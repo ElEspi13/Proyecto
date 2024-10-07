@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProyectoTicketing.Vistas.Ventana_IniciodeSesion"
+             Style="{DynamicResource Fondo}">
+    
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" 
+          HorizontalOptions="Center" 
+          VerticalOptions="Center"
+          RowSpacing="20">
+
+        <Label
+            x:Name="UsuarioLabel"
+            Grid.Row="0"
+            
+            Text="{DynamicResource UsuarioLabel}"
+            FontSize="30"
+            Style="{DynamicResource Label}"
+            />
+        <Entry x:Name="Usuario"
+            Grid.Row="1"
+            FontSize="30"
+            Style="{DynamicResource Entry}"
+            ToolTipProperties.Text="Introduzca su usuario"
+            SemanticProperties.Description="Introduzca su usuario en este campo">
+            <FlyoutBase.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Limpiar Datos" Clicked="LimpiarDatos">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Ctrl"
+                                                 Key="L"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                        
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="Iniciar Sesion" Clicked="Login_Clicked">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Ctrl,Shift"
+                             Key="I"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </FlyoutBase.ContextFlyout>
+
+        </Entry>
+        <Label
+            x:Name="ContrasenaLabel"
+            Grid.Row="2"
+            Text="{DynamicResource ContrasenaLabel}"
+            FontSize="30"
+            Style="{DynamicResource Label}"
+            
+            />
+        <Entry
+            x:Name="Passw"
+            Grid.Row="3"
+            FontSize="30"
+            IsPassword="True"
+            Style="{DynamicResource Entry}"
+            ToolTipProperties.Text="Introduzca su contraseña"
+             >
+            <FlyoutBase.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Limpiar Datos" Clicked="LimpiarDatos" SemanticProperties.Description="Este boton sirve para Limpiar los campos">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Ctrl"
+                                     Key="L"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="Iniciar Sesion" Clicked="Login_Clicked">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Ctrl,Shift"
+                 Key="I"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </FlyoutBase.ContextFlyout>
+        </Entry>
+        <Button
+            x:Name="Login"
+            Grid.Row="4"
+            Text="{DynamicResource BotonIniciosesion}"
+            FontSize="30"
+            Style="{DynamicResource Botones}"
+            Clicked="Login_Clicked"
+            SemanticProperties.Description="Este boton sirve para Iniciar Sesion"
+            ToolTipProperties.Text="Botón de inicio de sesión"
+            />
+        <Button
+            x:Name="Registrar"
+            Grid.Row="5"
+            Text="{DynamicResource BotonRegistrarse}"
+            FontSize="30"
+            Style="{DynamicResource Botones}"
+            Clicked="Registrar_Clicked"
+            ToolTipProperties.Text="Botón para registrarse"
+            SemanticProperties.Description="Este boton sirve para registrarse"
+            />
+
+
+    </Grid>
+</ContentPage>

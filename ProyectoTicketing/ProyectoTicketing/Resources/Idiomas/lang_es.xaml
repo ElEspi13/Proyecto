@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProyectoTicketing.Resources.Idiomas.lang_es">
+
+    <x:String x:Key="UsuarioLabel">Usuario</x:String>
+    <x:String x:Key="ContrasenaLabel">Contrasena</x:String>
+    <x:String x:Key="BotonIniciosesion">Iniciar Sesion</x:String>
+    <x:String x:Key="BotonRegistrarse">Registrarse</x:String>
+    <x:String x:Key="Configuracion">Configuracion</x:String>
+    <x:String x:Key="Idioma">Idioma</x:String>
+    <x:String x:Key="Tema">Tema</x:String>
+    <x:String x:Key="Original">Tema Original</x:String>
+    <x:String x:Key="AltoContraste">Alto Contraste</x:String>
+    <x:String x:Key="TamanoLetra">Tamano de Letra</x:String>
+    <x:String x:Key="GuardarConfiguracion">Guardar Configuracion</x:String>
+    <x:String x:Key="Personaje">Personajes</x:String>
+    <x:String x:Key="CreadorPersonaje">Crear Personaje</x:String>
+    <x:String x:Key="Ayuda">Ayuda</x:String>
+    <x:String x:Key="PaginaPrincipal">Pagina Principal</x:String>
+    <x:String x:Key="Masculino">Masculino</x:String>
+    <x:String x:Key="Femenino">Femenino</x:String>
+    <x:String x:Key="Desconectar">Desconectar</x:String>
+    <x:String x:Key="Arma">Elige tu arma</x:String>
+    <x:String x:Key="Casco">Elige tu casco</x:String>
+    <x:String x:Key="Perchera">Elige tu perchera</x:String>
+    <x:String x:Key="Guantes">Elige tus guantes</x:String>
+    <x:String x:Key="Pantalon">Elige tus pantalones</x:String>
+    <x:String x:Key="Botas">Elige tus botas</x:String>
+    <x:String x:Key="Accion">Accion</x:String>
+    <x:String x:Key="Usuario">Usuario Logueado</x:String>
+    <x:String x:Key="NoUsuario">Usuario no Logueado</x:String>
+    <x:String x:Key="Si">Si</x:String>
+    <x:String x:Key="No">No</x:String>
+    <x:String x:Key="GuardarPersonaje">Guardar Personaje</x:String>
+    <x:String x:Key="ListaAdmin">Lista de Usuarios</x:String>
+</ResourceDictionary>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProyectoTicketing.Vistas.Configuracion"
+             Title="Configuracion"
+             Style="{DynamicResource Fondo}">
+    
+    <Grid Padding="20" HorizontalOptions="Center" VerticalOptions="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label x:Name="Titulo" Text="{DynamicResource Configuracion}" FontSize="30" HorizontalOptions="Center" Grid.ColumnSpan="2" Grid.Row="0" Margin="0,20,0,40" Style="{DynamicResource Label}"/>
+
+        <Label x:Name="IdiomaLabel" Text="{DynamicResource Idioma}" FontSize="20" Grid.Row="1" Style="{DynamicResource Label}" Grid.Column="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Picker x:Name="LanguagePicker" FontSize="20" HorizontalOptions="CenterAndExpand" Grid.Column="1" VerticalOptions="CenterAndExpand" Grid.Row="1" SelectedIndexChanged="LanguagePicker_SelectedIndexChanged" Margin="0,20,0,20" Style="{DynamicResource Pickers}">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Español</x:String>
+                    <x:String>English</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <Label x:Name="TemaLabel" Text="{DynamicResource Tema}" Grid.Row="2" FontSize="20" Style="{DynamicResource Label}" Grid.Column="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Picker x:Name="ThemePicker" FontSize="20" Grid.Row="2" HorizontalOptions="CenterAndExpand" Grid.Column="1" VerticalOptions="CenterAndExpand" SelectedIndexChanged="ThemePicker_SelectedIndexChanged" Margin="0,20,0,20" Style="{DynamicResource Pickers}">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <Label x:Name="TamanoLabel" Text="{DynamicResource TamanoLetra}" FontSize="20" Grid.Row="3" Style="{DynamicResource Label}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="0,0,0,20" Grid.ColumnSpan="2" />
+        <Slider x:Name="FontSizeSlider" BackgroundColor="Black" Grid.Row="3" Minimum="1.0" Maximum="2.0" Value="1.0" Margin="0,50,0,0" ValueChanged="FontSizeSlider_ValueChanged" Grid.ColumnSpan="2"/>
+        <Button x:Name="BotonGuardar" Text="{DynamicResource GuardarConfiguracion}" FontSize="20" Style="{DynamicResource Botones}" Grid.Row="4" Clicked="Button_Clicked" HorizontalOptions="CenterAndExpand" Grid.ColumnSpan="2"  VerticalOptions="CenterAndExpand"/>
+    </Grid>
+</ContentPage>

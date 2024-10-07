@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProyectoTicketing.Resources.MisTemas.TemaOriginal">
+
+    
+   
+    <Style x:Key="Color_Shell" TargetType="Shell">
+        <Setter Property="BackgroundColor" Value="Gray"/>
+        <Setter Property="Title"/>
+        
+    </Style>
+    
+    
+
+    <Style x:Key="RadioButton" TargetType="RadioButton">
+        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="FontFamily" />
+    </Style>
+    <Color x:Key="Color_fondoTitulo">Blue</Color>
+    <Color x:Key="Color_Fuente">white</Color>
+    <Color x:Key="ColorpestanaNavegacion">Blue</Color>
+    
+    <Style x:Key="Pickers" TargetType="Picker">
+        <Setter Property="BackgroundColor" Value="#88FFFFFF" />
+        <Setter Property="TextColor" Value="Blue" />
+        <Setter Property="TitleColor" Value="Blue" />
+        <Setter Property="FontFamily" />
+    </Style>
+
+    <Style x:Key="Botones" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="LightBlue" />
+        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="FontFamily" />
+        
+    </Style>
+
+    <Style x:Key="Label" TargetType="Label">
+        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="FontFamily" />
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+
+    <Style x:Key="Entry" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="LightBlue" />
+        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+
+    <Style x:Key="LabelBotonesPersonajes" TargetType="Label">
+        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="FontFamily" />
+    </Style>
+
+</ResourceDictionary>
