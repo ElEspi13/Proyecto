@@ -14,7 +14,7 @@ namespace ProyectoTicketing.Clases
         /// <summary>
         /// Identificador único del usuario.
         /// </summary>
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Nombre del usuario.

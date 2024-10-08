@@ -66,10 +66,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Servicios\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="Resources\Idiomas\lang_en.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

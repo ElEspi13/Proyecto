@@ -1,4 +1,5 @@
 ﻿using ProyectoTicketing.Clases;
+using ProyectoTicketing.Servicios;
 using ProyectoTicketing.Vistas;
 
 namespace ProyectoTicketing
@@ -64,7 +65,7 @@ namespace ProyectoTicketing
                 Desconectar.Clicked += Desconectar_Clicked;
                 this.ToolbarItems.Add(Desconectar);
 
-                await Shell.Current.GoToAsync("//PersonajesRuta");
+                await Shell.Current.GoToAsync("//ListaTickets");
 
                 usuario.Nombre = Nombre;
 
@@ -101,6 +102,7 @@ namespace ProyectoTicketing
         private void RecuperarConfiguracion()
         {
             configuracion.AsignarConfiguracion(BBDD.SacarConfiguracion());
+            DisplayAlert("Guardada", "Se Guardo Correctamente la Configuración", "OK");
         }
 
         /// <summary>
@@ -175,7 +177,9 @@ namespace ProyectoTicketing
 
         internal void GuardarConfiguracion(int Tema, int Idioma, double Fuente)
         {
-            throw new NotImplementedException();
+ 
+            BBDD.GuardarConfiguracion(Tema,Idioma,Fuente);
+            DisplayAlert("Guardado","Se ha Guardado la configuración","Ok");
         }
     }
 }
