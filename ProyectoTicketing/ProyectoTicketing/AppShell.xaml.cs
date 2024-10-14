@@ -102,7 +102,6 @@ namespace ProyectoTicketing
         private void RecuperarConfiguracion()
         {
             configuracion.AsignarConfiguracion(BBDD.SacarConfiguracion());
-            DisplayAlert("Guardada", "Se Guardo Correctamente la Configuración", "OK");
         }
 
         /// <summary>
@@ -139,6 +138,8 @@ namespace ProyectoTicketing
             {
                 ToolbarItem desconectar = sender as ToolbarItem;
                 InicioSesion.IsVisible = true;
+                ListaTickets.IsVisible = false;
+                CrearTicket.IsVisible = false;
                 ventana_iniciodeSesion.LimpiarDatos();
                 
                 Shell.Current.ToolbarItems.Remove(desconectar);

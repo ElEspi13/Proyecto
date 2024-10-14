@@ -3,10 +3,62 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoTicketing.Vistas.VentanaUsuario_Creador_Tickets"
              Title="VentanaUsuario_Creador_Tickets">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
+
+
+        <!-- Formulario de creación de tickets -->
+        <VerticalStackLayout WidthRequest="350" HorizontalOptions="Center">
+
+            <!-- Selección del tipo de error -->
+            <Label Text="Tipo de error" FontSize="14" TextColor="Black"/>
+            <HorizontalStackLayout Spacing="5">
+                <Picker x:Name="TipoErrorPicker" WidthRequest="250" HeightRequest="30" BackgroundColor="#606060" TextColor="White" Title="Seleccione un error">
+                    <!-- Aquí agregas los elementos del picker -->
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Error de Conexión</x:String>
+                            <x:String>Error de Software</x:String>
+                            <x:String>Error de Hardware</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </HorizontalStackLayout>
+
+            <!-- Selección de la categoría -->
+            <Label Text="Categoría" FontSize="14" TextColor="Black"/>
+            <HorizontalStackLayout Spacing="5">
+                <Picker x:Name="CategoriaPicker" WidthRequest="250" HeightRequest="30" BackgroundColor="#606060" TextColor="White" Title="Seleccione una categoría">
+                    <!-- Aquí agregas los elementos del picker -->
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Red</x:String>
+                            <x:String>Software</x:String>
+                            <x:String>Hardware</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Seleccionar archivo" FontSize="14" TextColor="Black"/>
+                <HorizontalStackLayout Spacing="5">
+                    <Entry x:Name="ArchivoEntry" WidthRequest="250" HeightRequest="30" BackgroundColor="#606060" TextColor="White" IsReadOnly="True"/>
+                    <Button Text="Seleccionar" WidthRequest="80" HeightRequest="30" Clicked="OnSeleccionarArchivoClicked"/>
+                </HorizontalStackLayout>
+
+                <!-- Aquí se mostrará la imagen y el nombre del archivo seleccionado -->
+                <StackLayout x:Name="ArchivoSeleccionadoLayout" Orientation="Vertical" Spacing="5" IsVisible="False">
+                    <Image x:Name="ArchivoIcono" WidthRequest="40" HeightRequest="40"/>
+                    <Label x:Name="ArchivoNombre" WidthRequest="100" FontSize="14" TextColor="Black"/>
+                </StackLayout>
+            </VerticalStackLayout>
+
+            <!-- Área de texto para especificar el error -->
+            <Editor WidthRequest="350" HeightRequest="150" BackgroundColor="#606060" TextColor="White" 
+                    Placeholder="ESPECIFIQUE EL ERROR" PlaceholderColor="White" />
+
+            <!-- Botón de Enviar -->
+            <Button Text="ENVIAR" WidthRequest="150" HeightRequest="40" BackgroundColor="Black" TextColor="White" HorizontalOptions="Center" />
+        </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using ProyectoTicketing.Clases;
+using Microsoft.Maui.Animations;
 
 
 namespace ProyectoTicketing.Servicios
@@ -25,7 +26,7 @@ namespace ProyectoTicketing.Servicios
 
         internal void CerrarSesion()
         {
-            throw new NotImplementedException();
+            usuario=new Usuario();
         }
 
         internal int ComprobarRolUsuario()
@@ -174,7 +175,7 @@ namespace ProyectoTicketing.Servicios
                 }
                 else
                 {
-                    throw new Exception("No se encontró la configuración para el usuario.");
+                    return (0, 0, 0);
                 }
             }
             else

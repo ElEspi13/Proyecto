@@ -10,8 +10,12 @@
         <Setter Property="Title"/>
         
     </Style>
-    
-    
+    <Style x:Key="Fondo" TargetType="Page">
+        <Setter Property="BackgroundColor" Value="Gray"/>
+        <Setter Property="Title"/>
+
+    </Style>
+
 
     <Style x:Key="RadioButton" TargetType="RadioButton">
         <Setter Property="TextColor" Value="Black" />
