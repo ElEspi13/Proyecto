@@ -55,48 +55,56 @@ namespace ProyectoTicketing
             {
                 BBDDEstado = BBDD.Conexion();
             }
-            if (BBDD.ComprobarUsuario(Nombre, Contrasena) == true)
+            if (BBDDEstado == true)
             {
-                DisplayAlert("Conectado", "Se Inicio Sesion Correctamente", "OK");
-
-                InicioSesion.IsVisible = false;
-                ListaTickets.IsVisible = true;
-                CrearTicket.IsVisible = true;
-
-
-
-                Desconectar.Order = ToolbarItemOrder.Primary;
-                Desconectar.Clicked += Desconectar_Clicked;
-                this.ToolbarItems.Add(Desconectar);
-
-                await Shell.Current.GoToAsync("//ListaTickets");
-
-                usuario.Nombre = Nombre;
-
-                BBDDsesion = true;
-
-
-
-                Footer.Text = usuario.Nombre;
-
-                if (BBDD.ExisteConfiguracion())
+                if (BBDD.ComprobarUsuario(Nombre, Contrasena) == true)
                 {
-                    RecuperarConfiguracion();
-                }
-                Desconectar.Text = (string)App.Current.Resources["Desconectar"];
+                    await DisplayAlert("Conectado", "Se Inicio Sesion Correctamente", "OK");
 
-                if (BBDD.ComprobarRolUsuario() == 1)
+                    InicioSesion.IsVisible = false;
+                    ListaTickets.IsVisible = true;
+                    CrearTicket.IsVisible = true;
+
+
+
+                    Desconectar.Order = ToolbarItemOrder.Primary;
+                    Desconectar.Clicked += Desconectar_Clicked;
+                    this.ToolbarItems.Add(Desconectar);
+
+                    await Shell.Current.GoToAsync("//ListaTickets");
+
+                    usuario.Nombre = Nombre;
+
+                    BBDDsesion = true;
+
+
+
+                    Footer.Text = usuario.Nombre;
+
+                    if (BBDD.ExisteConfiguracion())
+                    {
+                        RecuperarConfiguracion();
+                    }
+                    Desconectar.Text = (string)App.Current.Resources["Desconectar"];
+
+                    if (BBDD.ComprobarRolUsuario() == 1)
+                    {
+                        //Ventana_Admin.IsVisible = true;
+                        //ActualizarDatosAdmin();
+                    }
+
+                }
+
+                else
                 {
-                    //Ventana_Admin.IsVisible = true;
-                    //ActualizarDatosAdmin();
+                    await DisplayAlert("Error", "No se Inicio Sesion Correctamente", "OK");
                 }
-
             }
-
             else
             {
-                DisplayAlert("Error", "No se Inicio Sesion Correctamente", "OK");
+                await DisplayAlert("Error", "No se Inicio Sesion Correctamente", "OK");
             }
+
 
         }
 
@@ -180,11 +188,11 @@ namespace ProyectoTicketing
             BBDD.RegistrarUsuario(Usuario,Passwd);
         }
 
-        internal void GuardarConfiguracion(int Tema, int Idioma, double Fuente)
+        internal async void GuardarConfiguracion(int Tema, int Idioma, double Fuente)
         {
  
             BBDD.GuardarConfiguracion(Tema,Idioma,Fuente);
-            DisplayAlert("Guardado","Se ha Guardado la configuración","Ok");
+            await DisplayAlert("Guardado","Se ha Guardado la configuración","Ok");
         }
     }
 }

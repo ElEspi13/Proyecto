@@ -17,7 +17,7 @@ namespace ProyectoTicketing.Servicios
         private MongoClient client;
         private IMongoDatabase database;
         private Usuario usuario = new Usuario();
-        private string connectionString = "mongodb://localhost:27017";
+        private string connectionString = "mongodb://localhost:27017/?connectTimeoutMS=2000&socketTimeoutMS=2000";
         public BBDD()
         {
 

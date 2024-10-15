@@ -43,7 +43,7 @@
             </Picker>
 
             <!-- Seleccionar archivo -->
-            <VerticalStackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="CenterAndExpand">
                 <Label Text="Seleccionar archivo" FontSize="16" TextColor="Black" Margin="0,20,0,5"/>
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
                     <Entry x:Name="ArchivoEntry" HeightRequest="50" BackgroundColor="#606060" TextColor="White" IsReadOnly="True" HorizontalOptions="FillAndExpand"/>

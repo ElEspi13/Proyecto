@@ -76,6 +76,9 @@ namespace ProyectoTicketing.Vistas
         {
             base.OnAppearing();
             // Oculta los ToolbarItems
+            // Habilitar la navegación cuando desaparece la página de configuración
+            // Muestra los ToolbarItems y los FlyoutItems
+            Shell.SetNavBarIsVisible(this, true); // Muestra los ToolbarItems
             Shell.SetTabBarIsVisible(this, false); // Oculta los FlyoutItems
         }
 
