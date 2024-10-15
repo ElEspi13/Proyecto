@@ -11,8 +11,9 @@ namespace ProyectoTicketing
         private BBDD BBDD;
         private Configuracion configuracion;
         private Ventana_IniciodeSesion ventana_iniciodeSesion;
-        private VentanaUsuario_Ver_Tickets ventanaUsuario_Ver_Tickets;
+        private VentanaGeneral_Ver_Tickets ventanaGeneral_Ver_Tickets;
         private VentanaUsuario_Creador_Tickets ventanaUsuario_Creador_Tickets;
+        private VentanaTecnico_ResolvedorTickets ventanaTecnico_Resolvedor;
         private Ayuda ventana_Ayuda;
         private Usuario usuario = new Usuario();
         public bool cargado = false;
@@ -25,11 +26,14 @@ namespace ProyectoTicketing
             ventana_iniciodeSesion = new Ventana_IniciodeSesion(this);
             InicioSesion.Content = ventana_iniciodeSesion;
 
-            ventanaUsuario_Ver_Tickets = new VentanaUsuario_Ver_Tickets(this);
-            ListaTickets.Content = ventanaUsuario_Ver_Tickets;
+            ventanaGeneral_Ver_Tickets = new VentanaGeneral_Ver_Tickets(this);
+            ListaTickets.Content = ventanaGeneral_Ver_Tickets;
 
             ventanaUsuario_Creador_Tickets=new VentanaUsuario_Creador_Tickets(this);
             CrearTicket.Content = ventanaUsuario_Creador_Tickets;
+
+            ventanaTecnico_Resolvedor=new VentanaTecnico_ResolvedorTickets(this);
+            TecnicoResolver.Content = ventanaTecnico_Resolvedor;
 
             ventana_Ayuda = new Ayuda(this);
             Ventana_Ayuda.Content = ventana_Ayuda;
@@ -81,7 +85,7 @@ namespace ProyectoTicketing
                 }
                 Desconectar.Text = (string)App.Current.Resources["Desconectar"];
 
-                if (BBDD.ComprobarRolUsuario() == 0)
+                if (BBDD.ComprobarRolUsuario() == 1)
                 {
                     //Ventana_Admin.IsVisible = true;
                     //ActualizarDatosAdmin();
@@ -173,7 +177,7 @@ namespace ProyectoTicketing
 
         internal void InsertarDatos(string Usuario, string Passwd)
         {
-            throw new NotImplementedException();
+            BBDD.RegistrarUsuario(Usuario,Passwd);
         }
 
         internal void GuardarConfiguracion(int Tema, int Idioma, double Fuente)

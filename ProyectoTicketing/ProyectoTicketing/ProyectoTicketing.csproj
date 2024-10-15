@@ -84,10 +84,13 @@
 	  <MauiXaml Update="Vistas\Configuracion.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Vistas\VentanaUsuario_Creador_Tickets.xaml">
+	  <MauiXaml Update="Vistas\VentanaGeneral_Ver_Tickets.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Vistas\VentanaUsuario_Ver_Tickets.xaml">
+	  <MauiXaml Update="Vistas\VentanaTecnico_ResolvedorTickets.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Vistas\VentanaUsuario_Creador_Tickets.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Vistas\Ventana_IniciodeSesion.xaml">

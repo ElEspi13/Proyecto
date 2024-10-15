@@ -149,6 +149,34 @@ namespace ProyectoTicketing.Servicios
             }
         }
 
+        internal void RegistrarUsuario(string nombreUsuario, string contrasena)
+        {
+            try
+            {
+                // Verificar conexión con la base de datos
+                if (Conexion())
+                {
+                    // Obtener la colección de usuarios
+                    var collectionUsuarios = database.GetCollection<BsonDocument>("usuarios");
+
+                    // Crear un nuevo documento Bson para el usuario
+                    var usuarioDoc = new BsonDocument
+            {
+                { "Usuario", nombreUsuario },
+                { "Contrasena", contrasena },
+                { "Rol", 1 } // Asigna un rol por defecto; ajusta según sea necesario
+            };
+
+                    // Insertar el documento en la colección
+                    collectionUsuarios.InsertOne(usuarioDoc);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al registrar el usuario: {ex.Message}");
+            }
+        }
+
 
         internal (int tema, int idioma, double fuente) SacarConfiguracion()
         {
@@ -180,7 +208,7 @@ namespace ProyectoTicketing.Servicios
             }
             else
             {
-                throw new Exception("Error al sacar la configuracion");
+                return (0, 0, 0);
             }
         }
     }

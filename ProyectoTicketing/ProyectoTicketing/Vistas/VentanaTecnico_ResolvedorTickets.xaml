@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProyectoTicketing.Vistas.VentanaTecnico_ResolvedorTickets"
+             Title="Detalles del Ticket">
+
+
+    <ScrollView>
+        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *, Auto"
+              ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+            <!-- Título del Ticket -->
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Text="DETALLES DEL TICKET" FontSize="24" TextColor="Black" HorizontalOptions="Center" Margin="0,0,0,10"/>
+
+            <!-- Tipo de error -->
+            <Label Grid.Row="1" Grid.Column="0" 
+                   Text="Tipo de error:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
+            <Entry Grid.Row="2" Grid.Column="0" 
+                   Text="{Binding Ticket.TipoError}" FontSize="16" TextColor="Black"/>
+
+            <!-- Categoría -->
+            <Label Grid.Row="3" Grid.Column="0" 
+                   Text="Categoría:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
+            <Entry Grid.Row="4" Grid.Column="0" 
+                   Text="{Binding Ticket.Categoria}" FontSize="16" TextColor="Black"/>
+
+            <!-- ID Ticket -->
+            <Label Grid.Row="1" Grid.Column="1" 
+                   Text="ID TICKET:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
+            <Entry Grid.Row="2" Grid.Column="1" 
+                   Text="{Binding Ticket.ID}" FontSize="16" TextColor="Black"/>
+
+            <!-- Nombre del Usuario -->
+            <Label Grid.Row="3" Grid.Column="1" 
+                   Text="Nombre Usuario:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
+            <Entry Grid.Row="4" Grid.Column="1" 
+                   Text="{Binding Ticket.NombreUsuario}" FontSize="16" TextColor="Black"/>
+
+            <!-- Documentos del Ticket -->
+            <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Text="Documentos del Ticket" FontSize="18" TextColor="Black" Margin="0,20,0,5"/>
+            <VerticalStackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
+                    <Entry x:Name="DocumentosEntry" HeightRequest="50" BackgroundColor="#606060" TextColor="White" IsReadOnly="True" HorizontalOptions="FillAndExpand"/>
+                </HorizontalStackLayout>
+
+                <StackLayout x:Name="DocumentosSeleccionadosLayout" Orientation="Vertical" Spacing="10" IsVisible="False">
+                    <Image x:Name="DocumentoIcono" WidthRequest="50" HeightRequest="50"/>
+                    <Label x:Name="DocumentoNombre" FontSize="16" TextColor="Black" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+            </VerticalStackLayout>
+
+            <!-- Especificación del error -->
+            <Label Grid.Row="7" Grid.Column="0" 
+                   Text="Especificación del error" FontSize="18" TextColor="Black" Margin="0,20,0,5"/>
+            <Editor Grid.Row="8" Grid.Column="0" HeightRequest="150" 
+                    BackgroundColor="#606060" TextColor="White" 
+                    Text="{Binding Ticket.EspecificacionError}" 
+                    Placeholder="Describa el error aquí" 
+                    PlaceholderColor="White" 
+                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+            <!-- Descripción de la solución -->
+            <Label Grid.Row="7" Grid.Column="1" 
+                   Text="Descripción de la solución" FontSize="18" TextColor="Black" Margin="0,20,0,5"/>
+            <Editor Grid.Row="8" Grid.Column="1" HeightRequest="150" 
+                    BackgroundColor="#606060" TextColor="White" 
+                    Placeholder="Describa la solución aquí" 
+                    PlaceholderColor="White" 
+                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+            <!-- Agregar documentos -->
+            <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" 
+                   Text="Agregar documentos" FontSize="18" TextColor="Black" Margin="0,20,0,5"/>
+            <VerticalStackLayout Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
+                    <Entry x:Name="ArchivoEntry" HeightRequest="50" BackgroundColor="#606060" TextColor="White" IsReadOnly="True" HorizontalOptions="FillAndExpand"/>
+                    <Button Text="Seleccionar" WidthRequest="90" HeightRequest="50" Clicked="OnSeleccionarArchivoClicked"/>
+                </HorizontalStackLayout>
+
+                <StackLayout x:Name="ArchivoSeleccionadoLayout" Orientation="Vertical" Spacing="10" IsVisible="False">
+                    <Image x:Name="ArchivoIcono" WidthRequest="50" HeightRequest="50"/>
+                    <Label x:Name="ArchivoNombre" FontSize="16" TextColor="Black" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+            </VerticalStackLayout>
+
+            <!-- Botón de Enviar -->
+            <Button Text="ENVIAR" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
+                    HeightRequest="55" BackgroundColor="Black" TextColor="White" 
+                    HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="0,20,0,0"/>
+        </Grid>
+    </ScrollView>
+</ContentPage>

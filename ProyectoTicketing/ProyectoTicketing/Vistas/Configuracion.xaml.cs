@@ -75,12 +75,7 @@ namespace ProyectoTicketing.Vistas
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-            // Deshabilitar la navegación cuando aparece la página de configuración
-            Shell.SetNavBarIsVisible(this, false); // Oculta la barra de navegación
-
             // Oculta los ToolbarItems
-            Shell.SetNavBarIsVisible(this, false); // Oculta los ToolbarItems
             Shell.SetTabBarIsVisible(this, false); // Oculta los FlyoutItems
         }
 

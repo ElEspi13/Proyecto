@@ -26,9 +26,9 @@
     </Shell.FlyoutFooter>
     <FlyoutItem Title="{DynamicResource PaginaPrincipal}" x:Name="Menu" >
         <ShellContent x:Name="InicioSesion" Title="{DynamicResource BotonIniciosesion}" Route="InicioSesionRuta" IsVisible="True" />
-        <ShellContent x:Name="ListaTickets" Route="ListaTickets" Title="{DynamicResource Personaje}" IsVisible="False" />
-        <ShellContent x:Name="CrearTicket" Route="CreadorTickets" Title="{DynamicResource CreadorPersonaje}" IsVisible="False" />
-
+        <ShellContent x:Name="ListaTickets" Route="ListaTickets" Title="{DynamicResource Personaje}" IsVisible="True" />
+        <ShellContent x:Name="CrearTicket" Route="CreadorTickets" Title="{DynamicResource CreadorPersonaje}" IsVisible="True" />
+        <ShellContent x:Name="TecnicoResolver" Route="TecnicoResolver" Title="{DynamicResource CreadorPersonaje}" IsVisible="True" />
     </FlyoutItem>
 
     <FlyoutItem Title="{DynamicResource Ayuda}">

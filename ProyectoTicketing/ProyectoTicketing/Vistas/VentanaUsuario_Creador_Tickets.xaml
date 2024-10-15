@@ -3,62 +3,70 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoTicketing.Vistas.VentanaUsuario_Creador_Tickets"
              Title="VentanaUsuario_Creador_Tickets">
-    <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
 
+    <!-- Usar ScrollView para permitir desplazamiento -->
+    <ScrollView>
+        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, *, Auto" ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 
-        <!-- Formulario de creación de tickets -->
-        <VerticalStackLayout WidthRequest="350" HorizontalOptions="Center">
+            <!-- Título de tipo de error -->
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Text="Tipo de error" FontSize="16" TextColor="Black" Margin="0,0,0,5"/>
 
-            <!-- Selección del tipo de error -->
-            <Label Text="Tipo de error" FontSize="14" TextColor="Black"/>
-            <HorizontalStackLayout Spacing="5">
-                <Picker x:Name="TipoErrorPicker" WidthRequest="250" HeightRequest="30" BackgroundColor="#606060" TextColor="White" Title="Seleccione un error">
-                    <!-- Aquí agregas los elementos del picker -->
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Error de Conexión</x:String>
-                            <x:String>Error de Software</x:String>
-                            <x:String>Error de Hardware</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
-            </HorizontalStackLayout>
+            <!-- Picker de tipo de error -->
+            <Picker x:Name="TipoErrorPicker" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    HeightRequest="70" BackgroundColor="#606060" TextColor="White" Title="Seleccione un error" 
+                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Error de Conexión</x:String>
+                        <x:String>Error de Software</x:String>
+                        <x:String>Error de Hardware</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
 
-            <!-- Selección de la categoría -->
-            <Label Text="Categoría" FontSize="14" TextColor="Black"/>
-            <HorizontalStackLayout Spacing="5">
-                <Picker x:Name="CategoriaPicker" WidthRequest="250" HeightRequest="30" BackgroundColor="#606060" TextColor="White" Title="Seleccione una categoría">
-                    <!-- Aquí agregas los elementos del picker -->
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Red</x:String>
-                            <x:String>Software</x:String>
-                            <x:String>Hardware</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
-            </HorizontalStackLayout>
+            <!-- Título de Categoría -->
+            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Text="Categoría" FontSize="16" TextColor="Black" Margin="0,20,0,5"/>
 
-            <VerticalStackLayout>
-                <Label Text="Seleccionar archivo" FontSize="14" TextColor="Black"/>
-                <HorizontalStackLayout Spacing="5">
-                    <Entry x:Name="ArchivoEntry" WidthRequest="250" HeightRequest="30" BackgroundColor="#606060" TextColor="White" IsReadOnly="True"/>
-                    <Button Text="Seleccionar" WidthRequest="80" HeightRequest="30" Clicked="OnSeleccionarArchivoClicked"/>
+            <!-- Picker de Categoría -->
+            <Picker x:Name="CategoriaPicker" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                    HeightRequest="70" BackgroundColor="#606060" TextColor="White" Title="Seleccione una categoría" 
+                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Red</x:String>
+                        <x:String>Software</x:String>
+                        <x:String>Hardware</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <!-- Seleccionar archivo -->
+            <VerticalStackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
+                <Label Text="Seleccionar archivo" FontSize="16" TextColor="Black" Margin="0,20,0,5"/>
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
+                    <Entry x:Name="ArchivoEntry" HeightRequest="50" BackgroundColor="#606060" TextColor="White" IsReadOnly="True" HorizontalOptions="FillAndExpand"/>
+                    <Button Text="Seleccionar" WidthRequest="90" HeightRequest="50" Clicked="OnSeleccionarArchivoClicked"/>
                 </HorizontalStackLayout>
 
                 <!-- Aquí se mostrará la imagen y el nombre del archivo seleccionado -->
-                <StackLayout x:Name="ArchivoSeleccionadoLayout" Orientation="Vertical" Spacing="5" IsVisible="False">
-                    <Image x:Name="ArchivoIcono" WidthRequest="40" HeightRequest="40"/>
-                    <Label x:Name="ArchivoNombre" WidthRequest="100" FontSize="14" TextColor="Black"/>
+                <StackLayout x:Name="ArchivoSeleccionadoLayout" Orientation="Vertical" Spacing="10" IsVisible="False" Margin="0,5,0,0" HorizontalOptions="FillAndExpand">
+                    <Image x:Name="ArchivoIcono" WidthRequest="50" HeightRequest="50"/>
+                    <Label x:Name="ArchivoNombre" FontSize="16" TextColor="Black" HorizontalOptions="FillAndExpand"/>
                 </StackLayout>
             </VerticalStackLayout>
 
-            <!-- Área de texto para especificar el error -->
-            <Editor WidthRequest="350" HeightRequest="150" BackgroundColor="#606060" TextColor="White" 
-                    Placeholder="ESPECIFIQUE EL ERROR" PlaceholderColor="White" />
+            <!-- Área para especificar el error -->
+            <Editor Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
+                    BackgroundColor="#606060" TextColor="White" Placeholder="ESPECIFIQUE EL ERROR" 
+                    PlaceholderColor="White" Margin="0,20,0,0" HeightRequest="200" 
+                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
             <!-- Botón de Enviar -->
-            <Button Text="ENVIAR" WidthRequest="150" HeightRequest="40" BackgroundColor="Black" TextColor="White" HorizontalOptions="Center" />
-        </VerticalStackLayout>
-    </VerticalStackLayout>
+            <Button Text="ENVIAR" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+                    HeightRequest="55" BackgroundColor="Black" TextColor="White" 
+                    HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="0,20,0,0"/>
+        </Grid>
+    </ScrollView>
 </ContentPage>
