@@ -7,7 +7,7 @@
 
     <ScrollView>
         <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *, Auto"
-              ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+              ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ColumnSpacing="20">
 
             <!-- Título del Ticket -->
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
@@ -17,25 +17,25 @@
             <Label Grid.Row="1" Grid.Column="0" 
                    Text="Tipo de error:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
             <Entry Grid.Row="2" Grid.Column="0" 
-                   Text="{Binding Ticket.TipoError}" FontSize="16" TextColor="Black"/>
+                   Text="{Binding Ticket.TipoError}" FontSize="16" TextColor="Black" IsEnabled="False"/>
 
             <!-- Categoría -->
             <Label Grid.Row="3" Grid.Column="0" 
                    Text="Categoría:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
             <Entry Grid.Row="4" Grid.Column="0" 
-                   Text="{Binding Ticket.Categoria}" FontSize="16" TextColor="Black"/>
+                   Text="{Binding Ticket.Categoria}" FontSize="16" TextColor="Black" IsEnabled="False"/>
 
             <!-- ID Ticket -->
             <Label Grid.Row="1" Grid.Column="1" 
                    Text="ID TICKET:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
             <Entry Grid.Row="2" Grid.Column="1" 
-                   Text="{Binding Ticket.ID}" FontSize="16" TextColor="Black"/>
+                   Text="{Binding Ticket.ID}" FontSize="16" TextColor="Black" IsEnabled="False"/>
 
             <!-- Nombre del Usuario -->
             <Label Grid.Row="3" Grid.Column="1" 
                    Text="Nombre Usuario:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
             <Entry Grid.Row="4" Grid.Column="1" 
-                   Text="{Binding Ticket.NombreUsuario}" FontSize="16" TextColor="Black"/>
+                   Text="{Binding Ticket.NombreUsuario}" FontSize="16" TextColor="Black" IsEnabled="False"/>
 
             <!-- Documentos del Ticket -->
             <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 

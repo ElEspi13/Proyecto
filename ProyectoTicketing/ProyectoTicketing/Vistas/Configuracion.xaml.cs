@@ -80,6 +80,9 @@ namespace ProyectoTicketing.Vistas
             // Muestra los ToolbarItems y los FlyoutItems
             Shell.SetNavBarIsVisible(this, true); // Muestra los ToolbarItems
             Shell.SetTabBarIsVisible(this, false); // Oculta los FlyoutItems
+                                                   // Deshabilitar el flyout
+            
+
         }
 
         /// <summary>
@@ -96,7 +99,7 @@ namespace ProyectoTicketing.Vistas
             // Muestra los ToolbarItems y los FlyoutItems
             Shell.SetNavBarIsVisible(this, true); // Muestra los ToolbarItems
             Shell.SetTabBarIsVisible(this, true); // Muestra los FlyoutItems
-            shell.FlyoutBehavior = FlyoutBehavior.Flyout;
+            
             shell.Desconectar.Text = (string)App.Current.Resources["Desconectar"];
         }
 

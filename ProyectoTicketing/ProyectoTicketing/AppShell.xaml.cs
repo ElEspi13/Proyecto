@@ -14,6 +14,7 @@ namespace ProyectoTicketing
         private VentanaGeneral_Ver_Tickets ventanaGeneral_Ver_Tickets;
         private VentanaUsuario_Creador_Tickets ventanaUsuario_Creador_Tickets;
         private VentanaTecnico_ResolvedorTickets ventanaTecnico_Resolvedor;
+        private Ventana_DetallesTicket ventanaDetallesTicket;
         private Ayuda ventana_Ayuda;
         private Usuario usuario = new Usuario();
         public bool cargado = false;
@@ -30,9 +31,12 @@ namespace ProyectoTicketing
             ListaTickets.Content = ventanaGeneral_Ver_Tickets;
 
             ventanaUsuario_Creador_Tickets=new VentanaUsuario_Creador_Tickets(this);
-            CrearTicket.Content = ventanaUsuario_Creador_Tickets;
+            CreadorTickets.Content = ventanaUsuario_Creador_Tickets;
 
-            ventanaTecnico_Resolvedor=new VentanaTecnico_ResolvedorTickets(this);
+            ventanaDetallesTicket = new Ventana_DetallesTicket(this);
+            DetallesTicket.Content = ventanaDetallesTicket;
+
+            ventanaTecnico_Resolvedor =new VentanaTecnico_ResolvedorTickets(this);
             TecnicoResolver.Content = ventanaTecnico_Resolvedor;
 
             ventana_Ayuda = new Ayuda(this);
@@ -63,7 +67,7 @@ namespace ProyectoTicketing
 
                     InicioSesion.IsVisible = false;
                     ListaTickets.IsVisible = true;
-                    CrearTicket.IsVisible = true;
+                    CreadorTickets.IsVisible = true;
 
 
 
@@ -77,7 +81,7 @@ namespace ProyectoTicketing
 
                     BBDDsesion = true;
 
-
+                    ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
 
                     Footer.Text = usuario.Nombre;
 
@@ -89,8 +93,14 @@ namespace ProyectoTicketing
 
                     if (BBDD.ComprobarRolUsuario() == 1)
                     {
+                        CreadorTickets.IsVisible = false;
+                        TecnicoResolver.IsVisible = true;
+                    }
+                    if (BBDD.ComprobarRolUsuario() == 0)
+                    {
                         //Ventana_Admin.IsVisible = true;
                         //ActualizarDatosAdmin();
+                        
                     }
 
                 }
@@ -151,7 +161,7 @@ namespace ProyectoTicketing
                 ToolbarItem desconectar = sender as ToolbarItem;
                 InicioSesion.IsVisible = true;
                 ListaTickets.IsVisible = false;
-                CrearTicket.IsVisible = false;
+                CreadorTickets.IsVisible = false;
                 ventana_iniciodeSesion.LimpiarDatos();
                 
                 Shell.Current.ToolbarItems.Remove(desconectar);
@@ -193,6 +203,57 @@ namespace ProyectoTicketing
  
             BBDD.GuardarConfiguracion(Tema,Idioma,Fuente);
             await DisplayAlert("Guardado","Se ha Guardado la configuración","Ok");
+        }
+
+        internal async void CrearTicket(Ticket nuevoTicket)
+        {
+            try
+            {
+                await BBDD.SubirTicketAsync(nuevoTicket);
+                await DisplayAlert("Guardado", "Ticket Se ha Creado Correctamente", "Ok");
+                await Shell.Current.GoToAsync("//ListaTickets");
+            }
+            catch (Exception e) {
+                await DisplayAlert("Error", "Ticket NO Se ha Creado Correctamente", "Ok");
+            }
+            
+        }
+
+        internal async Task<List<Ticket>> ObtenerTicketsDeUsuarioAsync()
+        {
+            try
+            {
+                // Llama al método de la base de datos y espera el resultado
+                var tickets = await BBDD.ObtenerTicketsDeUsuarioAsync();
+
+                if (tickets == null || tickets.Count == 0)
+                {
+                    await DisplayAlert("Información", "No se encontraron tickets para este usuario.", "Ok");
+                    return new List<Ticket>(); // Devuelve una lista vacía si no hay tickets
+                }
+
+                return tickets; // Devuelve los tickets si los hay
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"Tickets no se pueden cargar: {e.Message}", "Ok");
+                return new List<Ticket>(); // Devuelve una lista vacía en caso de error
+            }
+        }
+
+        internal void MostrarDetalles(Ticket? ticketSeleccionado)
+        {
+            ventanaDetallesTicket.SetTicketData(ticketSeleccionado);
+        }
+
+        internal void DescargarDocumento(Documento documento)
+        {
+            BBDD.DescargarDocumentoAsync(documento);
+        }
+
+        internal async void RedirigirPaginaDetalles()
+        {
+            await Shell.Current.GoToAsync("//DetallesTicket");
         }
     }
 }
