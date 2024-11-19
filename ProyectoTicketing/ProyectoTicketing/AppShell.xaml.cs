@@ -1,4 +1,7 @@
-﻿using ProyectoTicketing.Clases;
+﻿
+using Microsoft.Maui.Controls;
+using MongoDB.Bson;
+using ProyectoTicketing.Clases;
 using ProyectoTicketing.Servicios;
 using ProyectoTicketing.Vistas;
 
@@ -15,6 +18,7 @@ namespace ProyectoTicketing
         private VentanaUsuario_Creador_Tickets ventanaUsuario_Creador_Tickets;
         private VentanaTecnico_ResolvedorTickets ventanaTecnico_Resolvedor;
         private Ventana_DetallesTicket ventanaDetallesTicket;
+        private Ventana_Ver_TicketsSinAsignar ventana_Ver_TicketsSinAsignar;
         private Ayuda ventana_Ayuda;
         private Usuario usuario = new Usuario();
         public bool cargado = false;
@@ -41,10 +45,13 @@ namespace ProyectoTicketing
 
             ventana_Ayuda = new Ayuda(this);
             Ventana_Ayuda.Content = ventana_Ayuda;
+            
+            ventana_Ver_TicketsSinAsignar =new Ventana_Ver_TicketsSinAsignar(this);
+            ListaTicketsSinAsignar.Content= ventana_Ver_TicketsSinAsignar;
 
             configuracion = new Configuracion(this);
 
-            BBDD = new BBDD();
+            BBDD = new BBDD(this);
         }
 
         /// <summary>
@@ -55,6 +62,7 @@ namespace ProyectoTicketing
         /// <param name="Contrasena">Contraseña del usuario.</param>
         public async void ConectarBBDD(String Nombre, String Contrasena)
         {
+            
             if (BBDDEstado == false)
             {
                 BBDDEstado = BBDD.Conexion();
@@ -66,22 +74,21 @@ namespace ProyectoTicketing
                     await DisplayAlert("Conectado", "Se Inicio Sesion Correctamente", "OK");
 
                     InicioSesion.IsVisible = false;
-                    ListaTickets.IsVisible = true;
-                    CreadorTickets.IsVisible = true;
+                    
 
 
-
+                    Desconectar = new ToolbarItem();
                     Desconectar.Order = ToolbarItemOrder.Primary;
                     Desconectar.Clicked += Desconectar_Clicked;
                     this.ToolbarItems.Add(Desconectar);
-
-                    await Shell.Current.GoToAsync("//ListaTickets");
+                    
+                    
 
                     usuario.Nombre = Nombre;
 
                     BBDDsesion = true;
 
-                    ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
+                    
 
                     Footer.Text = usuario.Nombre;
 
@@ -93,8 +100,16 @@ namespace ProyectoTicketing
 
                     if (BBDD.ComprobarRolUsuario() == 1)
                     {
-                        CreadorTickets.IsVisible = false;
+                        ActualizarTicketsTiempoRealTecnico();
+                        ListaTicketsSinAsignar.IsVisible = true;
                         TecnicoResolver.IsVisible = true;
+                        DetallesTicket.IsVisible = true;
+                        ListaTickets.IsVisible = true;
+                        DetallesTicket.IsVisible = false;
+                        ventanaGeneral_Ver_Tickets.tecnico = true;
+                        BBDD.IniciarMonitoreoTecnico();
+                        await Shell.Current.GoToAsync("//ListaTicketsSinAsignar");
+
                     }
                     if (BBDD.ComprobarRolUsuario() == 0)
                     {
@@ -102,6 +117,16 @@ namespace ProyectoTicketing
                         //ActualizarDatosAdmin();
                         
                     }
+                    if (BBDD.ComprobarRolUsuario() == 2)
+                    {
+                        ventanaGeneral_Ver_Tickets.tecnico = false;
+                        ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
+                        ListaTickets.IsVisible = true;
+                        CreadorTickets.IsVisible = true;
+                        BBDD.IniciarMonitoreoUsuario();
+                        await Shell.Current.GoToAsync("//ListaTickets");
+                    }
+                    
 
                 }
 
@@ -163,16 +188,16 @@ namespace ProyectoTicketing
                 ListaTickets.IsVisible = false;
                 CreadorTickets.IsVisible = false;
                 ventana_iniciodeSesion.LimpiarDatos();
-                
                 Shell.Current.ToolbarItems.Remove(desconectar);
-                
-                usuario.Nombre = "";
+                DetallesTicket.IsVisible = false;
+                usuario.Nombre = "";    
                 BBDDsesion = false;
                 
                 Footer.Text = "";
                 BBDD.CerrarSesion();
                 configuracion.AsignarConfiguracion(BBDD.SacarConfiguracion());
                 Desconectar.IsEnabled = true;
+                BBDD.DetenerMonitoreo();
                 await Shell.Current.GoToAsync("//InicioSesionRuta");
             }
             else { Desconectar.IsEnabled = true; }
@@ -224,7 +249,7 @@ namespace ProyectoTicketing
             try
             {
                 // Llama al método de la base de datos y espera el resultado
-                var tickets = await BBDD.ObtenerTicketsDeUsuarioAsync();
+                List<Ticket> tickets = await BBDD.ObtenerTicketsDeUsuarioAsync();
 
                 if (tickets == null || tickets.Count == 0)
                 {
@@ -244,6 +269,7 @@ namespace ProyectoTicketing
         internal void MostrarDetalles(Ticket? ticketSeleccionado)
         {
             ventanaDetallesTicket.SetTicketData(ticketSeleccionado);
+            
         }
 
         internal void DescargarDocumento(Documento documento)
@@ -253,7 +279,117 @@ namespace ProyectoTicketing
 
         internal async void RedirigirPaginaDetalles()
         {
+            DetallesTicket.IsVisible = true;
             await Shell.Current.GoToAsync("//DetallesTicket");
+            
+        }
+
+        internal void ActualizarTicketsTiempoReal()
+        {
+            ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
+        }
+
+        internal async void CrearTicketHijo(string IDTicketPadre)
+        {
+            ventanaUsuario_Creador_Tickets.GuardarTicketPadre(IDTicketPadre);
+            await Shell.Current.GoToAsync("//CreadorTickets");
+
+        }
+
+        internal void CerrarTicketsIDTicketPadre(string iDTicketPadre)
+        {
+            BBDD.CerrarTicketsIDTicketPadre(iDTicketPadre);
+        }
+
+        internal void CerrarTicketsIDTicket(ObjectId idTicket)
+        {
+            BBDD.CerrarTicketsIDTicket(idTicket);
+        }
+
+        internal async Task<List<Ticket>> ObtenerTicketsSinAsignarAsync()
+        {
+            try
+            {
+                // Llama al método de la base de datos y espera el resultado
+                List<Ticket> tickets = await BBDD.ObtenerTicketsDeSinAsignarAsync();
+
+                if (tickets == null || tickets.Count == 0)
+                {
+                    await DisplayAlert("Información", "No se encontraron tickets para asignar a este usuario.", "Ok");
+                    return new List<Ticket>(); // Devuelve una lista vacía si no hay tickets
+                }
+
+                return tickets; // Devuelve los tickets si los hay
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"Tickets no se pueden cargar: {e.Message}", "Ok");
+                return new List<Ticket>(); // Devuelve una lista vacía en caso de error
+            }
+        }
+
+        internal void PaginaDetallesTecnico()
+        {
+            ventanaDetallesTicket.VistaTecnico();
+        }
+
+        internal async void ActualizarTicketsTiempoRealTecnico()
+        {
+            try
+            {
+                ventana_Ver_TicketsSinAsignar.CargarTicketsAsync();
+                ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
+            }
+            catch (Exception e) { 
+            
+            
+            }
+            
+        }
+
+        internal async void AsignarTicketATecnico(ObjectId ticketID)
+        {
+            if (await BBDD.ActualizarIDTecnicoAsync(ticketID) == true)
+            {
+                await Shell.Current.GoToAsync("//ListaTickets");
+                await DisplayAlert("Información", "Ticket Asignado.", "Ok");
+            }
+            else {
+
+                await DisplayAlert("Información", "Ticket no se ha asignado", "Ok");
+
+            }
+
+
+            
+
+        }
+
+        internal async void TecnicoResolvedor(Ticket ticketSeleccionado)
+        {
+            ventanaTecnico_Resolvedor.SetTicketData(ticketSeleccionado);
+            await DisplayAlert("Información", "Redirigiendo a Pagina Resolvedora.", "Ok");
+            await Shell.Current.GoToAsync("//TecnicoResolver");
+        }
+
+        internal async void ActualizarTecnicoTicket(ObjectId idTicket, string Solucion, List<Documento> documentosSeleccionados)
+        {
+            try
+            {
+                BBDD.ActualizacionTecnicoAsync(idTicket, Solucion, documentosSeleccionados);
+                await DisplayAlert("Información", "Se actualizaron los datos.", "Ok");
+                await Shell.Current.GoToAsync("//ListaTickets");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "No pudieron actualizar los datos.", "Ok");
+            }
+            
+        }
+
+        internal void EliminarUsuario(Usuario? usuario)
+        {
+            throw new NotImplementedException();
         }
     }
 }

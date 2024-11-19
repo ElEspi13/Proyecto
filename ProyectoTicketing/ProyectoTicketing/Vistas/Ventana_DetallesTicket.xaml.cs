@@ -5,6 +5,7 @@ namespace ProyectoTicketing.Vistas;
 public partial class Ventana_DetallesTicket : ContentPage
 {
 	private AppShell shell;
+    private Ticket ticket;
 	public Ventana_DetallesTicket(AppShell shell)
 	{
 		InitializeComponent();
@@ -12,23 +13,44 @@ public partial class Ventana_DetallesTicket : ContentPage
 	}
     private async void OnCerrarTicketClicked(object sender, EventArgs e)
     {
-        // Lógica para cerrar el ticket
-        await DisplayAlert("Cerrar Ticket", "El ticket se ha cerrado correctamente.", "OK");
+        bool result = await DisplayAlert("Cerrar Ticket", "Está seguro de que quiere cerrar los Tickets SE CERRARÁN TODOS LOS TICKETS RELACIONADOS", "OK", "Cancelar");
+
+        if (result)
+        {
+            if (ticket.IDTicketPadre!=null)
+            {
+                // Buscar todos los tickets que tienen este IDTicketPadre
+                shell.CerrarTicketsIDTicketPadre(ticket.IDTicketPadre);
+            }
+            else
+            {
+                shell.CerrarTicketsIDTicket(ticket.IdTicket);
+            }
+            await DisplayAlert("Tickets Cerrados", "Todos los tickets relacionados han sido cerrados.", "OK");
+        }
+    
+        else
+        {
+            // Si el usuario presiona "Cancelar", no hacer nada o realizar alguna otra acción
+        }
+
     }
 
     // Maneja el evento de Crear Ticket Hijo
     private async void OnCrearTicketHijoClicked(object sender, EventArgs e)
     {
-        // Lógica para crear un ticket hijo
-        await DisplayAlert("Crear Ticket Hijo", "Se ha creado un ticket hijo.", "OK");
+        shell.CrearTicketHijo(IdTicketEntry.Text);
     }
     public void SetTicketData(Ticket ticket)
     {
+        this.ticket = ticket;
         // Asignamos el ticket al BindingContext de la página
-        BindingContext = ticket;
-        try {
-            if(ticket.Documentos != null && ticket.Documentos.Count > 0)
+        try
         {
+
+            BindingContext = ticket;
+            if (ticket.Documentos != null && ticket.Documentos.Count > 0)
+            {
                 // Limpiamos cualquier contenido anterior en el StackLayout antes de agregar nuevos elementos
                 DocumentosSeleccionadosLayout.Children.Clear();
 
@@ -100,15 +122,27 @@ public partial class Ventana_DetallesTicket : ContentPage
                 // Hacemos visible la sección de documentos
                 DocumentosSeleccionadosLayout.IsVisible = true;
             }
-        else
+            else
             {
                 // Si no hay documentos, ocultamos la sección de documentos
                 DocumentosSeleccionadosLayout.IsVisible = false;
             }
-        } catch (Exception e)
-        {
-
+            if (ticket.Estado == "Cerrado")
+            {
+                CrearHijo.IsVisible = false;
+                CerrarTickets.IsVisible =false;
+            }
+            else
+            {
+                CrearHijo.IsVisible = true;
+                CerrarTickets.IsVisible = true;
+            }
         }
+        catch(Exception e) {
+            
+        }
+        
+        
         
     }
 
@@ -129,5 +163,22 @@ public partial class Ventana_DetallesTicket : ContentPage
             DisplayAlert("Error", "No se pudo encontrar el documento asociado.", "OK");
         }
        
+    }
+
+    internal void VistaTecnico()
+    {
+        CrearHijo.IsVisible = false;
+        CerrarTickets.IsVisible = false;
+        if (ticket.Estado=="Abierto")
+        {
+            AsignarTicket.IsVisible = true;
+        }
+        
+    }
+    private void OnAsignarTicketClicked(object sender, EventArgs e)
+    {
+        System.Diagnostics.Debug.WriteLine("Botón 'Asignar Ticket' clickeado.");
+        shell.AsignarTicketATecnico(ticket.IdTicket);
+        shell.ActualizarTicketsTiempoRealTecnico();
     }
 }

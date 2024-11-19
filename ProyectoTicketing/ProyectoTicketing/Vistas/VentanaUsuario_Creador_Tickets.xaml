@@ -6,14 +6,34 @@
 
     <!-- Usar ScrollView para permitir desplazamiento -->
     <ScrollView>
-        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+            <!-- Indicador de Ticket Hijo -->
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                   x:Name="TicketHijoLabel"
+                   Text="Creando Ticket Hijo"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   TextColor="Red"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   IsVisible="False" />
+
+            <!-- Título de Nombre del Ticket -->
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Text="Nombre del Ticket" FontSize="16" TextColor="White" Margin="0,20,0,5"/>
+
+            <!-- Entry para Nombre del Ticket -->
+            <Entry x:Name="NombreTicketEntry" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                   HeightRequest="50" BackgroundColor="#606060" TextColor="White" Placeholder="Escribe el nombre del ticket"
+                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
             <!-- Título de tipo de error -->
-            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
                    Text="Tipo de error" FontSize="16" TextColor="Black" />
 
             <!-- Picker de tipo de error -->
-            <Picker x:Name="TipoErrorPicker" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+            <Picker x:Name="TipoErrorPicker" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
                     HeightRequest="70" BackgroundColor="#606060" TextColor="White" Title="Seleccione un error" 
                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SelectedIndexChanged="OnTipoErrorSelected">
                 <Picker.ItemsSource>
@@ -26,26 +46,17 @@
             </Picker>
 
             <!-- Título de Categoría -->
-            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" 
+            <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
                    Text="Categoría" FontSize="16" TextColor="White" Margin="0,20,0,5"/>
 
             <!-- Picker de Categoría -->
-            <Picker x:Name="CategoriaPicker" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+            <Picker x:Name="CategoriaPicker" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
                     HeightRequest="70" BackgroundColor="#606060" TextColor="White" Title="Seleccione una categoría" 
                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             </Picker>
 
-            <!-- Título de Nombre del Ticket -->
-            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
-                   Text="Nombre del Ticket" FontSize="16" TextColor="White" Margin="0,20,0,5"/>
-
-            <!-- Entry para Nombre del Ticket -->
-            <Entry x:Name="NombreTicketEntry" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                   HeightRequest="50" BackgroundColor="#606060" TextColor="White" Placeholder="Escribe el nombre del ticket"
-                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
-
             <!-- Seleccionar archivo -->
-            <VerticalStackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="CenterAndExpand">
+            <VerticalStackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="CenterAndExpand">
                 <Label Text="Seleccionar archivo" FontSize="16" TextColor="White" Margin="0,20,0,5"/>
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
                     <Entry x:Name="ArchivoEntry" HeightRequest="50" BackgroundColor="#606060" TextColor="White" IsReadOnly="True" HorizontalOptions="FillAndExpand"/>
@@ -63,16 +74,15 @@
             </VerticalStackLayout>
 
             <!-- Área para especificar el error -->
-            <Editor x:Name="Descripcion" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" 
+            <Editor x:Name="Descripcion" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" 
                     BackgroundColor="#606060" TextColor="White" Placeholder="ESPECIFIQUE EL ERROR" 
                     PlaceholderColor="White" Margin="0,20,0,0" HeightRequest="200" 
                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
             <!-- Botón de Enviar -->
-            <Button Text="ENVIAR" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
+            <Button Text="ENVIAR" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
                     HeightRequest="55" BackgroundColor="Black" TextColor="White" 
                     HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="0,20,0,0" Clicked="OnEnviarClicked"/>
         </Grid>
     </ScrollView>
 </ContentPage>
-

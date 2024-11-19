@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace ProyectoTicketing.Clases
 {
     internal class MonitoreoUsuario : MonitoreoBase
     {
+        public event EventHandler DatosActualizadosTiempoReal;
         public MonitoreoUsuario(IMongoDatabase database, string idUsuario)
             : base(database, idUsuario, "IDUsuario")
         {
@@ -16,8 +18,12 @@ namespace ProyectoTicketing.Clases
 
         protected override async Task CargarDatosAsync()
         {
-            Console.WriteLine("Actualizando datos del usuario...");
-            // Aquí puedes implementar la lógica específica para cargar los datos del usuario.
+            System.Diagnostics.Debug.WriteLine("Este es un mensaje de depuración.");
+            DatosActualizadosTiempoReal?.Invoke(this, EventArgs.Empty);
+        }
+        protected override FilterDefinition<ChangeStreamDocument<BsonDocument>> ConfigurarFiltro()
+        {
+            return Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq($"fullDocument.{campoFiltro}", filtroId);
         }
     }
 }

@@ -33,15 +33,14 @@ namespace ProyectoTicketing.Clases
 
         protected abstract Task CargarDatosAsync();
 
+        protected abstract FilterDefinition<ChangeStreamDocument<BsonDocument>> ConfigurarFiltro();
         private async Task MonitorearCambiosAsync(CancellationToken token)
         {
             var collection = database.GetCollection<BsonDocument>("tickets");
+
+            // Usa el filtro configurado por la clase derivada
             var pipeline = new EmptyPipelineDefinition<ChangeStreamDocument<BsonDocument>>()
-                .Match(Builders<ChangeStreamDocument<BsonDocument>>.Filter
-                    .Or(
-                        Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq($"fullDocument.{campoFiltro}", filtroId),
-                        Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq($"fullDocument.{campoFiltro}", BsonNull.Value)
-                    ));
+                .Match(ConfigurarFiltro());
 
             using var cursor = await collection.WatchAsync(pipeline, cancellationToken: token);
 
@@ -52,19 +51,20 @@ namespace ProyectoTicketing.Clases
                     foreach (var change in cursor.Current)
                     {
                         Console.WriteLine($"Cambio detectado: {change.FullDocument}");
-                        await CargarDatosAsync(); // Actualiza la interfaz u otra acción necesaria
+                        await CargarDatosAsync();
                     }
                 }
             }
             catch (OperationCanceledException)
             {
-                Console.WriteLine("Monitoreo cancelado.");
+                System.Diagnostics.Debug.WriteLine("Monitoreo cancelado");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error durante el monitoreo: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error durante el monitoreo: {ex.Message}");
             }
         }
+
 
     }
 }

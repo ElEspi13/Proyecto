@@ -26,10 +26,12 @@
     </Shell.FlyoutFooter>
     <FlyoutItem Title="{DynamicResource PaginaPrincipal}" x:Name="Menu" >
         <ShellContent x:Name="InicioSesion" Title="{DynamicResource BotonIniciosesion}" Route="InicioSesionRuta" IsVisible="True" />
-        <ShellContent x:Name="ListaTickets" Route="ListaTickets" Title="{DynamicResource Personaje}" IsVisible="False" />
-        <ShellContent x:Name="CreadorTickets" Route="CreadorTickets" Title="{DynamicResource CreadorPersonaje}" IsVisible="False" />
-        <ShellContent x:Name="TecnicoResolver" Route="TecnicoResolver" Title="{DynamicResource CreadorPersonaje}" IsVisible="False" />
-        <ShellContent x:Name="DetallesTicket" Route="DetallesTicket" Title="{DynamicResource CreadorPersonaje}" IsVisible="True" />
+        <ShellContent x:Name="ListaTickets" Route="ListaTickets" Title="{DynamicResource ListaTickets}" IsVisible="False" />
+        <ShellContent x:Name="CreadorTickets" Route="CreadorTickets" Title="{DynamicResource CreadorTickets}" IsVisible="False" />
+        <ShellContent x:Name="ListaTicketsSinAsignar" Route="ListaTicketsSinAsignar" Title="{DynamicResource ListaTicketsAsig}" IsVisible="False" />
+        <ShellContent x:Name="TecnicoResolver" Route="TecnicoResolver" Title="{DynamicResource TecnicoResolver}" IsVisible="False" />
+        <ShellContent x:Name="DetallesTicket" Route="DetallesTicket" Title="{DynamicResource DetallesTicket}" IsVisible="False" />
+        
     </FlyoutItem>
 
     <FlyoutItem Title="{DynamicResource Ayuda}">

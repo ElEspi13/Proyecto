@@ -1,18 +1,15 @@
-using Microsoft.Maui.Controls;
-using ProyectoTicketing.Clases;
 using System.Collections.ObjectModel;
-
+using ProyectoTicketing.Clases;
 namespace ProyectoTicketing.Vistas;
 
-public partial class VentanaGeneral_Ver_Tickets : ContentPage
+public partial class Ventana_Ver_TicketsSinAsignar : ContentPage
 {
-	private AppShell shell;
+    private AppShell shell;
     public ObservableCollection<Ticket> Tickets { get; set; }
-    public bool tecnico {  get; set; }
-    public VentanaGeneral_Ver_Tickets(AppShell shell)
-	{
-		InitializeComponent();
-		this.shell = shell;
+    public Ventana_Ver_TicketsSinAsignar(AppShell shell)
+    {
+        InitializeComponent();
+        this.shell = shell;
         Tickets = new ObservableCollection<Ticket>();
         BindingContext = this;
     }
@@ -27,7 +24,7 @@ public partial class VentanaGeneral_Ver_Tickets : ContentPage
         try
         {
             Tickets.Clear();
-            List<Ticket> tickets = await shell.ObtenerTicketsDeUsuarioAsync();
+            List<Ticket> tickets = await shell.ObtenerTicketsSinAsignarAsync();
             foreach (Ticket ticket in tickets)
             {
                 if (!Tickets.Any(t => t.IdTicket == ticket.IdTicket)) // Verifica por ID u otra propiedad única
@@ -55,17 +52,11 @@ public partial class VentanaGeneral_Ver_Tickets : ContentPage
         {
             await DisplayAlert("Ticket seleccionado", $"Nombre del ticket: {ticketSeleccionado.NombreTicket}", "OK");
 
-            if (tecnico == false)
-            {
+
                 // Mostrar detalles y redirigir a otra página
                 shell.MostrarDetalles(ticketSeleccionado);
                 shell.RedirigirPaginaDetalles();
-            }
-            else
-            {
-                shell.TecnicoResolvedor(ticketSeleccionado);
-            }
+            shell.PaginaDetallesTecnico();
         }
     }
-
 }

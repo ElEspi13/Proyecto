@@ -34,8 +34,10 @@ public partial class Ventana_IniciodeSesion : ContentPage
     /// </summary>
     private void Login_Clicked(object sender, EventArgs e)
     {
-        Shell.ConectarBBDD(Usuario.Text,Passw.Text);
+        Login.IsEnabled = false;
         
+        Shell.ConectarBBDD(Usuario.Text,Passw.Text);
+        Login.IsEnabled = true;
     }
 
     /// <summary>

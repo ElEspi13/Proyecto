@@ -42,6 +42,8 @@ namespace ProyectoTicketing.Clases
         [BsonElement("IDTecnico")]
         public string? IDTecnico { get; set; }
 
+        public string? IDTicketPadre { get; set; }
+
         [BsonElement("documentosAdjuntos")]
         public List<Documento> Documentos { get; set; }
 

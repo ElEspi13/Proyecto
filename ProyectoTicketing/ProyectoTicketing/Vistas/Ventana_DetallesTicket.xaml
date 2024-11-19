@@ -1,39 +1,38 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoTicketing.Vistas.Ventana_DetallesTicket"
              Title="Detalles Ticket">
     <ScrollView>
-        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *, Auto"
+        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *, Auto, Auto"
               ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ColumnSpacing="20">
 
             <!-- Título del Ticket -->
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
-                   Text="DETALLES DEL TICKET" FontSize="24" TextColor="Black" HorizontalOptions="Center" Margin="0,0,0,10"/>
+                   Text="{DynamicResource DetallesTicket}" FontSize="24" TextColor="Black" HorizontalOptions="Center" Margin="0,0,0,10"/>
 
             <!-- Tipo de error -->
             <Label Grid.Row="1" Grid.Column="0" 
                    Text="Tipo de error:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
-            <Entry Grid.Row="2" Grid.Column="0" 
+            <Entry x:Name="TipoErrorEntry" Grid.Row="2" Grid.Column="0" 
                    Text="{Binding TipoError}" FontSize="16" TextColor="Black" IsEnabled="False"/>
 
             <!-- Categoría -->
             <Label Grid.Row="3" Grid.Column="0" 
                    Text="Categoría:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
-            <Entry Grid.Row="4" Grid.Column="0" 
+            <Entry x:Name="CategoriaEntry" Grid.Row="4" Grid.Column="0" 
                    Text="{Binding Categoria}" FontSize="16" TextColor="Black" IsEnabled="False"/>
 
             <!-- ID Ticket -->
             <Label Grid.Row="1" Grid.Column="1" 
                    Text="ID TICKET:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
-            <Entry Grid.Row="2" Grid.Column="1" 
+            <Entry x:Name="IdTicketEntry" Grid.Row="2" Grid.Column="1" 
                    Text="{Binding IdTicket}" FontSize="16" TextColor="Black" IsEnabled="False"/>
 
             <!-- Nombre del Usuario -->
             <Label Grid.Row="3" Grid.Column="1" 
-                   Text="Nombre Usuario:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
+                   Text="Nombre Ticket:" FontSize="16" TextColor="Black" VerticalOptions="Center" />
             <Entry Grid.Row="4" Grid.Column="1" 
-                   Text="{Binding IDUsuario}" FontSize="16" TextColor="Black" IsEnabled="False"/>
+                   Text="{Binding NombreTicket}" FontSize="16" TextColor="Black" IsEnabled="False"/>
 
             <!-- Especificación del error -->
             <Label Grid.Row="5" Grid.Column="0" 
@@ -51,7 +50,7 @@
             <Editor Grid.Row="6" Grid.Column="1" HeightRequest="150" 
                     BackgroundColor="#606060" TextColor="White" 
                     Text="{Binding Solucion}" 
-                    Placeholder="Describa la solución aquí" 
+                    Placeholder="Aquí ira la posible solución de su ticket" 
                     PlaceholderColor="White" 
                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsEnabled="False"/>
 
@@ -66,14 +65,19 @@
             </VerticalStackLayout>
 
             <!-- Botón Cerrar Ticket -->
-            <Button Text="Cerrar Ticket" Grid.Row="9" Grid.Column="0"
+            <Button x:Name="CerrarTickets" Text="Cerrar Ticket" Grid.Row="9" Grid.Column="0"
                     HeightRequest="55" BackgroundColor="Red" TextColor="White" 
                     HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="0,20,0,0" Clicked="OnCerrarTicketClicked"/>
 
             <!-- Botón Crear Ticket Hijo -->
-            <Button Text="Crear Ticket Hijo" Grid.Row="9" Grid.Column="1"
+            <Button x:Name="CrearHijo" Text="Crear Ticket Hijo" Grid.Row="9" Grid.Column="1"
                     HeightRequest="55" BackgroundColor="Black" TextColor="White" 
                     HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="0,20,0,0" Clicked="OnCrearTicketHijoClicked"/>
+
+            <!-- Botón oculto: Asignar Ticket -->
+            <Button x:Name="AsignarTicket" Text="Asignar Ticket" Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"
+                    IsVisible="False" HeightRequest="55" BackgroundColor="Blue" TextColor="White" 
+                    HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="0,20,0,0" Clicked="OnAsignarTicketClicked"/>
         </Grid>
     </ScrollView>
 </ContentPage>

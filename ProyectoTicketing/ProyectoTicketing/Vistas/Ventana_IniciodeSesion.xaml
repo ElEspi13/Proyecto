@@ -49,7 +49,7 @@
             Text="{DynamicResource ContrasenaLabel}"
             FontSize="30"
             Style="{DynamicResource Label}"
-            
+            SemanticProperties.Description="Introduzca su contaseña en este campo"
             />
         <Entry
             x:Name="Passw"

@@ -16,6 +16,7 @@ namespace ProyectoTicketing.Vistas
 
         // Contador de documentos seleccionados
         private int contadorDocumentos = 0;
+        private string ticketPadre = null;
 
         // Diccionario para las categorías según el tipo de error
         private Dictionary<string, List<string>> categoriasPorTipoError = new Dictionary<string, List<string>>()
@@ -44,7 +45,8 @@ namespace ProyectoTicketing.Vistas
                 FechaCreacion = DateTime.Now,
                 Estado = "Abierto",
                 Prioridad = "Media",
-                IDUsuario = null
+                IDUsuario = null,
+                IDTicketPadre = ticketPadre
             };
 
             // Agregar los documentos seleccionados al ticket
@@ -59,6 +61,8 @@ namespace ProyectoTicketing.Vistas
 
             // Limpiar el formulario después de enviar el ticket
             ClearForm();
+            ticketPadre = null;
+            TicketHijoLabel.IsVisible =false;
         }
 
         // Método para seleccionar el archivo (vinculado al botón de selección)
@@ -186,13 +190,13 @@ namespace ProyectoTicketing.Vistas
         // Método para manejar la descarga del documento
         private async void OnDescargarDocumentoClicked(FileResult result)
         {
-            // Aquí iría la lógica para descargar el archivo
-            await DisplayAlert("Descargar Documento", $"Descargando {result.FileName}", "OK");
+            
         }
 
         // Método para limpiar el formulario después de enviar el ticket
         private void ClearForm()
         {
+            NombreTicketEntry.Text = "";
             TipoErrorPicker.SelectedItem = null;
             CategoriaPicker.SelectedItem = null;
             Descripcion.Text= string.Empty;
@@ -228,6 +232,18 @@ namespace ProyectoTicketing.Vistas
                     CategoriaPicker.Items.Add(categoria);
                 }
             }
+        }
+
+        internal void GuardarTicketPadre(string iDTicketPadre)
+        {
+            this.ticketPadre = iDTicketPadre;
+            TicketHijoLabel.IsVisible = true;
+        }
+        protected override async void OnDisappearing()
+        {
+            base.OnDisappearing();
+            ticketPadre = null;
+            TicketHijoLabel.IsVisible = false;
         }
     }
 }

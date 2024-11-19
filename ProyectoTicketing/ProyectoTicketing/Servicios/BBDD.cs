@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using ProyectoTicketing.Clases;
 using Microsoft.Maui.Animations;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 
 namespace ProyectoTicketing.Servicios
@@ -21,16 +23,17 @@ namespace ProyectoTicketing.Servicios
         private IMongoDatabase database;
         private Usuario usuario = new Usuario();
         private GridFSBucket gridFSBucket;
-        private string connectionString = "mongodb://CuidaoConLosHackersn:ContraseñaSegura123@79.116.92.21:27017/ticketingDB?connectTimeoutMS=2000&socketTimeoutMS=2000";
-        public BBDD()
+        private AppShell shell;
+        private string connectionString = "mongodb://alvaroespi13:TQqtYSj3BwZbGOw7@cluster0-shard-00-00.b0c6k.mongodb.net:27017,cluster0-shard-00-01.b0c6k.mongodb.net:27017,cluster0-shard-00-02.b0c6k.mongodb.net:27017/ticketingDB?authSource=admin&ssl=true\r\n";
+        public BBDD(AppShell shell)
         {
-
+            this.shell = shell;
 
         }
 
         internal void CerrarSesion()
         {
-            usuario=new Usuario();
+            usuario = new Usuario();
         }
 
         internal int ComprobarRolUsuario()
@@ -85,6 +88,7 @@ namespace ProyectoTicketing.Servicios
             catch (Exception ex)
             {
                 return false;
+                Debug.WriteLine(ex);
             }
         }
 
@@ -229,7 +233,7 @@ namespace ProyectoTicketing.Servicios
                     var fileId = await gridFSBucket.UploadFromStreamAsync(documento.NombreArchivo, fileStream);
 
                     // Crear instancia de Documento con el ObjectId de GridFS
-                    var docMetadata = new Documento(fileId, documento.NombreArchivo, documento.TipoArchivo,documento.RutaArchivo);
+                    var docMetadata = new Documento(fileId, documento.NombreArchivo, documento.TipoArchivo, documento.RutaArchivo);
 
                     // Agregar la referencia del documento al ticket
                     documentosAdjuntos.Add(new BsonDocument
@@ -253,6 +257,7 @@ namespace ProyectoTicketing.Servicios
                 { "nombreTicket", string.IsNullOrEmpty(ticket.NombreTicket) ? "Ticket Nuevo" : ticket.NombreTicket },  // Valor predeterminado si es null o vacío
                 { "IDUsuario", usuario.Id },
                 { "IDTecnico", BsonNull.Value },  // Usamos BsonNull si IDTecnico es null
+                { "IDTicketPadre", ticket.IDTicketPadre == null ? BsonNull.Value : ticket.IDTicketPadre },
                 { "documentosAdjuntos", new BsonArray(documentosAdjuntos ?? new List<BsonDocument>()) }
             };
 
@@ -268,13 +273,20 @@ namespace ProyectoTicketing.Servicios
             var ticketsCollection = database.GetCollection<Ticket>("tickets");
 
             // Crear el filtro para buscar los tickets del usuario por su ID
-            var filter = Builders<Ticket>.Filter.Eq("IDUsuario",usuario.Id);
+            var filter = Builders<Ticket>.Filter.Or(
+                Builders<Ticket>.Filter.Eq("IDUsuario", usuario.Id),  // Filtro por IDUsuario
+                Builders<Ticket>.Filter.Eq("IDTecnico", usuario.Id)    // Filtro por IDTecnico
+            );
 
-            // Realizar la consulta y devolver los tickets encontrados
-            List<Ticket> tickets = await ticketsCollection.Find(filter).ToListAsync();
+            // Crear el criterio de ordenación: "Abierto" primero, "Cerrado" después
+            var sort = Builders<Ticket>.Sort.Ascending(t => t.Estado);
+
+            // Realizar la consulta con el filtro y la ordenación
+            List<Ticket> tickets = await ticketsCollection.Find(filter).Sort(sort).ToListAsync();
 
             return tickets;
         }
+
         public async Task DescargarDocumentoAsync(Documento documento)
         {
             try
@@ -312,6 +324,8 @@ namespace ProyectoTicketing.Servicios
 
             monitoreoTecnico = new MonitoreoTecnico(database, usuario.Id);
             monitoreoTecnico.IniciarMonitoreo();
+            monitoreoTecnico.DatosActualizadosTiempoRealTecnico -= OnDatosActualizadosTiempoRealTecnico;
+            monitoreoTecnico.DatosActualizadosTiempoRealTecnico += OnDatosActualizadosTiempoRealTecnico;
             Console.WriteLine("Monitoreo para técnico iniciado.");
         }
 
@@ -324,8 +338,11 @@ namespace ProyectoTicketing.Servicios
             }
 
             monitoreoUsuario = new MonitoreoUsuario(database, usuario.Id);
+            monitoreoUsuario.DatosActualizadosTiempoReal -= OnDatosActualizadosTiempoReal;
+            monitoreoUsuario.DatosActualizadosTiempoReal += OnDatosActualizadosTiempoReal;
             monitoreoUsuario.IniciarMonitoreo();
-            Console.WriteLine("Monitoreo para usuario iniciado.");
+            System.Diagnostics.Debug.WriteLine("Este es un mensaje de depuración.");
+
         }
 
         internal void DetenerMonitoreo()
@@ -334,7 +351,183 @@ namespace ProyectoTicketing.Servicios
             monitoreoUsuario?.DetenerMonitoreo();
             Console.WriteLine("Monitoreo detenido.");
         }
+        private void OnDatosActualizadosTiempoReal(object sender, EventArgs e)
+        {
+            shell.ActualizarTicketsTiempoReal();
+
+        }
+
+        private void OnDatosActualizadosTiempoRealTecnico(object sender, EventArgs e)
+        {
+            shell.ActualizarTicketsTiempoRealTecnico();
+
+        }
+
+
+        public async Task CerrarTicketsIDTicketPadre(string idTicketPadre)
+        {
+            var collection = database.GetCollection<Ticket>("tickets"); // Asegurándonos de que sea la colección "tickets"
+
+            // 1. Buscar todos los tickets relacionados con el mismo IDTicketPadre
+            var filterPadre = Builders<Ticket>.Filter.Eq(t => t.IDTicketPadre, idTicketPadre); // Comparar con el IDTicketPadre que es un string
+            var updatePadre = Builders<Ticket>.Update.Set(t => t.Estado, "Cerrado");
+
+            // Mensaje para verificar el filtro de IDTicketPadre
+            Debug.WriteLine($"Buscando tickets con IDTicketPadre: {idTicketPadre}");
+
+            // 2. Realizar la actualización masiva de los tickets hijos
+            var resultHijos = await collection.UpdateManyAsync(filterPadre, updatePadre);
+            Debug.WriteLine($"Actualizados {resultHijos.ModifiedCount} tickets hijos con IDTicketPadre: {idTicketPadre}");
+
+            // 3. Actualizar el ticket padre
+            var filterPadrePrincipal = Builders<Ticket>.Filter.Eq(t => t.IdTicket, ObjectId.Parse(idTicketPadre)); // Convertir el IDTicketPadre a ObjectId para la comparación
+            var updatePadrePrincipal = Builders<Ticket>.Update.Set(t => t.Estado, "Cerrado");
+
+            Debug.WriteLine($"Actualizando ticket padre con _id: {idTicketPadre}");
+
+            var resultPadre = await collection.UpdateOneAsync(filterPadrePrincipal, updatePadrePrincipal);
+            Debug.WriteLine($"Actualizado ticket padre, {resultPadre.ModifiedCount} documentos modificados");
+        }
+
+        public async Task CerrarTicketsIDTicket(ObjectId idTicket)
+        {
+            var collection = database.GetCollection<Ticket>("tickets"); // Asegurándonos de que sea la colección "tickets"
+
+            // 1. Buscar todos los tickets hijos que tienen como IDTicketPadre este IDTicket
+            var filterHijos = Builders<Ticket>.Filter.Eq(t => t.IDTicketPadre, idTicket.ToString()); // Convertir idTicket a string para la comparación con IDTicketPadre
+            var updateHijos = Builders<Ticket>.Update.Set(t => t.Estado, "Cerrado");
+
+            // Mensaje para verificar el filtro de IDTicketPadre
+            Debug.WriteLine($"Buscando tickets hijos con IDTicketPadre: {idTicket.ToString()}");
+
+            // 2. Diagnóstico: Verificar cuántos tickets hijos se encuentran
+            var hijos = await collection.Find(filterHijos).ToListAsync(); // Obtener los hijos para imprimir información
+            Debug.WriteLine($"Se encontraron {hijos.Count} tickets hijos con IDTicketPadre: {idTicket.ToString()}");
+
+            // 3. Actualizar los tickets hijos si existen
+            var resultHijos = await collection.UpdateManyAsync(filterHijos, updateHijos);
+            Debug.WriteLine($"Actualizados {resultHijos.ModifiedCount} tickets hijos con IDTicketPadre: {idTicket.ToString()}");
+
+            // 4. Actualizar el estado del ticket principal a "Cerrado" si tiene hijos
+            var updateTicketPadre = Builders<Ticket>.Update.Set(t => t.Estado, "Cerrado");
+            var resultPadre = await collection.UpdateOneAsync(t => t.IdTicket == idTicket, updateTicketPadre);
+            Debug.WriteLine($"Actualizado ticket padre con _id: {idTicket}, {resultPadre.ModifiedCount} documentos modificados");
+        }
+
+        internal async Task<List<Ticket>> ObtenerTicketsDeSinAsignarAsync()
+        {
+            // Obtener la colección de tickets
+            var ticketsCollection = database.GetCollection<Ticket>("tickets");
+            string stringnull = null;
+
+            // Crear el filtro para buscar los tickets del usuario por su ID
+            var filter = Builders<Ticket>.Filter.Eq("IDTecnico", stringnull);
+
+            // Crear la ordenación: "Abierto" primero, "Cerrado" después
+            var sort = Builders<Ticket>.Sort.Ascending(t => t.Estado);
+
+            // Realizar la consulta con el filtro y la ordenación
+            List<Ticket> tickets = await ticketsCollection.Find(filter).Sort(sort).ToListAsync();
+
+            return tickets;
+        }
+
+        public async Task<bool> ActualizarIDTecnicoAsync(ObjectId ticketId)
+        {
+
+            try {
+                // Obtener la colección de tickets
+                var ticketsCollection = database.GetCollection<Ticket>("tickets");
+
+                // Crear el filtro para encontrar el ticket con IDTecnico igual a null
+                var filter = Builders<Ticket>.Filter.Eq("_id", ticketId);
+
+                // Crear el update para cambiar el IDTecnico al ID del técnico
+                var update = Builders<Ticket>.Update.Set("IDTecnico", usuario.Id);
+
+                // Realizar la actualización
+                var result = await ticketsCollection.UpdateOneAsync(filter, update);
+
+                if (result.MatchedCount==0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+
+            }
+            catch (COMException ex)
+            {
+                // Capturar la excepción COMException
+                Console.WriteLine($"COM Exception: {ex.Message}");
+                Console.WriteLine($"Código de error: {ex.ErrorCode}");
+                // Otras acciones necesarias, como registrar el error en un log
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Capturar cualquier otra excepción general
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+
+        }
+
+        internal async void ActualizacionTecnicoAsync(ObjectId idTicket, string solucion, List<Documento> documentosSeleccionados)
+        {
+            
+                try
+                {
+                    // Crear un bucket para manejar GridFS
+                    var gridFSBucket = new GridFSBucket(database);
+
+                    // Subir documentos a GridFS y almacenar metadatos
+                    var documentosAdjuntos = new List<BsonDocument>();
+                    foreach (var documento in documentosSeleccionados)
+                    {
+                        using (var fileStream = File.OpenRead(documento.RutaArchivo))
+                        {
+                            // Subir el archivo a GridFS
+                            var fileId = await gridFSBucket.UploadFromStreamAsync(documento.NombreArchivo, fileStream);
+
+                            // Crear metadatos del documento
+                            var docMetadata = new BsonDocument
+                            {
+                                { "IdDocumento", fileId },
+                                { "NombreArchivo", documento.NombreArchivo },
+                                { "TipoArchivo", documento.TipoArchivo }
+                            };
+
+                            // Agregar los metadatos a la lista
+                            documentosAdjuntos.Add(docMetadata);
+                        }
+                    }
+
+                    // Obtener la colección de tickets
+                    var ticketsCollection = database.GetCollection<Ticket>("tickets");
+
+                    // Crear el filtro para encontrar el ticket por su ID
+                    var filter = Builders<Ticket>.Filter.Eq("_id", idTicket);
+
+                    // Crear el documento de actualización
+                    var update = Builders<Ticket>.Update
+                        .Set("solucion", solucion) // Actualizar la solución
+                        .Set("documentosAdjuntos", documentosAdjuntos); // Actualizar documentos adjuntos
+
+                    // Ejecutar la actualización
+                    var result = await ticketsCollection.UpdateOneAsync(filter, update);
+
+                }
+                catch (Exception ex)
+                {
+                    // Manejo de errores
+                    Console.WriteLine($"Error al actualizar el ticket: {ex.Message}");
+                }
+            }
     }
 
 
-}
+    }
+

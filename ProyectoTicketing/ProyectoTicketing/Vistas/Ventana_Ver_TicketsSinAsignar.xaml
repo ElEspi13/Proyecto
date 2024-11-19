@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ProyectoTicketing.Vistas.VentanaGeneral_Ver_Tickets"
-             Title="VentanaGeneral_Ver_Tickets">
-
+             x:Class="ProyectoTicketing.Vistas.Ventana_Ver_TicketsSinAsignar"
+             Title="Ventana_Ver_TicketsSinAsignar">
     <ScrollView Padding="10">
         <StackLayout Padding="10">
             <Label Text="Tickets" FontSize="24" HorizontalOptions="Center" Margin="0,10"/>
 
             <!-- ListView con Binding adecuado -->
             <ListView x:Name="TicketsListView" 
-                      SelectionMode="Single" 
-                      ItemsSource="{Binding Tickets}" 
-                      ItemTapped="OnTicketSelected" 
-                      VerticalOptions="FillAndExpand">
+                  SelectionMode="Single" 
+                  ItemsSource="{Binding Tickets}" 
+                  ItemTapped="OnTicketSelected" 
+                  VerticalOptions="FillAndExpand">
 
                 <!-- Template para cada ítem -->
                 <ListView.ItemTemplate>
