@@ -20,6 +20,7 @@ namespace ProyectoTicketing
         private Ventana_DetallesTicket ventanaDetallesTicket;
         private Ventana_Ver_TicketsSinAsignar ventana_Ver_TicketsSinAsignar;
         private Ayuda ventana_Ayuda;
+        private Ventana_Admin ventana_Admin;
         private Usuario usuario = new Usuario();
         public bool cargado = false;
         public ToolbarItem Desconectar = new ToolbarItem();
@@ -48,6 +49,11 @@ namespace ProyectoTicketing
             
             ventana_Ver_TicketsSinAsignar =new Ventana_Ver_TicketsSinAsignar(this);
             ListaTicketsSinAsignar.Content= ventana_Ver_TicketsSinAsignar;
+
+            ventana_Admin= new Ventana_Admin(this);
+            Admin.Content = ventana_Admin;
+            
+            
 
             configuracion = new Configuracion(this);
 
@@ -89,7 +95,7 @@ namespace ProyectoTicketing
                     BBDDsesion = true;
 
                     
-
+                    
                     Footer.Text = usuario.Nombre;
 
                     if (BBDD.ExisteConfiguracion())
@@ -113,9 +119,12 @@ namespace ProyectoTicketing
                     }
                     if (BBDD.ComprobarRolUsuario() == 0)
                     {
-                        //Ventana_Admin.IsVisible = true;
-                        //ActualizarDatosAdmin();
-                        
+                        Admin.IsVisible = true;
+                        InicioSesion.IsVisible = true;
+                        ventana_iniciodeSesion.VistaAdmin(true);
+                        ventana_Admin.MostrarListaUsuarios(await BBDD.ListaUsuarios());
+                        await Shell.Current.GoToAsync("//InicioSesionRuta");
+
                     }
                     if (BBDD.ComprobarRolUsuario() == 2)
                     {
@@ -126,8 +135,9 @@ namespace ProyectoTicketing
                         BBDD.IniciarMonitoreoUsuario();
                         await Shell.Current.GoToAsync("//ListaTickets");
                     }
-                    
 
+                    Ventana_Ayuda.IsVisible = true;
+                    ventana_Ayuda.MostrarSeccionesSegunRol(BBDD.ComprobarRolUsuario());
                 }
 
                 else
@@ -188,6 +198,11 @@ namespace ProyectoTicketing
                 ListaTickets.IsVisible = false;
                 CreadorTickets.IsVisible = false;
                 ventana_iniciodeSesion.LimpiarDatos();
+                TecnicoResolver.IsVisible = false;
+                ListaTicketsSinAsignar.IsVisible = false;
+                Ventana_Ayuda.IsVisible = false;
+                ventana_iniciodeSesion.VistaAdmin(false);
+                Admin.IsVisible = false;
                 Shell.Current.ToolbarItems.Remove(desconectar);
                 DetallesTicket.IsVisible = false;
                 usuario.Nombre = "";    
@@ -198,6 +213,7 @@ namespace ProyectoTicketing
                 configuracion.AsignarConfiguracion(BBDD.SacarConfiguracion());
                 Desconectar.IsEnabled = true;
                 BBDD.DetenerMonitoreo();
+                ventana_Ayuda.MostrarSeccionesSegunRol(-1);
                 await Shell.Current.GoToAsync("//InicioSesionRuta");
             }
             else { Desconectar.IsEnabled = true; }
@@ -218,9 +234,9 @@ namespace ProyectoTicketing
 
         }
 
-        internal void InsertarDatos(string Usuario, string Passwd)
+        internal void InsertarDatos(string Usuario, string Passwd, int selectedIndex)
         {
-            BBDD.RegistrarUsuario(Usuario,Passwd);
+            BBDD.RegistrarUsuario(Usuario,Passwd,selectedIndex);
         }
 
         internal async void GuardarConfiguracion(int Tema, int Idioma, double Fuente)
@@ -284,9 +300,15 @@ namespace ProyectoTicketing
             
         }
 
-        internal void ActualizarTicketsTiempoReal()
+        internal async void ActualizarTicketsTiempoReal()
         {
-            ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
+            
+
+                await ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
+                
+            
+            
+            
         }
 
         internal async void CrearTicketHijo(string IDTicketPadre)
@@ -337,8 +359,8 @@ namespace ProyectoTicketing
         {
             try
             {
-                ventana_Ver_TicketsSinAsignar.CargarTicketsAsync();
-                ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
+                await ventana_Ver_TicketsSinAsignar.CargarTicketsAsync();
+                await ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
             }
             catch (Exception e) { 
             
@@ -387,9 +409,26 @@ namespace ProyectoTicketing
             
         }
 
-        internal void EliminarUsuario(Usuario? usuario)
+        internal async void EliminarUsuario(Usuario usuario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await BBDD.EliminarDatosUsuario(usuario);
+                await MostrarListaUsuarios();
+                await DisplayAlert("Completado", "Se Elimino el usuario.", "Ok");
+            }
+            catch (Exception ex) {
+
+                await DisplayAlert("Error", "No se pudo eliminar al usuario.", "Ok");
+            }
+
+            
+            
+        }
+
+        internal async Task<List<Usuario>> MostrarListaUsuarios()
+        {
+            return await BBDD.ListaUsuarios();
         }
     }
 }

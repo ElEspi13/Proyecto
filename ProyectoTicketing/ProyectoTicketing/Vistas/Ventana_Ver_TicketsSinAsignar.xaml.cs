@@ -23,17 +23,23 @@ public partial class Ventana_Ver_TicketsSinAsignar : ContentPage
 
         try
         {
-            Tickets.Clear();
-            List<Ticket> tickets = await shell.ObtenerTicketsSinAsignarAsync();
-            foreach (Ticket ticket in tickets)
-            {
-                if (!Tickets.Any(t => t.IdTicket == ticket.IdTicket)) // Verifica por ID u otra propiedad única
-                {
-                    Tickets.Add(ticket);
-                }
-                await Task.Yield();
-            }
+            var tickets = await shell.ObtenerTicketsSinAsignarAsync() ?? new List<Ticket>();
 
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Tickets.Clear(); // Asegura que esta operación está en el hilo principal
+
+                foreach (var ticket in tickets)
+                {
+                    if (!Tickets.Any(t => t.IdTicket == ticket.IdTicket))
+                    {
+                        Tickets.Add(ticket); // Modificación de la colección también en el hilo principal
+                    }
+                }
+                OnPropertyChanged(nameof(Tickets)); // Notificar cambios si es necesario
+
+            });
         }
         finally
         {

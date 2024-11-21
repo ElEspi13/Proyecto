@@ -2,16 +2,21 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoTicketing.Vistas.VentanaUsuario_Creador_Tickets"
-             Title="VentanaUsuario_Creador_Tickets">
+             Title="{DynamicResource VentanaCreadorTicketsTitle}"
+             Style="{DynamicResource Fondo}">
 
-    <!-- Usar ScrollView para permitir desplazamiento -->
+    <!-- ScrollView para manejo de desplazamiento -->
     <ScrollView>
-        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <Grid Padding="20" 
+              RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
+              ColumnDefinitions="*,*" 
+              VerticalOptions="FillAndExpand" 
+              HorizontalOptions="FillAndExpand">
 
             <!-- Indicador de Ticket Hijo -->
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                    x:Name="TicketHijoLabel"
-                   Text="Creando Ticket Hijo"
+                   Text="{DynamicResource CreandoTicketHijoLabel}"
                    FontSize="18"
                    FontAttributes="Bold"
                    TextColor="Red"
@@ -21,21 +26,34 @@
 
             <!-- Título de Nombre del Ticket -->
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                   Text="Nombre del Ticket" FontSize="16" TextColor="White" Margin="0,20,0,5"/>
+                   Text="{DynamicResource NombreTicketLabel}" 
+                   FontSize="16" 
+                   TextColor="{DynamicResource Color_Fuente}" 
+                   Margin="0,20,0,5"/>
 
-            <!-- Entry para Nombre del Ticket -->
+            <!-- Entrada para Nombre del Ticket -->
             <Entry x:Name="NombreTicketEntry" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                   HeightRequest="50" BackgroundColor="#606060" TextColor="White" Placeholder="Escribe el nombre del ticket"
+                   HeightRequest="50" 
+                   BackgroundColor="#606060" 
+                   TextColor="{DynamicResource Color_Fuente}" 
+                   Placeholder="{DynamicResource PlaceholderNombreTicket}"
                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
-            <!-- Título de tipo de error -->
+            <!-- Título de Tipo de Error -->
             <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
-                   Text="Tipo de error" FontSize="16" TextColor="Black" />
+                   Text="{DynamicResource TipoErrorLabel}" 
+                   FontSize="16" 
+                   TextColor="Black" />
 
-            <!-- Picker de tipo de error -->
+            <!-- Picker para Tipo de Error -->
             <Picker x:Name="TipoErrorPicker" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                    HeightRequest="70" BackgroundColor="#606060" TextColor="White" Title="Seleccione un error" 
-                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SelectedIndexChanged="OnTipoErrorSelected">
+                    HeightRequest="70" 
+                    BackgroundColor="#606060" 
+                    TextColor="{DynamicResource Color_Fuente}"  
+                    Title="{DynamicResource PlaceholderTipoError}" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand" 
+                    SelectedIndexChanged="OnTipoErrorSelected">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Error de Conexión</x:String>
@@ -47,42 +65,87 @@
 
             <!-- Título de Categoría -->
             <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
-                   Text="Categoría" FontSize="16" TextColor="White" Margin="0,20,0,5"/>
+                   Text="{DynamicResource CategoriaLabel}" 
+                   FontSize="16" 
+                   TextColor="{DynamicResource Color_Fuente}" 
+                   Margin="0,20,0,5"/>
 
-            <!-- Picker de Categoría -->
+            <!-- Picker para Categoría -->
             <Picker x:Name="CategoriaPicker" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
-                    HeightRequest="70" BackgroundColor="#606060" TextColor="White" Title="Seleccione una categoría" 
-                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    HeightRequest="70" 
+                    BackgroundColor="#606060" 
+                    TextColor="{DynamicResource Color_Fuente}" 
+                    Title="{DynamicResource PlaceholderCategoria}" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand">
             </Picker>
 
             <!-- Seleccionar archivo -->
-            <VerticalStackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="CenterAndExpand">
-                <Label Text="Seleccionar archivo" FontSize="16" TextColor="White" Margin="0,20,0,5"/>
+            <VerticalStackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" 
+                                 Spacing="10" 
+                                 HorizontalOptions="CenterAndExpand">
+                <Label Text="{DynamicResource SeleccionarArchivoLabel}" 
+                       FontSize="16" 
+                       TextColor="{DynamicResource Color_Fuente}" 
+                       Margin="0,20,0,5"/>
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
-                    <Entry x:Name="ArchivoEntry" HeightRequest="50" BackgroundColor="#606060" TextColor="White" IsReadOnly="True" HorizontalOptions="FillAndExpand"/>
-                    <Button x:Name="SeleccionarArchivoButton" Text="Seleccionar" WidthRequest="90" HeightRequest="50" Clicked="OnSeleccionarArchivoClicked"/>
+                    <Entry x:Name="ArchivoEntry" 
+                           HeightRequest="50" 
+                           BackgroundColor="#606060" 
+                           TextColor="{DynamicResource Color_Fuente}" 
+                           IsReadOnly="True" 
+                           HorizontalOptions="FillAndExpand"/>
+                    <Button x:Name="SeleccionarArchivoButton" 
+                            Text="{DynamicResource BotonSeleccionarArchivo}" 
+                            WidthRequest="90" 
+                            HeightRequest="50" 
+                            BackgroundColor="Blue" 
+                            TextColor="{DynamicResource Color_Fuente}" 
+                            Clicked="OnSeleccionarArchivoClicked"/>
                 </HorizontalStackLayout>
 
-                <!-- Aquí se mostrará la imagen y el nombre del archivo seleccionado -->
-                <StackLayout x:Name="ArchivoSeleccionadoLayout" Orientation="Vertical" Spacing="10" IsVisible="False" Margin="0,5,0,0" HorizontalOptions="FillAndExpand">
+                <!-- Mostrar archivo seleccionado -->
+                <StackLayout x:Name="ArchivoSeleccionadoLayout" 
+                             Orientation="Vertical" 
+                             Spacing="10" 
+                             IsVisible="False" 
+                             Margin="0,5,0,0" 
+                             HorizontalOptions="FillAndExpand">
                     <Image x:Name="ArchivoIcono" WidthRequest="50" HeightRequest="50"/>
-                    <Label x:Name="ArchivoNombre" FontSize="16" TextColor="White" HorizontalOptions="FillAndExpand"/>
+                    <Label x:Name="ArchivoNombre" FontSize="16" TextColor="{DynamicResource Color_Fuente}" HorizontalOptions="FillAndExpand"/>
                 </StackLayout>
 
-                <!-- Contenedor para los documentos seleccionados -->
-                <StackLayout x:Name="DocumentosSeleccionadosLayout" Orientation="Vertical" Spacing="10" IsVisible="True" HorizontalOptions="FillAndExpand"/>
+                <!-- Contenedor de documentos -->
+                <StackLayout x:Name="DocumentosSeleccionadosLayout" 
+                             Orientation="Vertical" 
+                             Spacing="10" 
+                             IsVisible="True" 
+                             HorizontalOptions="FillAndExpand"/>
             </VerticalStackLayout>
 
-            <!-- Área para especificar el error -->
+            <!-- Editor para especificación del error -->
             <Editor x:Name="Descripcion" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" 
-                    BackgroundColor="#606060" TextColor="White" Placeholder="ESPECIFIQUE EL ERROR" 
-                    PlaceholderColor="White" Margin="0,20,0,0" HeightRequest="200" 
-                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                    BackgroundColor="#606060" 
+                    TextColor="White" 
+                    Placeholder="{DynamicResource PlaceholderDescripcionError}" 
+                    PlaceholderColor="White" 
+                    Margin="0,20,0,0" 
+                    HeightRequest="200" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand"/>
 
             <!-- Botón de Enviar -->
-            <Button Text="ENVIAR" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
-                    HeightRequest="55" BackgroundColor="Black" TextColor="White" 
-                    HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="0,20,0,0" Clicked="OnEnviarClicked"/>
+            <Button Text="{DynamicResource BotonEnviar}" 
+                    Grid.Row="9" 
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="2"
+                    HeightRequest="55" 
+                    BackgroundColor="Blue" 
+                    TextColor="{DynamicResource Color_Fuente}" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="EndAndExpand" 
+                    Margin="0,20,0,0" 
+                    Clicked="OnEnviarClicked"/>
         </Grid>
     </ScrollView>
 </ContentPage>

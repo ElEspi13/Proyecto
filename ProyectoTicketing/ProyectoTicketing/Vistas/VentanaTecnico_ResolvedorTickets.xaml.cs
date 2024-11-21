@@ -147,7 +147,6 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
         if (documento != null)
         {
             shell.DescargarDocumento(documento);
-            DisplayAlert("Descargado", "Se ha descargado el archivo en su sistema.", "OK");
         }
         else
         {

@@ -22,19 +22,15 @@ public partial class Ayuda : ContentPage
     /// <param name="factorMultiplicador">El factor por el cual se multiplicará el tamaño original de la fuente.</param>
     public void CambiarTamanoFuente(double factorMultiplicador)
     {
-        TituloAyuda.FontSize = fuenteOriginal * factorMultiplicador;
-        AccionLabel.FontSize = fuenteOriginal * factorMultiplicador;
-        NoUsuarioLabel.FontSize = fuenteOriginal * factorMultiplicador;
-        UsuarioLabel.FontSize = fuenteOriginal * factorMultiplicador;
-        CreadorPersonajeLabel.FontSize = fuenteOriginal * factorMultiplicador;
-        SiLabel1.FontSize = fuenteOriginal * factorMultiplicador;
-        SiLabel2.FontSize = fuenteOriginal * factorMultiplicador;
-        GuardarPersonajeLabel.FontSize = fuenteOriginal * factorMultiplicador;
-        NoLabel.FontSize = fuenteOriginal * factorMultiplicador;
-        SiLabel3.FontSize = fuenteOriginal * factorMultiplicador;
-        GuardarConfiguracionLabel.FontSize = fuenteOriginal * factorMultiplicador;
-        NoLabel2.FontSize = fuenteOriginal * factorMultiplicador;
-        SiLabel4.FontSize = fuenteOriginal * factorMultiplicador;
+        
 
     }
+    public void MostrarSeccionesSegunRol(int rol)
+    {
+        // Por ejemplo, si el rol es 'Usuario'
+        LayoutUsuario.IsVisible = rol == 2;
+        LayoutTecnico.IsVisible = rol == 1;
+        LayoutAdmin.IsVisible = rol == 0;
+    }
+
 }

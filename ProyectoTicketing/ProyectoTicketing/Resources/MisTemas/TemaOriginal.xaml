@@ -6,12 +6,12 @@
     
    
     <Style x:Key="Color_Shell" TargetType="Shell">
-        <Setter Property="BackgroundColor" Value="Gray"/>
+        <Setter Property="BackgroundColor" Value="Grey"/>
         <Setter Property="Title"/>
         
     </Style>
     <Style x:Key="Fondo" TargetType="Page">
-        <Setter Property="BackgroundColor" Value="Gray"/>
+        <Setter Property="BackgroundColor" Value="White"/>
         <Setter Property="Title"/>
 
     </Style>
@@ -22,11 +22,14 @@
         <Setter Property="FontFamily" />
     </Style>
     <Color x:Key="Color_fondoTitulo">Blue</Color>
-    <Color x:Key="Color_Fuente">white</Color>
+    <Color x:Key="Color_Fuente">Black</Color>
     <Color x:Key="ColorpestanaNavegacion">Blue</Color>
-    
+    <Color x:Key="ColorBorder2">white</Color>
+    <Color x:Key="ColorBorder1">#6cc3f5</Color>
+
+
     <Style x:Key="Pickers" TargetType="Picker">
-        <Setter Property="BackgroundColor" Value="#88FFFFFF" />
+        <Setter Property="BackgroundColor" Value="#6cc3f5" />
         <Setter Property="TextColor" Value="Blue" />
         <Setter Property="TitleColor" Value="Blue" />
         <Setter Property="FontFamily" />
@@ -47,7 +50,7 @@
 
     <Style x:Key="Entry" TargetType="Entry">
         <Setter Property="BackgroundColor" Value="LightBlue" />
-        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="TextColor" Value="White" />
         <Setter Property="FontSize" Value="15"/>
     </Style>
 
@@ -55,5 +58,6 @@
         <Setter Property="TextColor" Value="Black" />
         <Setter Property="FontFamily" />
     </Style>
+    
 
 </ResourceDictionary>

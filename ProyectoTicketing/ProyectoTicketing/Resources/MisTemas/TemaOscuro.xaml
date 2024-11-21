@@ -3,56 +3,54 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     x:Class="ProyectoTicketing.Resources.MisTemas.TemaOscuro">
 
-    <Style x:Key="Fondo" TargetType="NavigationPage">
-        <Setter Property="BackgroundColor" Value="White"/>
-    </Style>
-    <Style x:Key="Fondo_Menu" TargetType="FlyoutPage">
-        <Setter Property="BackgroundColor" Value="White"/>
-        
-    </Style>
     <Style x:Key="Color_Shell" TargetType="Shell">
-        <Setter Property="BackgroundColor" Value="Black"/>
-        <Setter Property="Title" Value="MonsterHunter.ttf"/>
-        <Setter Property="FlyoutBackgroundColor" Value="Black"/>
+        <Setter Property="BackgroundColor" Value="Grey"/> 
 
     </Style>
-   
+    <Style x:Key="Fondo" TargetType="Page">
+        <Setter Property="BackgroundColor" Value="Black"/>
+
+    </Style>
+
+
     <Style x:Key="RadioButton" TargetType="RadioButton">
         <Setter Property="TextColor" Value="Black" />
-        <Setter Property="FontFamily" Value="MonsterHunter.ttf"/>
     </Style>
-    <Color x:Key="Color_fondoTitulo">White</Color>
+    <Color x:Key="Color_fondoTitulo">white</Color>
     <Color x:Key="Color_Fuente">white</Color>
     <Color x:Key="ColorpestanaNavegacion">Black</Color>
+    <Color x:Key="ColorBorder2">white</Color>
+    <Color x:Key="ColorBorder1">red</Color>
+
 
     <Style x:Key="Pickers" TargetType="Picker">
-        <Setter Property="BackgroundColor" Value="Black" />
-        <Setter Property="TextColor" Value="White" />
-        <Setter Property="TitleColor" Value="Black" />
-        <Setter Property="FontFamily" Value="MonsterHunter.ttf"/>
+        <Setter Property="BackgroundColor" Value="#88FFFFFF" />
+        <Setter Property="TextColor" Value="Blue" />
+        <Setter Property="TitleColor" Value="Blue" />
     </Style>
 
     <Style x:Key="Botones" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="Black" />
+        <Setter Property="BackgroundColor" Value="Red" />
         <Setter Property="TextColor" Value="White" />
-        <Setter Property="FontFamily" Value="MonsterHunter.ttf"/>
+
     </Style>
 
     <Style x:Key="Label" TargetType="Label">
-        <Setter Property="TextColor" Value="Black" />
-        <Setter Property="FontFamily" Value="MonsterHunter.ttf"/>
-    </Style>
-
-    <Style x:Key="Entry" TargetType="Entry">
-        <Setter Property="BackgroundColor" Value="Black" />
         <Setter Property="TextColor" Value="White" />
         <Setter Property="FontSize" Value="15"/>
     </Style>
 
-    <Style x:Key="LabelBotonesPersonajes" TargetType="Label">
+    <Style x:Key="Entry" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="Grey" />
         <Setter Property="TextColor" Value="White" />
-        <Setter Property="FontFamily" Value="MonsterHunter.ttf"/>
+        <Setter Property="FontSize" Value="15"/>
     </Style>
+
+    <Style x:Key="LabelBotones" TargetType="Label">
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontFamily" />
+    </Style>
+
 
 </ResourceDictionary>
 

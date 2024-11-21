@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ProyectoTicketing"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="ProyectoTicketing">
 
     <Shell.ToolbarItems >
@@ -25,12 +25,13 @@
         <Label x:Name="Footer" TextColor="{DynamicResource Color_Fuente}" HorizontalOptions="Center" Margin="0,0,0,50"/>
     </Shell.FlyoutFooter>
     <FlyoutItem Title="{DynamicResource PaginaPrincipal}" x:Name="Menu" >
-        <ShellContent x:Name="InicioSesion" Title="{DynamicResource BotonIniciosesion}" Route="InicioSesionRuta" IsVisible="True" />
+        <ShellContent x:Name="InicioSesion" Title="{DynamicResource BotonRegistrarse}" Route="InicioSesionRuta" IsVisible="True" />
         <ShellContent x:Name="ListaTickets" Route="ListaTickets" Title="{DynamicResource ListaTickets}" IsVisible="False" />
         <ShellContent x:Name="CreadorTickets" Route="CreadorTickets" Title="{DynamicResource CreadorTickets}" IsVisible="False" />
         <ShellContent x:Name="ListaTicketsSinAsignar" Route="ListaTicketsSinAsignar" Title="{DynamicResource ListaTicketsAsig}" IsVisible="False" />
         <ShellContent x:Name="TecnicoResolver" Route="TecnicoResolver" Title="{DynamicResource TecnicoResolver}" IsVisible="False" />
         <ShellContent x:Name="DetallesTicket" Route="DetallesTicket" Title="{DynamicResource DetallesTicket}" IsVisible="False" />
+        <ShellContent x:Name="Admin" Route="Admin" Title="{DynamicResource ListaAdmin}" IsVisible="False" />
         
     </FlyoutItem>
 

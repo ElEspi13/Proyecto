@@ -88,7 +88,6 @@ namespace ProyectoTicketing.Servicios
             catch (Exception ex)
             {
                 return false;
-                Debug.WriteLine(ex);
             }
         }
 
@@ -158,26 +157,59 @@ namespace ProyectoTicketing.Servicios
             }
         }
 
-        internal void RegistrarUsuario(string nombreUsuario, string contrasena)
+        internal async void RegistrarUsuario(string nombreUsuario, string contrasena, int Rol)
         {
             try
             {
                 // Verificar conexión con la base de datos
                 if (Conexion())
                 {
-                    // Obtener la colección de usuarios
                     var collectionUsuarios = database.GetCollection<BsonDocument>("usuarios");
 
-                    // Crear un nuevo documento Bson para el usuario
-                    var usuarioDoc = new BsonDocument
-            {
-                { "Usuario", nombreUsuario },
-                { "Contrasena", contrasena },
-                { "Rol", 1 } // Asigna un rol por defecto; ajusta según sea necesario
-            };
+                    // Verificar si ya existe un usuario con el mismo nombre
+                    var filtro = Builders<BsonDocument>.Filter.Eq("Usuario", nombreUsuario);
+                    var usuarioExistente = collectionUsuarios.Find(filtro).FirstOrDefault();
 
-                    // Insertar el documento en la colección
-                    collectionUsuarios.InsertOne(usuarioDoc);
+                    if (usuarioExistente != null)
+                    {
+                        await Shell.Current.DisplayAlert("Error", "El Nombre de Usuario ya esta siendo usado", "OK");
+                        return; // Salir del método si el usuario ya existe
+                    }
+                    else
+                    {
+                        // Obtener la colección de usuarios
+                        collectionUsuarios = database.GetCollection<BsonDocument>("usuarios");
+                        if (Rol == 0)
+                        {
+                            // Crear un nuevo documento Bson para el usuario
+                            var usuarioDoc = new BsonDocument
+
+                    {
+                        { "Usuario", nombreUsuario },
+                        { "Contrasena", contrasena },
+                        { "Rol", 2 } // Asigna un rol por defecto; ajusta según sea necesario
+                    };
+
+                            // Insertar el documento en la colección
+                            collectionUsuarios.InsertOne(usuarioDoc);
+                        }
+                        else if (Rol == 1)
+                        {
+
+                            // Crear un nuevo documento Bson para el usuario
+                            var usuarioDoc = new BsonDocument
+
+                    {
+                        { "Usuario", nombreUsuario },
+                        { "Contrasena", contrasena },
+                        { "Rol", 1 } // Asigna un rol por defecto; ajusta según sea necesario
+                    };
+
+                            // Insertar el documento en la colección
+                            collectionUsuarios.InsertOne(usuarioDoc);
+                        }
+                    }
+                    
                 }
             }
             catch (Exception ex)
@@ -291,29 +323,90 @@ namespace ProyectoTicketing.Servicios
         {
             try
             {
-                // Obtener el directorio de "Descargas" de Windows
-                var downloadsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-
-                // Ruta completa para guardar el archivo en la carpeta de descargas
-                var filePath = Path.Combine(downloadsFolder, documento.NombreArchivo);
-
-                // Acceder al archivo en GridFS
-                var fileStream = await gridFSBucket.OpenDownloadStreamAsync(documento.IdDocumento);
-
-                // Guardar el archivo en la carpeta de descargas
-                using (var file = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                // Verifica la plataforma en la que se ejecuta la aplicación
+                if (DeviceInfo.Platform == DevicePlatform.Android)
                 {
-                    await fileStream.CopyToAsync(file);
+                    // Solicita permisos de almacenamiento en Android
+                    var statusWrite = await Permissions.RequestAsync<Permissions.StorageWrite>();
+                    var statusRead = await Permissions.RequestAsync<Permissions.StorageRead>();
+
+                    // Comprobar si los permisos fueron concedidos
+                    if (statusWrite == PermissionStatus.Granted && statusRead == PermissionStatus.Granted)
+                    {
+                        // Verificar si estamos en Android 10 o superior (API 29+)
+                        if (DeviceInfo.Version.Major >= 10 ) // Android 10 y superior
+                        {
+
+                            var downloadsFolder = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "Downloads");
+                            string filePath = Path.Combine(downloadsFolder, documento.NombreArchivo);
+
+                            // Acceder al archivo en GridFS
+                            var fileStream = await gridFSBucket.OpenDownloadStreamAsync(documento.IdDocumento);
+
+                            // Guardar el archivo en la carpeta de descargas
+                            using (var file = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                            {
+                                await fileStream.CopyToAsync(file);
+                            }
+
+                            // Abrir el archivo usando el Launcher
+                            await Launcher.OpenAsync(filePath);
+                            await Shell.Current.DisplayAlert("Descargado", "Se ha descargado el archivo en su dispositivo", "Aceptar");
+                        }
+
+                    }
+                 
+                    else
+                    {
+                        await Shell.Current.DisplayAlert("Error", "Dispositivo no compatible por ahora", "Aceptar");
+
+                    }
+                }
+                else if (DeviceInfo.Platform == DevicePlatform.WinUI) // Windows
+                {
+                    // Para Windows, obtenemos el directorio de "Descargas"
+                    var downloadsFolder = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "Downloads");
+
+                    // Ruta completa para guardar el archivo
+                    var filePath = Path.Combine(downloadsFolder, documento.NombreArchivo);
+
+                    // Acceder al archivo en GridFS
+                    var fileStream = await gridFSBucket.OpenDownloadStreamAsync(documento.IdDocumento);
+
+                    // Guardar el archivo en la carpeta de descargas
+                    using (var file = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                    {
+                        await fileStream.CopyToAsync(file);
+                    }
+
+                    // Abrir el archivo usando el Launcher
+                    await Launcher.OpenAsync(filePath);
+                    await Shell.Current.DisplayAlert("Descargado", "Se ha descargado el archivo en su dispositivo", "Aceptar");
+                }
+                else
+                {
+                    // Si la plataforma no es soportada, lanzamos una excepción
+                    throw new NotSupportedException("Plataforma no soportada.");
                 }
 
-                // Si deseas abrir el archivo, puedes hacerlo con la función Launcher
-                await Launcher.OpenAsync(filePath);
             }
             catch (Exception ex)
             {
+                // Manejo de excepciones
+                Console.WriteLine($"Error en la descarga: {ex.Message}");
 
             }
         }
+
+
+
+           
+            
+
+        
+
+
+
         internal void IniciarMonitoreoTecnico()
         {
             if (string.IsNullOrEmpty(usuario.Id))
@@ -372,21 +465,18 @@ namespace ProyectoTicketing.Servicios
             var filterPadre = Builders<Ticket>.Filter.Eq(t => t.IDTicketPadre, idTicketPadre); // Comparar con el IDTicketPadre que es un string
             var updatePadre = Builders<Ticket>.Update.Set(t => t.Estado, "Cerrado");
 
-            // Mensaje para verificar el filtro de IDTicketPadre
-            Debug.WriteLine($"Buscando tickets con IDTicketPadre: {idTicketPadre}");
 
             // 2. Realizar la actualización masiva de los tickets hijos
             var resultHijos = await collection.UpdateManyAsync(filterPadre, updatePadre);
-            Debug.WriteLine($"Actualizados {resultHijos.ModifiedCount} tickets hijos con IDTicketPadre: {idTicketPadre}");
+
 
             // 3. Actualizar el ticket padre
             var filterPadrePrincipal = Builders<Ticket>.Filter.Eq(t => t.IdTicket, ObjectId.Parse(idTicketPadre)); // Convertir el IDTicketPadre a ObjectId para la comparación
             var updatePadrePrincipal = Builders<Ticket>.Update.Set(t => t.Estado, "Cerrado");
 
-            Debug.WriteLine($"Actualizando ticket padre con _id: {idTicketPadre}");
+
 
             var resultPadre = await collection.UpdateOneAsync(filterPadrePrincipal, updatePadrePrincipal);
-            Debug.WriteLine($"Actualizado ticket padre, {resultPadre.ModifiedCount} documentos modificados");
         }
 
         public async Task CerrarTicketsIDTicket(ObjectId idTicket)
@@ -398,20 +488,18 @@ namespace ProyectoTicketing.Servicios
             var updateHijos = Builders<Ticket>.Update.Set(t => t.Estado, "Cerrado");
 
             // Mensaje para verificar el filtro de IDTicketPadre
-            Debug.WriteLine($"Buscando tickets hijos con IDTicketPadre: {idTicket.ToString()}");
+
 
             // 2. Diagnóstico: Verificar cuántos tickets hijos se encuentran
             var hijos = await collection.Find(filterHijos).ToListAsync(); // Obtener los hijos para imprimir información
-            Debug.WriteLine($"Se encontraron {hijos.Count} tickets hijos con IDTicketPadre: {idTicket.ToString()}");
-
+            
             // 3. Actualizar los tickets hijos si existen
             var resultHijos = await collection.UpdateManyAsync(filterHijos, updateHijos);
-            Debug.WriteLine($"Actualizados {resultHijos.ModifiedCount} tickets hijos con IDTicketPadre: {idTicket.ToString()}");
+            
 
             // 4. Actualizar el estado del ticket principal a "Cerrado" si tiene hijos
             var updateTicketPadre = Builders<Ticket>.Update.Set(t => t.Estado, "Cerrado");
             var resultPadre = await collection.UpdateOneAsync(t => t.IdTicket == idTicket, updateTicketPadre);
-            Debug.WriteLine($"Actualizado ticket padre con _id: {idTicket}, {resultPadre.ModifiedCount} documentos modificados");
         }
 
         internal async Task<List<Ticket>> ObtenerTicketsDeSinAsignarAsync()
@@ -526,8 +614,88 @@ namespace ProyectoTicketing.Servicios
                     Console.WriteLine($"Error al actualizar el ticket: {ex.Message}");
                 }
             }
+
+        internal async Task<List<Usuario>> ListaUsuarios()
+        {
+            try
+            {
+                // Verificar conexión con la base de datos
+                if (Conexion())
+                {
+                    // Obtener la colección de usuarios
+                    var collectionUsuarios = database.GetCollection<BsonDocument>("usuarios");
+
+                    // Consultar todos los documentos de la colección
+                    var usuariosDocs = await collectionUsuarios.FindAsync(Builders<BsonDocument>.Filter.Empty);
+
+                    // Convertir los documentos Bson en objetos Usuario
+                    var usuarios = usuariosDocs.ToList().Select(doc => new Usuario
+                    {
+                        Id = doc["_id"].ToString(),
+                        Nombre = doc["Usuario"].AsString,
+                        Rol = doc["Rol"].AsInt32
+                    }).ToList();
+
+                    return usuarios;
+                }
+                else
+                {
+                    Console.WriteLine("No se pudo conectar a la base de datos.");
+                    return new List<Usuario>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener la lista de usuarios: {ex.Message}");
+                return new List<Usuario>();
+            }
+        }
+
+        internal async Task EliminarDatosUsuario(Usuario usuario)
+        {
+
+            try
+            {
+                // Verificar conexión con la base de datos
+                if (Conexion())
+                {
+                    // Obtener la colección de usuarios
+                    var collectionUsuarios = database.GetCollection<BsonDocument>("usuarios");
+
+                    // Crear un filtro para encontrar el usuario por su ID
+                    var filtroUsuario = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(usuario.Id));
+
+                    // Eliminar el usuario de la colección "usuarios"
+                    var resultadoUsuario = await collectionUsuarios.DeleteOneAsync(filtroUsuario);
+
+                    if (resultadoUsuario.DeletedCount == 0)
+                    {
+                        Console.WriteLine("No se encontró un usuario con ese ID.");
+                        return;
+                    }
+
+                    // Eliminar datos relacionados en la colección "configuracion"
+                    var collectionConfiguracion = database.GetCollection<BsonDocument>("configuracion");
+                    var filtroConfiguracion = Builders<BsonDocument>.Filter.Eq("IdUsuario", usuario.Id);
+
+                    var resultadoConfiguracion = await collectionConfiguracion.DeleteManyAsync(filtroConfiguracion);
+
+                    // Mostrar en consola los resultados
+                    Console.WriteLine($"Usuario eliminado: {resultadoUsuario.DeletedCount}");
+                    Console.WriteLine($"Datos relacionados eliminados: {resultadoConfiguracion.DeletedCount}");
+                }
+                else
+                {
+                    Console.WriteLine("No se pudo conectar a la base de datos.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al eliminar el usuario y los datos relacionados: {ex.Message}");
+            }
+        }
     }
 
 
-    }
+}
 

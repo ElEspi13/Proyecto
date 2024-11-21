@@ -99,6 +99,7 @@ namespace ProyectoTicketing.Vistas
             // Muestra los ToolbarItems y los FlyoutItems
             Shell.SetNavBarIsVisible(this, true); // Muestra los ToolbarItems
             Shell.SetTabBarIsVisible(this, true); // Muestra los FlyoutItems
+            Shell.Current.FlyoutBehavior = FlyoutBehavior.Flyout;
             
             shell.Desconectar.Text = (string)App.Current.Resources["Desconectar"];
         }
@@ -162,6 +163,7 @@ namespace ProyectoTicketing.Vistas
                 (string)App.Current.Resources["AltoContraste"]
             };
             ThemePicker.SelectedIndex = seleccionado;
+            
         }
 
         /// <summary>

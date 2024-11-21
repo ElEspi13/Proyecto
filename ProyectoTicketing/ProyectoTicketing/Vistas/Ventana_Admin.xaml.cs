@@ -1,4 +1,6 @@
+
 using ProyectoTicketing.Clases;
+using ProyectoTicketing.Servicios;
 
 namespace ProyectoTicketing.Vistas
 {
@@ -46,6 +48,22 @@ namespace ProyectoTicketing.Vistas
         public void CambiarTamanoFuente(double factorMultiplicador)
         {
             Titulo.FontSize = 30 * factorMultiplicador;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            try
+            {
+                List<Usuario> lista= await shell.MostrarListaUsuarios();
+                MostrarListaUsuarios(lista);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en OnAppearing: {ex.Message}");
+                await DisplayAlert("Error", "Ocurrió un problema al cargar la página.", "OK");
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,11 @@ namespace ProyectoTicketing.Clases
         }
         protected override FilterDefinition<ChangeStreamDocument<BsonDocument>> ConfigurarFiltro()
         {
-            return Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq($"fullDocument.{campoFiltro}", filtroId);
+            var filtroEstado = Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq("updateDescription.updatedFields.Estado", "Cerrado");
+
+            // Filtro para verificar si el "IDUsuario" coincide con el filtroId
+            var filtroIdUsuario = Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq($"fullDocument.{campoFiltro}", filtroId);
+            return filtroIdUsuario | filtroEstado;
         }
     }
 }

@@ -26,5 +26,91 @@
     <x:String x:Key="No">No</x:String>
     <x:String x:Key="Aceptar">Aceptar</x:String>
     <x:String x:Key="ListaAdmin">Lista de Usuarios</x:String>
-    
+
+    <x:String x:Key="GuiaUsuario">Guía de Usuario</x:String>
+    <x:String x:Key="ComoCrearTicket">Cómo Crear un Ticket</x:String>
+    <x:String x:Key="InstruccionesCrearTicket">1. Haz clic en el menú 'Crear Ticket'.</x:String>
+    <x:String x:Key="InstruccionesFormulario">2. Completa el formulario con los siguientes datos:</x:String>
+    <x:String x:Key="NombreTicket">- Nombre del Ticket</x:String>
+    <x:String x:Key="CategoriaError">- Categoría del Error</x:String>
+    <x:String x:Key="TipoError">- Tipo de Error</x:String>
+    <x:String x:Key="DescripcionProblema">- Descripción del Problema</x:String>
+    <x:String x:Key="AdjuntarFotos">3. Puedes adjuntar fotos o documentos que ayuden a explicar el problema.</x:String>
+    <x:String x:Key="EnviarTicket">4. Haz clic en el botón 'Enviar' para crear el ticket.</x:String>
+
+    <x:String x:Key="ComoVerTickets">Cómo Ver los Tickets</x:String>
+    <x:String x:Key="InstruccionesVerTickets">1. Haz clic en el menú 'Lista de Tickets'.</x:String>
+    <x:String x:Key="VerListaTickets">2. Aparecerá una lista con todos los tickets creados.</x:String>
+    <x:String x:Key="VerDetallesTicket">3. Haz clic en un ticket para ver los detalles y la solución propuesta.</x:String>
+
+    <x:String x:Key="ComoCrearTicketHijo">Cómo Crear un Ticket Hijo</x:String>
+    <x:String x:Key="InstruccionesCrearTicketHijo">1. Si encuentras un nuevo problema en un ticket ya existente, puedes crear un 'Ticket Hijo'.</x:String>
+    <x:String x:Key="BotonCrearTicketHijo">2. Desde la página de detalles del ticket, haz clic en el botón 'Crear Ticket Hijo'.</x:String>
+    <x:String x:Key="CierreTicketHijo">3. El ticket hijo estará vinculado al ticket original, y si uno se cierra, el otro también se cerrará.</x:String>
+
+    <x:String x:Key="CierreTicket">Cierre de un Ticket</x:String>
+    <x:String x:Key="InstruccionesCierreTicket">1. Si el problema se ha resuelto, puedes cerrar el ticket.</x:String>
+    <x:String x:Key="TicketCerrado">2. Un ticket cerrado no podrá ser modificado.</x:String>
+    <x:String x:Key="GuardarCierreTicket">3. Si decides cerrar un ticket, este se guardará como resuelto en la base de datos.</x:String>
+
+    <x:String x:Key="GuiaTecnico">Guía de Técnico</x:String>
+    <x:String x:Key="ComoResolverTickets">Cómo Resolver Tickets</x:String>
+    <x:String x:Key="InstruccionesResolverTickets">1. Haz clic en el menú 'Lista de Tickets'.</x:String>
+    <x:String x:Key="VerTicketsSinAsignar">2. Puedes ver los tickets asignados o sin asignar.</x:String>
+    <x:String x:Key="DetallesTicketResolucion">3. Si haces clic en un ticket, verás los detalles y podrás asignarlo a ti mismo.</x:String>
+
+    <x:String x:Key="ComoResolverTicket">Cómo Resolver un Ticket</x:String>
+    <x:String x:Key="InstruccionesModificarSolucion">1. En la página de detalles del ticket, podrás modificar la solución.</x:String>
+    <x:String x:Key="InstruccionesSubirDocumentos">2. Añade nuevos documentos y haz clic en el botón 'Enviar' para actualizar la solución.</x:String>
+    <x:String x:Key="LimiteArchivos">3. El sistema solo permite subir hasta 3 archivos por actualización.</x:String>
+    <x:String x:Key="TicketCerradoNoModificar">4. Si el ticket está cerrado, no podrá ser modificado.</x:String>
+
+    <x:String x:Key="GuiaAdministrador">Guía para Administradores</x:String>
+    <x:String x:Key="ComoRegistrarUsuario">Cómo Registrar un Usuario</x:String>
+    <x:String x:Key="InstruccionesRegistrarUsuario">1. Desde el menú, selecciona 'Registrar Usuario'.</x:String>
+    <x:String x:Key="PaginaRegistrarUsuario">2. Se abrirá una página donde podrás ingresar los datos del usuario.</x:String>
+    <x:String x:Key="DatosUsuario">3. Introduce el nombre de usuario, la contraseña y selecciona el rol del usuario.</x:String>
+    <x:String x:Key="VerificarUsuario">4. El sistema comprobará que no exista un usuario con el mismo nombre.</x:String>
+    <x:String x:Key="RegistrarNuevoUsuario">5. Si el nombre de usuario es único, podrás registrar el nuevo usuario.</x:String>
+
+    <x:String x:Key="ComoVerEliminarUsuario">Cómo Ver y Eliminar un Usuario</x:String>
+    <x:String x:Key="InstruccionesVerUsuarios">1. Desde el menú, selecciona 'Ver Usuarios'.</x:String>
+    <x:String x:Key="VerListaUsuarios">2. Verás una lista de todos los usuarios registrados.</x:String>
+    <x:String x:Key="EliminarUsuario">3. Haz clic en el usuario que deseas eliminar.</x:String>
+    <x:String x:Key="DetallesUsuario">4. Se abrirá una página con los detalles del usuario.</x:String>
+    <x:String x:Key="EliminarUsuarioConfirmacion">5. Podrás eliminar el usuario haciendo clic en el botón 'Eliminar Usuario'.</x:String>
+    <x:String x:Key="ImportanteEliminarUsuario">6. **Importante:** Eliminar un usuario **no eliminará los tickets ni documentos** asociados a él.</x:String>
+    <x:String x:Key="EliminarUsuarioBaseDatos">7. El usuario será eliminado de la base de datos, pero sus tickets y documentos permanecerán intactos.</x:String>
+
+    <x:String x:Key="TipoErrorLabel">Tipo de error:</x:String>
+    <x:String x:Key="CategoriaLabel">Categoría:</x:String>
+    <x:String x:Key="IdTicketLabel">ID TICKET:</x:String>
+    <x:String x:Key="NombreTicketLabel">Nombre Ticket:</x:String>
+    <x:String x:Key="EspecificacionErrorLabel">Especificación del error</x:String>
+    <x:String x:Key="PlaceholderError">Describa el error aquí</x:String>
+    <x:String x:Key="DescripcionSolucionLabel">Descripción de la solución</x:String>
+    <x:String x:Key="PlaceholderSolucion">Aquí irá la posible solución de su ticket</x:String>
+    <x:String x:Key="DocumentosAdjuntosLabel">Documentos Adjuntos</x:String>
+    <x:String x:Key="BotonCerrarTicket">Cerrar Ticket</x:String>
+    <x:String x:Key="BotonCrearHijo">Crear Ticket Hijo</x:String>
+    <x:String x:Key="BotonAsignarTicket">Asignar Ticket</x:String>
+    <x:String x:Key="DetallesTicketTitle">Detalles del Ticket</x:String>
+    <x:String x:Key="DetallesTicketHeader">DETALLES DEL TICKET</x:String>
+    <x:String x:Key="DocumentosTicketLabel">Documentos del Ticket</x:String>
+    <x:String x:Key="AgregarDocumentosLabel">Agregar documentos</x:String>
+    <x:String x:Key="BotonSeleccionar">Seleccionar</x:String>
+    <x:String x:Key="BotonEnviar">ENVIAR</x:String>
+    <x:String x:Key="VentanaCreadorTicketsTitle">Creador de Tickets</x:String>
+    <x:String x:Key="CreandoTicketHijoLabel">Creando Ticket Hijo</x:String>
+    <x:String x:Key="PlaceholderNombreTicket">Escribe el nombre del ticket</x:String>
+    <x:String x:Key="PlaceholderTipoError">Seleccione un error</x:String>
+    <x:String x:Key="ErrorConexion">Error de Conexión</x:String>
+    <x:String x:Key="ErrorSoftware">Error de Software</x:String>
+    <x:String x:Key="ErrorHardware">Error de Hardware</x:String>
+    <x:String x:Key="PlaceholderCategoria">Seleccione una categoría</x:String>
+    <x:String x:Key="SeleccionarArchivoLabel">Seleccionar archivo</x:String>
+    <x:String x:Key="BotonSeleccionarArchivo">Seleccionar</x:String>
+    <x:String x:Key="PlaceholderDescripcionError">Especifique el error</x:String>
+    <x:String x:Key="ListaTicketsSinAsignar">Lista Tickets Sin Asignar</x:String>
+
 </ResourceDictionary>

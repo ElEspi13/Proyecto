@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoTicketing.Vistas.Ventana_IniciodeSesion"
-             Style="{DynamicResource Fondo}">
+             Style="{DynamicResource Fondo}"
+             >
     
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" 
           HorizontalOptions="Center" 
@@ -88,6 +89,20 @@
             SemanticProperties.Description="Este boton sirve para Iniciar Sesion"
             ToolTipProperties.Text="Botón de inicio de sesión"
             />
+        <Picker
+            x:Name="Rol"
+            Grid.Row="4"
+            FontSize="30"
+            Style="{DynamicResource Pickers}"
+            IsVisible="False">
+            <Picker.ItemsSource>
+            <x:Array Type="{x:Type x:String}">
+                <x:String>Cliente</x:String>
+                <x:String>Tecnico</x:String>
+            </x:Array>
+            </Picker.ItemsSource>
+
+            </Picker>
         <Button
             x:Name="Registrar"
             Grid.Row="5"
@@ -96,7 +111,8 @@
             Style="{DynamicResource Botones}"
             Clicked="Registrar_Clicked"
             ToolTipProperties.Text="Botón para registrarse"
-            SemanticProperties.Description="Este boton sirve para registrarse"
+            SemanticProperties.Description="Este boton sirve para registrar un Usuario"
+            IsVisible="False"
             />
 
 

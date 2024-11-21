@@ -1,3 +1,4 @@
+
 using Microsoft.Maui.Controls;
 using ProyectoTicketing.Clases;
 using System.Collections.ObjectModel;
@@ -9,6 +10,7 @@ public partial class VentanaGeneral_Ver_Tickets : ContentPage
 	private AppShell shell;
     public ObservableCollection<Ticket> Tickets { get; set; }
     public bool tecnico {  get; set; }
+    
     public VentanaGeneral_Ver_Tickets(AppShell shell)
 	{
 		InitializeComponent();
@@ -26,17 +28,23 @@ public partial class VentanaGeneral_Ver_Tickets : ContentPage
 
         try
         {
-            Tickets.Clear();
-            List<Ticket> tickets = await shell.ObtenerTicketsDeUsuarioAsync();
-            foreach (Ticket ticket in tickets)
-            {
-                if (!Tickets.Any(t => t.IdTicket == ticket.IdTicket)) // Verifica por ID u otra propiedad única
-                {
-                    Tickets.Add(ticket);
-                }
-                await Task.Yield();
-            }
+            var tickets = await shell.ObtenerTicketsDeUsuarioAsync() ?? new List<Ticket>();
 
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Tickets.Clear(); // Asegura que esta operación está en el hilo principal
+
+                foreach (var ticket in tickets)
+                {
+                    if (!Tickets.Any(t => t.IdTicket == ticket.IdTicket))
+                    {
+                        Tickets.Add(ticket); // Modificación de la colección también en el hilo principal
+                    }
+                }
+                OnPropertyChanged(nameof(Tickets)); // Notificar cambios si es necesario
+
+            });
         }
         finally
         {
@@ -67,5 +75,6 @@ public partial class VentanaGeneral_Ver_Tickets : ContentPage
             }
         }
     }
+    
 
 }

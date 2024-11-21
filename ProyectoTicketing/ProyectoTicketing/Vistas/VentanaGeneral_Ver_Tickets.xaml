@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoTicketing.Vistas.VentanaGeneral_Ver_Tickets"
-             Title="VentanaGeneral_Ver_Tickets">
+             Title="{DynamicResource ListaTickets}"
+             Style="{DynamicResource Fondo}">
 
     <ScrollView Padding="10">
         <StackLayout Padding="10">
@@ -10,7 +11,6 @@
 
             <!-- ListView con Binding adecuado -->
             <ListView x:Name="TicketsListView" 
-                      SelectionMode="Single" 
                       ItemsSource="{Binding Tickets}" 
                       ItemTapped="OnTicketSelected" 
                       VerticalOptions="FillAndExpand">
@@ -19,15 +19,24 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame Padding="10" Margin="5" BorderColor="Gray" CornerRadius="5" HeightRequest="40">
+                            <Border Padding="10" Margin="5" HeightRequest="45" >
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="{DynamicResource ColorBorder1}" Offset="0.2"/>
+                                        <GradientStop Color="{DynamicResource ColorBorder2}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10"/>
+                                </Border.StrokeShape>
                                 <!-- HorizontalStackLayout para disposición en línea -->
                                 <HorizontalStackLayout Spacing="10" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
 
                                     <!-- NombreTicket -->
-                                    <Label Text="{Binding NombreTicket}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start"/>
+                                    <Label Text="{Binding NombreTicket}" FontAttributes="Bold" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" HorizontalOptions="Start"/>
 
                                     <!-- Descripción -->
-                                    <Label Text="{Binding Categoria}" LineBreakMode="TailTruncation" VerticalOptions="Center" HorizontalOptions="Start"/>
+                                    <Label Text="{Binding Categoria}" LineBreakMode="TailTruncation"  TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" HorizontalOptions="Start"/>
 
                                     <!-- TipoError -->
                                     <Label Text="{Binding TipoError}" FontSize="Small" TextColor="Gray" VerticalOptions="Center" HorizontalOptions="Start"/>
@@ -41,7 +50,7 @@
                                     <!-- FechaCreacion -->
                                     <Label Text="{Binding FechaCreacion, StringFormat='{0:dd/MM/yyyy HH:mm}'}" FontSize="Small" TextColor="Gray" VerticalOptions="Center" HorizontalOptions="End"/>
                                 </HorizontalStackLayout>
-                            </Frame>
+                            </Border>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

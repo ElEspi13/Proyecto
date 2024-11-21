@@ -5,25 +5,111 @@
 
     <x:String x:Key="UsuarioLabel">User</x:String>
     <x:String x:Key="ContrasenaLabel">Password</x:String>
-    <x:String x:Key="BotonIniciosesion">Sing in</x:String>
-    <x:String x:Key="BotonRegistrarse">Sing up</x:String>
+    <x:String x:Key="BotonIniciosesion">Log In</x:String>
+    <x:String x:Key="BotonRegistrarse">Sign Up</x:String>
     <x:String x:Key="Configuracion">Settings</x:String>
-    <x:String x:Key="Idioma">Languaje</x:String>
+    <x:String x:Key="Idioma">Language</x:String>
     <x:String x:Key="Tema">Theme</x:String>
     <x:String x:Key="Original">Original Theme</x:String>
     <x:String x:Key="AltoContraste">High Contrast</x:String>
     <x:String x:Key="TamanoLetra">Font Size</x:String>
-    <x:String x:Key="GuardarConfiguracion">Save Configuration</x:String>
+    <x:String x:Key="GuardarConfiguracion">Save Settings</x:String>
     <x:String x:Key="ListaTickets">Ticket List</x:String>
-    <x:String x:Key="CreadorTickets">Ticket Build</x:String>
-    <x:String x:Key="TecnicoResolver">Tecnician Resolve</x:String>
-    <x:String x:Key="DetallesTicket">Details Ticket</x:String>
-    <x:String x:Key="ListaTicketsAsig">Ticket List No Asign</x:String>
+    <x:String x:Key="CreadorTickets">Ticket Creator</x:String>
+    <x:String x:Key="TecnicoResolver">Technical Resolver</x:String>
+    <x:String x:Key="DetallesTicket">Ticket Details</x:String>
+    <x:String x:Key="ListaTicketsAsig">Unassigned Tickets List</x:String>
     <x:String x:Key="Ayuda">Help</x:String>
-    <x:String x:Key="PaginaPrincipal">Principal Page</x:String>
-    <x:String x:Key="Desconectar">Disconect</x:String>
+    <x:String x:Key="PaginaPrincipal">Home Page</x:String>
+    <x:String x:Key="Desconectar">Log Out</x:String>
     <x:String x:Key="Si">Yes</x:String>
     <x:String x:Key="No">No</x:String>
-    <x:String x:Key="ListaAdmin">User Lists</x:String>
     <x:String x:Key="Aceptar">Accept</x:String>
+    <x:String x:Key="ListaAdmin">User List</x:String>
+
+    <x:String x:Key="GuiaUsuario">User Guide</x:String>
+    <x:String x:Key="ComoCrearTicket">How to Create a Ticket</x:String>
+    <x:String x:Key="InstruccionesCrearTicket">1. Click on the 'Create Ticket' menu.</x:String>
+    <x:String x:Key="InstruccionesFormulario">2. Fill in the form with the following information:</x:String>
+    <x:String x:Key="NombreTicket">- Ticket Name</x:String>
+    <x:String x:Key="CategoriaError">- Error Category</x:String>
+    <x:String x:Key="TipoError">- Error Type</x:String>
+    <x:String x:Key="DescripcionProblema">- Problem Description</x:String>
+    <x:String x:Key="AdjuntarFotos">3. You can attach photos or documents that help explain the issue.</x:String>
+    <x:String x:Key="EnviarTicket">4. Click the 'Submit' button to create the ticket.</x:String>
+
+    <x:String x:Key="ComoVerTickets">How to View Tickets</x:String>
+    <x:String x:Key="InstruccionesVerTickets">1. Click on the 'Ticket List' menu.</x:String>
+    <x:String x:Key="VerListaTickets">2. A list with all created tickets will appear.</x:String>
+    <x:String x:Key="VerDetallesTicket">3. Click on a ticket to view the details and the proposed solution.</x:String>
+
+    <x:String x:Key="ComoCrearTicketHijo">How to Create a Child Ticket</x:String>
+    <x:String x:Key="InstruccionesCrearTicketHijo">1. If you find a new issue in an existing ticket, you can create a 'Child Ticket'.</x:String>
+    <x:String x:Key="BotonCrearTicketHijo">2. From the ticket details page, click on the 'Create Child Ticket' button.</x:String>
+    <x:String x:Key="CierreTicketHijo">3. The child ticket will be linked to the original ticket, and when one is closed, the other will also be closed.</x:String>
+
+    <x:String x:Key="CierreTicket">Closing a Ticket</x:String>
+    <x:String x:Key="InstruccionesCierreTicket">1. If the issue is resolved, you can close the ticket.</x:String>
+    <x:String x:Key="TicketCerrado">2. A closed ticket cannot be modified.</x:String>
+    <x:String x:Key="GuardarCierreTicket">3. If you decide to close a ticket, it will be saved as resolved in the database.</x:String>
+
+    <x:String x:Key="GuiaTecnico">Technician Guide</x:String>
+    <x:String x:Key="ComoResolverTickets">How to Resolve Tickets</x:String>
+    <x:String x:Key="InstruccionesResolverTickets">1. Click on the 'Ticket List' menu.</x:String>
+    <x:String x:Key="VerTicketsSinAsignar">2. You can see assigned or unassigned tickets.</x:String>
+    <x:String x:Key="DetallesTicketResolucion">3. If you click on a ticket, you will see the details and can assign it to yourself.</x:String>
+
+    <x:String x:Key="ComoResolverTicket">How to Resolve a Ticket</x:String>
+    <x:String x:Key="InstruccionesModificarSolucion">1. On the ticket details page, you can modify the solution.</x:String>
+    <x:String x:Key="InstruccionesSubirDocumentos">2. Add new documents and click the 'Submit' button to update the solution.</x:String>
+    <x:String x:Key="LimiteArchivos">3. The system allows you to upload up to 3 files per update.</x:String>
+    <x:String x:Key="TicketCerradoNoModificar">4. If the ticket is closed, it cannot be modified.</x:String>
+
+    <x:String x:Key="GuiaAdministrador">Administrator Guide</x:String>
+    <x:String x:Key="ComoRegistrarUsuario">How to Register a User</x:String>
+    <x:String x:Key="InstruccionesRegistrarUsuario">1. From the menu, select 'Register User'.</x:String>
+    <x:String x:Key="PaginaRegistrarUsuario">2. A page will open where you can enter the user's details.</x:String>
+    <x:String x:Key="DatosUsuario">3. Enter the username, password, and select the user role.</x:String>
+    <x:String x:Key="VerificarUsuario">4. The system will check if a user with the same name exists.</x:String>
+    <x:String x:Key="RegistrarNuevoUsuario">5. If the username is unique, you can register the new user.</x:String>
+
+    <x:String x:Key="ComoVerEliminarUsuario">How to View and Delete a User</x:String>
+    <x:String x:Key="InstruccionesVerUsuarios">1. From the menu, select 'View Users'.</x:String>
+    <x:String x:Key="VerListaUsuarios">2. You will see a list of all registered users.</x:String>
+    <x:String x:Key="EliminarUsuario">3. Click on the user you wish to delete.</x:String>
+    <x:String x:Key="DetallesUsuario">4. A page will open with the user's details.</x:String>
+    <x:String x:Key="EliminarUsuarioConfirmacion">5. You can delete the user by clicking the 'Delete User' button.</x:String>
+    <x:String x:Key="ImportanteEliminarUsuario">6. **Important:** Deleting a user **will not delete tickets or documents** associated with them.</x:String>
+    <x:String x:Key="EliminarUsuarioBaseDatos">7. The user will be removed from the database, but their tickets and documents will remain intact.</x:String>
+
+    <x:String x:Key="TipoErrorLabel">Error Type:</x:String>
+    <x:String x:Key="CategoriaLabel">Category:</x:String>
+    <x:String x:Key="IdTicketLabel">TICKET ID:</x:String>
+    <x:String x:Key="NombreTicketLabel">Ticket Name:</x:String>
+    <x:String x:Key="EspecificacionErrorLabel">Error Specification</x:String>
+    <x:String x:Key="PlaceholderError">Describe the error here</x:String>
+    <x:String x:Key="DescripcionSolucionLabel">Solution Description</x:String>
+    <x:String x:Key="PlaceholderSolucion">Here is the possible solution for your ticket</x:String>
+    <x:String x:Key="DocumentosAdjuntosLabel">Attached Documents</x:String>
+    <x:String x:Key="BotonCerrarTicket">Close Ticket</x:String>
+    <x:String x:Key="BotonCrearHijo">Create Child Ticket</x:String>
+    <x:String x:Key="BotonAsignarTicket">Assign Ticket</x:String>
+    <x:String x:Key="DetallesTicketTitle">Ticket Details</x:String>
+    <x:String x:Key="DetallesTicketHeader">TICKET DETAILS</x:String>
+    <x:String x:Key="DocumentosTicketLabel">Ticket Documents</x:String>
+    <x:String x:Key="AgregarDocumentosLabel">Add Documents</x:String>
+    <x:String x:Key="BotonSeleccionar">Select</x:String>
+    <x:String x:Key="BotonEnviar">SUBMIT</x:String>
+    <x:String x:Key="VentanaCreadorTicketsTitle">Ticket Creator</x:String>
+    <x:String x:Key="CreandoTicketHijoLabel">Creating Child Ticket</x:String>
+    <x:String x:Key="PlaceholderNombreTicket">Enter the ticket name</x:String>
+    <x:String x:Key="PlaceholderTipoError">Select an error type</x:String>
+    <x:String x:Key="ErrorConexion">Connection Error</x:String>
+    <x:String x:Key="ErrorSoftware">Software Error</x:String>
+    <x:String x:Key="ErrorHardware">Hardware Error</x:String>
+    <x:String x:Key="PlaceholderCategoria">Select a category</x:String>
+    <x:String x:Key="SeleccionarArchivoLabel">Select File</x:String>
+    <x:String x:Key="BotonSeleccionarArchivo">Select</x:String>
+    <x:String x:Key="PlaceholderDescripcionError">Specify the error</x:String>
+    <x:String x:Key="ListaTicketsSinAsignar">Unassigned Tickets List</x:String>
 </ResourceDictionary>

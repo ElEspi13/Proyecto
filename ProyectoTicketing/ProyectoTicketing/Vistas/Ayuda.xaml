@@ -2,41 +2,117 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoTicketing.Vistas.Ayuda"
-             Title="Ayuda"
+             Title="{DynamicResource Ayuda}"
              Style="{DynamicResource Fondo}">
 
+    <ScrollView Padding="20">
+        <!-- Contenedor principal de todo el contenido -->
+        <StackLayout>
+            <!-- Sección de Usuario -->
+            <StackLayout x:Name="LayoutUsuario" IsVisible="False">
+                <Label Text="{DynamicResource GuiaUsuario}"
+                       FontSize="24"
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="{DynamicResource Color_Fuente}" />
 
-    <VerticalStackLayout HorizontalOptions="CenterAndExpand"
-                         Margin="10,0,10,0">
-        <Label x:Name="TituloAyuda" Text="AYUDA" FontSize="30" VerticalOptions="Start" HorizontalOptions="Center" Grid.Row="0" Margin="0,20,0,40" Style="{DynamicResource Label}"/>
-        <Grid HorizontalOptions="CenterAndExpand" Margin="0,20" Padding="5" BackgroundColor="LightGreen"  >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="AUTo"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+                <Label Text="{DynamicResource ComoCrearTicket}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesCrearTicket}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesFormulario}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource NombreTicket}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource CategoriaError}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource TipoError}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource DescripcionProblema}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource AdjuntarFotos}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource EnviarTicket}" TextColor="{DynamicResource Color_Fuente}" />
 
-            <Label x:Name="AccionLabel" Text="{DynamicResource Accion}" Grid.Row="0" Grid.Column="0" Style="{DynamicResource Label}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="30" Margin="10"/>
-            <Label x:Name="NoUsuarioLabel" Text="{DynamicResource NoUsuario}" Grid.Row="0" Grid.Column="1" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
-            <Label x:Name="UsuarioLabel" Text="{DynamicResource Usuario}" Grid.Row="0" Grid.Column="2" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
+                <Label Text="{DynamicResource ComoVerTickets}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0,20,0,0"
+                       TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesVerTickets}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource VerListaTickets}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource VerDetallesTicket}" TextColor="{DynamicResource Color_Fuente}" />
 
-            <Label x:Name="CreadorPersonajeLabel" Text="{DynamicResource CreadorPersonaje}" Grid.Row="1" Grid.Column="0" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
-            <Label x:Name="SiLabel1" Text="{DynamicResource Si}" Grid.Row="1" Grid.Column="1" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
-            <Label x:Name="SiLabel2" Text="{DynamicResource Si}" Grid.Row="1" Grid.Column="2" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
+                <Label Text="{DynamicResource ComoCrearTicketHijo}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0,20,0,0"
+                       TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesCrearTicketHijo}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource BotonCrearTicketHijo}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource CierreTicketHijo}" TextColor="{DynamicResource Color_Fuente}" />
 
-            <Label x:Name="GuardarPersonajeLabel" Text="{DynamicResource GuardarPersonaje}" Grid.Row="2" Grid.Column="0" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
-            <Label x:Name="NoLabel" Text="{DynamicResource No}" Grid.Row="2" Grid.Column="1" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
-            <Label x:Name="SiLabel3" Text="{DynamicResource Si}" Grid.Row="2" Grid.Column="2" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
+                <Label Text="{DynamicResource CierreTicket}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0,20,0,0"
+                       TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesCierreTicket}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource TicketCerrado}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource GuardarCierreTicket}" TextColor="{DynamicResource Color_Fuente}" />
+            </StackLayout>
 
-            <Label x:Name="GuardarConfiguracionLabel" Text="{DynamicResource GuardarConfiguracion}" Grid.Row="3" Grid.Column="0" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
-            <Label x:Name="NoLabel2" Text="{DynamicResource No}" Grid.Row="3" Grid.Column="1" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
-            <Label x:Name="SiLabel4" Text="{DynamicResource Si}" Grid.Row="3" Grid.Column="2" Style="{DynamicResource Label}" HorizontalOptions="Center" FontSize="30" Margin="10"/>
-        </Grid>
-    </VerticalStackLayout>
+            <!-- Sección de Técnico -->
+            <StackLayout x:Name="LayoutTecnico" IsVisible="False">
+                <Label Text="{DynamicResource GuiaTecnico}"
+                       FontSize="24"
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="{DynamicResource Color_Fuente}" />
+
+                <Label Text="{DynamicResource ComoResolverTickets}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesResolverTickets}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource VerTicketsSinAsignar}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource DetallesTicketResolucion}" TextColor="{DynamicResource Color_Fuente}" />
+
+                <Label Text="{DynamicResource ComoResolverTicket}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0,20,0,0"
+                       TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesModificarSolucion}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesSubirDocumentos}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource LimiteArchivos}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource TicketCerradoNoModificar}" TextColor="{DynamicResource Color_Fuente}" />
+            </StackLayout>
+
+            <!-- Sección de Administrador -->
+            <StackLayout x:Name="LayoutAdmin" IsVisible="False">
+                <Label Text="{DynamicResource GuiaAdministrador}"
+                       FontSize="24"
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="{DynamicResource Color_Fuente}" />
+
+                <Label Text="{DynamicResource ComoRegistrarUsuario}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesRegistrarUsuario}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource PaginaRegistrarUsuario}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource DatosUsuario}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource VerificarUsuario}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource RegistrarNuevoUsuario}" TextColor="{DynamicResource Color_Fuente}" />
+
+                <Label Text="{DynamicResource ComoVerEliminarUsuario}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0,20,0,0"
+                       TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource InstruccionesVerUsuarios}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource VerListaUsuarios}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource EliminarUsuario}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource DetallesUsuario}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource EliminarUsuarioConfirmacion}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource ImportanteEliminarUsuario}" TextColor="{DynamicResource Color_Fuente}" />
+                <Label Text="{DynamicResource EliminarUsuarioBaseDatos}" TextColor="{DynamicResource Color_Fuente}" />
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+
 </ContentPage>

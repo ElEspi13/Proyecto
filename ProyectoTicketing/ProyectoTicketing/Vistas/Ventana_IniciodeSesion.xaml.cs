@@ -1,4 +1,5 @@
 
+
 namespace ProyectoTicketing.Vistas;
 
 /// <summary>
@@ -26,6 +27,7 @@ public partial class Ventana_IniciodeSesion : ContentPage
     {
         Usuario.Text = "";
         Passw.Text = "";
+        Rol.SelectedIndex = -1;
     }
 
     /// <summary>
@@ -38,15 +40,25 @@ public partial class Ventana_IniciodeSesion : ContentPage
         
         Shell.ConectarBBDD(Usuario.Text,Passw.Text);
         Login.IsEnabled = true;
+        LimpiarDatos();
     }
 
     /// <summary>
     /// Evento que se dispara cuando se hace clic en el botón de registro.
     /// Llama al método InsertarDatos del objeto Shell, pasando los datos ingresados por el usuario.
     /// </summary>
-    private void Registrar_Clicked(object sender, EventArgs e)
+    private async void Registrar_Clicked(object sender, EventArgs e)
     {
-        Shell.InsertarDatos(Usuario.Text,Passw.Text);
+        if (Usuario.Text == "" && Passw.Text == "" && Rol.SelectedIndex ==-1)
+        {
+            await DisplayAlert("Error", "Error al crear la cuenta", "OK");
+        }
+        else {
+
+            Shell.InsertarDatos(Usuario.Text, Passw.Text, Rol.SelectedIndex);
+            LimpiarDatos();
+            await DisplayAlert("Correcto", "Se creo la cuenta", "OK");
+        }
     }
 
     /// <summary>
@@ -63,6 +75,23 @@ public partial class Ventana_IniciodeSesion : ContentPage
     /// <param name="factorMultiplicador">El factor por el cual se multiplicará el tamaño original de la fuente.</param>
     public void CambiarTamanoFuente(double factorMultiplicador)
     {
+        
+    }
+
+    public void VistaAdmin(bool Admin)
+    {
+        if (Admin == true)
+        {
+            Registrar.IsVisible = true;
+            Login.IsVisible = false;
+            Rol.IsVisible = true;
+        }
+        else
+        {
+            Registrar.IsVisible = false;
+            Login.IsVisible = true;
+            Rol.IsVisible = false;
+        }
         
     }
 }
