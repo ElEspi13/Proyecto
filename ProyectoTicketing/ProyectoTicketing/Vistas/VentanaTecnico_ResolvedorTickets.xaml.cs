@@ -1,6 +1,7 @@
 using Microsoft.Maui.Controls;
 using MongoDB.Bson;
 using ProyectoTicketing.Clases;
+
 namespace ProyectoTicketing.Vistas;
 
 public partial class VentanaTecnico_ResolvedorTickets : ContentPage
@@ -10,75 +11,66 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
     private List<Documento> documentosSeleccionados = new List<Documento>();
     private int contadorDocumentos = 0;
     private Ticket ticket;
+
+    /// <summary>
+    /// Constructor de la ventana donde el técnico resuelve tickets.
+    /// </summary>
     public VentanaTecnico_ResolvedorTickets(AppShell shell)
     {
-		InitializeComponent();
+        InitializeComponent();
         this.shell = shell;
     }
-    
 
-    // Método para seleccionar el archivo (vinculado al botón de selección)
+    /// <summary>
+    /// Método para seleccionar un archivo. Se invoca cuando el usuario hace clic en el botón de selección.
+    /// </summary>
     private async void OnSeleccionarArchivoClicked(object sender, EventArgs e)
     {
-        
         // Verificar si ya se han seleccionado 3 documentos
         if (contadorDocumentos >= LIMITE_DOCUMENTOS)
         {
-            // Mostrar un mensaje de error o advertencia
             await DisplayAlert("Límite de Documentos", "Ya has alcanzado el límite de 3 documentos.", "OK");
-            return; // No permite seleccionar más archivos
+            return;
         }
 
         var result = await FilePicker.Default.PickAsync();
         if (result != null)
         {
-            // Obtener la ruta completa del archivo seleccionado
             var rutaArchivoSeleccionado = result.FullPath;
 
-            // Crear un documento y agregarlo a la lista
             Documento documento = new Documento(
-                idDocumento: ObjectId.Empty, // Se actualizará después de cargar en GridFS
+                idDocumento: ObjectId.Empty,
                 nombreArchivo: result.FileName,
-                tipoArchivo: Path.GetExtension(result.FileName), // Asigna el tipo según la extensión
+                tipoArchivo: Path.GetExtension(result.FileName),
                 rutaArchivo: rutaArchivoSeleccionado
             );
             documentosSeleccionados.Add(documento);
 
-            // Mostrar el nombre del archivo en el Entry
             ArchivoEntry.Text = result.FileName;
-
-            // Hacer visible la vista previa del archivo
             ArchivoSeleccionadoLayout.IsVisible = true;
 
-
-            // Obtener la extensión del archivo
             string extension = Path.GetExtension(result.FileName).ToLower();
-
-            // Asignar el ícono correspondiente según la extensión del archivo
             if (extension == ".docx" || extension == ".doc")
             {
-                ArchivoIcono.Source = "icono_word.png";  // Asegúrate de tener el ícono en tus recursos
+                ArchivoIcono.Source = "icono_word.png";
             }
             else if (extension == ".pdf")
             {
-                ArchivoIcono.Source = "icono_pdf.png";   // Asegúrate de tener el ícono en tus recursos
+                ArchivoIcono.Source = "icono_pdf.png";
             }
             else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
             {
-                ArchivoIcono.Source = "icono_imagen.png"; // Asegúrate de tener el ícono en tus recursos
+                ArchivoIcono.Source = "icono_imagen.png";
             }
             else
             {
-                ArchivoIcono.Source = "icono_generico.png"; // Asegúrate de tener el ícono en tus recursos
+                ArchivoIcono.Source = "icono_generico.png";
             }
 
-            // Crear dinámicamente los controles para el archivo seleccionado
-            CrearControlesDocumento(result,documento);
+            CrearControlesDocumento(result, documento);
 
-            // Incrementar el contador de documentos seleccionados
             contadorDocumentos++;
 
-            // Si se alcanzó el límite, deshabilitamos el botón de selección de archivo
             if (contadorDocumentos >= LIMITE_DOCUMENTOS)
             {
                 SeleccionarArchivoButton.IsEnabled = false;
@@ -87,41 +79,39 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
         }
     }
 
-    // Método para crear dinámicamente los controles para el documento seleccionado
-    private void CrearControlesDocumento(FileResult result,Documento documento)
+    /// <summary>
+    /// Método para crear dinámicamente los controles visuales para el archivo seleccionado.
+    /// </summary>
+    private void CrearControlesDocumento(FileResult result, Documento documento)
     {
-        // Crear un StackLayout dinámico para cada documento
         var stackLayoutDocumento = new StackLayout { Orientation = StackOrientation.Vertical, Spacing = 10 };
 
-        // Crear el ImageButton para el documento
         var imageButton = new ImageButton
         {
             WidthRequest = 50,
             HeightRequest = 50,
-            HorizontalOptions=LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Center,
         };
 
-        // Establecer el ícono basado en la extensión del archivo
         string extension = Path.GetExtension(result.FileName).ToLower();
         if (extension == ".docx" || extension == ".doc")
         {
-            imageButton.Source = "icono_word.png";  // Asignar ícono de Word
+            imageButton.Source = "icono_word.png";
         }
         else if (extension == ".pdf")
         {
-            imageButton.Source = "icono_pdf.png";   // Asignar ícono de PDF
+            imageButton.Source = "icono_pdf.png";
         }
         else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
         {
-            imageButton.Source = "icono_imagen.png"; // Asignar ícono de imagen
+            imageButton.Source = "icono_imagen.png";
         }
         else
         {
-            imageButton.Source = "icono_generico.png"; // Asignar ícono genérico
+            imageButton.Source = "icono_generico.png";
         }
         imageButton.IsVisible = true;
 
-        // Crear el Label para mostrar el nombre del archivo
         var labelDocumento = new Label
         {
             Text = result.FileName,
@@ -129,21 +119,20 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
             HorizontalOptions = LayoutOptions.Center,
         };
         labelDocumento.IsVisible = true;
-        // Agregar el ImageButton y el Label al StackLayout
+
         stackLayoutDocumento.Children.Add(imageButton);
         stackLayoutDocumento.Children.Add(labelDocumento);
 
-        // Agregar el StackLayout al contenedor de documentos
         DocumentosSeleccionadosLayout.Children.Add(stackLayoutDocumento);
 
-        // Asociar el evento Clicked al ImageButton
         imageButton.Clicked += (sender, e) => OnDescargarDocumentoClicked(documento);
     }
 
-    // Método para manejar la descarga del documento
+    /// <summary>
+    /// Método para manejar la descarga del documento seleccionado.
+    /// </summary>
     private void OnDescargarDocumentoClicked(Documento documento)
     {
-
         if (documento != null)
         {
             shell.DescargarDocumento(documento);
@@ -152,99 +141,85 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
         {
             DisplayAlert("Error", "No se pudo encontrar el documento asociado.", "OK");
         }
-
     }
+
+    /// <summary>
+    /// Establece los datos del ticket y genera dinámicamente los controles de los documentos asociados.
+    /// </summary>
     public void SetTicketData(Ticket ticket)
     {
         this.ticket = ticket;
         try
         {
-
             BindingContext = ticket;
             if (ticket.Documentos != null && ticket.Documentos.Count > 0)
             {
-                // Limpiamos cualquier contenido anterior en el StackLayout antes de agregar nuevos elementos
                 DocumentosSeleccionadosLayout.Children.Clear();
 
-                // Recorremos cada documento para asignar el ícono correspondiente
                 foreach (var documento in ticket.Documentos)
                 {
-                    // Clonamos el StackLayout básico que está definido en el XAML
                     var documentoLayout = new StackLayout
                     {
-                        Orientation = StackOrientation.Vertical,  // Cambiado a Vertical para apilar los elementos (imagen y texto)
+                        Orientation = StackOrientation.Vertical,
                         Spacing = 10,
-                        HorizontalOptions = LayoutOptions.Center // Centrado para que se vea bonito
+                        HorizontalOptions = LayoutOptions.Center
                     };
 
-                    // Creamos un ImageButton para el ícono
                     var imageButton = new ImageButton
                     {
                         WidthRequest = 50,
                         HeightRequest = 50
                     };
 
-                    // Determinamos el ícono que corresponde según la extensión del archivo
-                    string extension = Path.GetExtension(documento.NombreArchivo).ToLower();  // Convertimos a minúsculas
+                    string extension = Path.GetExtension(documento.NombreArchivo).ToLower();
 
                     if (extension == ".pdf")
                     {
-                        // Si es un PDF, usamos el ícono de PDF
                         imageButton.Source = "icono_pdf.png";
                     }
                     else if (extension == ".docx" || extension == ".doc")
                     {
-                        // Si es un archivo Word, usamos el ícono de Word
-                        imageButton.Source = "icono_word.png";  // Puedes tener un ícono específico para Word
+                        imageButton.Source = "icono_word.png";
                     }
                     else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                     {
-                        // Si es una imagen, usamos la ruta de la imagen directamente
                         imageButton.Source = documento.RutaArchivo;
                     }
                     else
                     {
-                        // Para otros tipos de archivo, usamos un ícono genérico
                         imageButton.Source = "icono_generico.png";
                     }
 
-                    // Agregamos un evento de clic al ImageButton (si lo deseas, puedes hacer algo cuando se haga clic)
                     imageButton.Clicked += (sender, e) =>
                     {
-                        // Llamamos al método OnDescargarDocumentoClicked y pasamos el documento
                         OnDescargarDocumentoClicked(documento);
                     };
 
-
-                    // Creamos el Label para mostrar el nombre del archivo
                     var label = new Label
                     {
                         Text = documento.NombreArchivo,
                         FontSize = 16,
                         HorizontalOptions = LayoutOptions.Center,
+                        TextColor = DocumentoNombre.TextColor
                     };
 
-                    // Agregamos el ImageButton y el Label al StackLayout de cada documento
                     documentoLayout.Children.Add(imageButton);
                     documentoLayout.Children.Add(label);
 
-                    // Finalmente, agregamos el StackLayout al StackLayout principal donde se muestran los documentos
                     DocumentosSeleccionadosLayout.Children.Add(documentoLayout);
                 }
 
-                // Hacemos visible la sección de documentos
                 DocumentosSeleccionadosLayout.IsVisible = true;
             }
-            else if(documentosSeleccionados.Count==0)
+            else if (documentosSeleccionados.Count == 0)
             {
-                // Si no hay documentos, ocultamos la sección de documentos
                 DocumentosSeleccionadosLayout.IsVisible = true;
-
             }
             else
             {
                 DocumentosSeleccionadosLayout.Clear();
             }
+
             if (ticket.Estado == "Cerrado")
             {
                 EnviarButton.IsVisible = false;
@@ -253,20 +228,41 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
             {
                 EnviarButton.IsVisible = true;
             }
-
         }
         catch (Exception e)
         {
-
+            // Manejo de excepciones si fuera necesario
         }
-
-
-
     }
 
+    /// <summary>
+    /// Método que se invoca al hacer clic en el botón de "Enviar" para actualizar el ticket con la solución y los documentos seleccionados.
+    /// </summary>
     private void EnviarButton_Clicked(object sender, EventArgs e)
     {
-        shell.ActualizarTecnicoTicket(ticket.IdTicket,Solucion.Text,documentosSeleccionados);
+        shell.ActualizarTecnicoTicket(ticket.IdTicket, Solucion.Text, documentosSeleccionados);
     }
-
+    /// <summary>
+    /// Cambia el tamaño de la fuente de varios elementos de la interfaz de usuario.
+    /// </summary>
+    /// <param name="factorMultiplicador">El factor por el cual se multiplicará el tamaño original de la fuente.</param>
+    public void CambiarTamanoFuente(double factorMultiplicador)
+    {
+        TituloLabel.FontSize = 24 * factorMultiplicador;
+        TipoErrorLabel.FontSize = 16 * factorMultiplicador;
+        CategoriaLabel.FontSize = 16 * factorMultiplicador;
+        IdTicketLabel.FontSize = 16 * factorMultiplicador;
+        NombreTicketLabel.FontSize = 16 * factorMultiplicador;
+        DocumentosTicketLabel.FontSize = 18 * factorMultiplicador;
+        EspecificacionErrorLabel.FontSize = 18 * factorMultiplicador;
+        DescripcionSolucionLabel.FontSize = 18 * factorMultiplicador;
+        TipoErrorEntry.FontSize = 16 * factorMultiplicador;
+        CategoriaEntry.FontSize = 16 * factorMultiplicador;
+        IdTicketEntry.FontSize = 16 * factorMultiplicador;
+        NombreTicketEntry.FontSize = 16 * factorMultiplicador;
+        EspecificacionErrorEditor.FontSize = 16 * factorMultiplicador;
+        Solucion.FontSize = 16 * factorMultiplicador;
+        EnviarButton.FontSize = 20 * factorMultiplicador;
+        SeleccionarArchivoButton.FontSize = 16 * factorMultiplicador;
+    }
 }

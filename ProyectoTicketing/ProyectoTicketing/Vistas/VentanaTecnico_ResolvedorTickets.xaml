@@ -6,39 +6,39 @@
              Style="{DynamicResource Fondo}">
 
     <ScrollView>
-        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *, Auto"
+        <Grid x:Name="MyGrid" Padding="20" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *, Auto"
               ColumnDefinitions="*,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ColumnSpacing="20">
 
             <!-- Título del Ticket -->
-            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
-                   Text="{DynamicResource DetallesTicketHeader}" FontSize="24" Style="{DynamicResource Entry}" HorizontalOptions="Center" Margin="0,0,0,10"/>
+            <Label x:Name="TituloLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+             Text="{DynamicResource DetallesTicket}" FontSize="24" TextColor="{DynamicResource Color_Fuente}" HorizontalOptions="Center" Margin="0,0,0,10"/>
 
             <!-- Tipo de error -->
-            <Label Grid.Row="1" Grid.Column="0" 
-                   Text="{DynamicResource TipoErrorLabel}" FontSize="16" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" />
-            <Entry Grid.Row="2" Grid.Column="0" 
-                   Text="{Binding TipoError}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
+            <Label x:Name="TipoErrorLabel" Grid.Row="1" Grid.Column="0" 
+            Text="{DynamicResource TipoErrorLabel}" FontSize="16" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" />
+            <Entry x:Name="TipoErrorEntry" Grid.Row="2" Grid.Column="0" 
+            Text="{Binding TipoError}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
 
             <!-- Categoría -->
-            <Label Grid.Row="3" Grid.Column="0" 
-                   Text="{DynamicResource CategoriaLabel}" FontSize="16" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" />
-            <Entry Grid.Row="4" Grid.Column="0" 
-                   Text="{Binding Categoria}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
+            <Label x:Name="CategoriaLabel" Grid.Row="3" Grid.Column="0" 
+            Text="{DynamicResource CategoriaLabel}" FontSize="16" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" />
+            <Entry x:Name="CategoriaEntry" Grid.Row="4" Grid.Column="0" 
+            Text="{Binding Categoria}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
 
             <!-- ID Ticket -->
-            <Label Grid.Row="1" Grid.Column="1" 
-                   Text="{DynamicResource IdTicketLabel}" FontSize="16" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" />
-            <Entry Grid.Row="2" Grid.Column="1" 
-                   Text="{Binding IdTicket}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
+            <Label x:Name="IdTicketLabel" Grid.Row="1" Grid.Column="1" 
+            Text="{DynamicResource IdTicketLabel}" FontSize="16" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" />
+            <Entry x:Name="IdTicketEntry" Grid.Row="2" Grid.Column="1" 
+            Text="{Binding IdTicket}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
 
             <!-- Nombre del Usuario -->
-            <Label Grid.Row="3" Grid.Column="1" 
-                   Text="{DynamicResource NombreUsuarioLabel}" FontSize="16" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" />
-            <Entry Grid.Row="4" Grid.Column="1" 
-                   Text="{Binding NombreTicket}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
+            <Label x:Name="NombreTicketLabel" Grid.Row="3" Grid.Column="1" 
+            Text="{DynamicResource NombreTicketLabel}" FontSize="16" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" />
+            <Entry x:Name="NombreTicketEntry" Grid.Row="4" Grid.Column="1" 
+            Text="{Binding NombreTicket}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
 
             <!-- Documentos del Ticket -->
-            <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalOptions="Center"
+            <Label x:Name="DocumentosTicketLabel" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalOptions="Center"
                    Text="{DynamicResource DocumentosTicketLabel}" FontSize="18" TextColor="{DynamicResource Color_Fuente}" Margin="0,70,0,5"/>
             <VerticalStackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
@@ -50,9 +50,9 @@
             </VerticalStackLayout>
 
             <!-- Especificación del error -->
-            <Label Grid.Row="8" Grid.Column="0" 
+            <Label x:Name="EspecificacionErrorLabel" Grid.Row="8" Grid.Column="0" 
                    Text="{DynamicResource EspecificacionErrorLabel}" FontSize="18" TextColor="{DynamicResource Color_Fuente}" Margin="0,20,0,5"/>
-            <Editor Grid.Row="9" Grid.Column="0" HeightRequest="150" 
+            <Editor x:Name="EspecificacionErrorEditor" Grid.Row="9" Grid.Column="0" HeightRequest="150" 
                     BackgroundColor="#606060" TextColor="White" 
                     Text="{Binding Descripcion}" 
                     Placeholder="{DynamicResource PlaceholderError}" 
@@ -60,7 +60,7 @@
                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsEnabled="False" Style="{DynamicResource Entry}"/>
 
             <!-- Descripción de la solución -->
-            <Label Grid.Row="8" Grid.Column="1" 
+            <Label x:Name="DescripcionSolucionLabel" Grid.Row="8" Grid.Column="1" 
                    Text="{DynamicResource DescripcionSolucionLabel}" FontSize="18" TextColor="{DynamicResource Color_Fuente}" Margin="0,20,0,5"/>
             <Editor x:Name="Solucion"  Grid.Row="9" Grid.Column="1" HeightRequest="150" 
                     BackgroundColor="#606060" TextColor="White" 
@@ -74,7 +74,7 @@
             <VerticalStackLayout Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
                     <Entry x:Name="ArchivoEntry" HeightRequest="50" BackgroundColor="#606060" TextColor="White" IsReadOnly="True" HorizontalOptions="FillAndExpand"/>
-                    <Button x:Name="SeleccionarArchivoButton" Text="{DynamicResource BotonSeleccionar}" WidthRequest="90" HeightRequest="50" Clicked="OnSeleccionarArchivoClicked" BackgroundColor="Blue" 
+                    <Button x:Name="SeleccionarArchivoButton" ToolTipProperties.Text="Botón para seleccionar archivos" Text="{DynamicResource BotonSeleccionar}" Clicked="OnSeleccionarArchivoClicked" BackgroundColor="Blue" 
                     TextColor="{DynamicResource Color_Fuente}" />
                 </HorizontalStackLayout>
                 <StackLayout x:Name="ArchivoSeleccionadoLayout" Orientation="Vertical" Spacing="10" IsVisible="False">

@@ -1,4 +1,3 @@
-
 using Microsoft.Maui.Controls;
 using ProyectoTicketing.Clases;
 using System.Collections.ObjectModel;
@@ -7,22 +6,37 @@ namespace ProyectoTicketing.Vistas;
 
 public partial class VentanaGeneral_Ver_Tickets : ContentPage
 {
-	private AppShell shell;
+    private AppShell shell;
+
+    /// <summary>
+    /// Colección observable de tickets para enlazar con la interfaz de usuario.
+    /// </summary>
     public ObservableCollection<Ticket> Tickets { get; set; }
-    public bool tecnico {  get; set; }
-    
+
+    /// <summary>
+    /// Indica si el usuario es técnico.
+    /// </summary>
+    public bool tecnico { get; set; }
+
+    /// <summary>
+    /// Constructor de la ventana de visualización de tickets.
+    /// </summary>
     public VentanaGeneral_Ver_Tickets(AppShell shell)
-	{
-		InitializeComponent();
-		this.shell = shell;
+    {
+        InitializeComponent();
+        this.shell = shell;
         Tickets = new ObservableCollection<Ticket>();
         BindingContext = this;
     }
+
     private bool _cargandoTickets = false;
 
+    /// <summary>
+    /// Método asincrónico para cargar los tickets desde la fuente de datos.
+    /// </summary>
     public async Task CargarTicketsAsync()
     {
-        if (_cargandoTickets) return; // Evita que se ejecute si ya está cargando
+        if (_cargandoTickets) return; 
 
         _cargandoTickets = true;
 
@@ -30,32 +44,33 @@ public partial class VentanaGeneral_Ver_Tickets : ContentPage
         {
             var tickets = await shell.ObtenerTicketsDeUsuarioAsync() ?? new List<Ticket>();
 
-
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                Tickets.Clear(); // Asegura que esta operación está en el hilo principal
+                Tickets.Clear(); 
 
                 foreach (var ticket in tickets)
                 {
                     if (!Tickets.Any(t => t.IdTicket == ticket.IdTicket))
                     {
-                        Tickets.Add(ticket); // Modificación de la colección también en el hilo principal
+                        Tickets.Add(ticket); 
                     }
                 }
-                OnPropertyChanged(nameof(Tickets)); // Notificar cambios si es necesario
-
+                OnPropertyChanged(nameof(Tickets)); 
             });
         }
         finally
         {
-            _cargandoTickets = false; // Libera el flag al terminar
+            _cargandoTickets = false; 
         }
     }
 
+    /// <summary>
+    /// Método que se invoca cuando se selecciona un ticket en la lista.
+    /// </summary>
     private async void OnTicketSelected(object sender, ItemTappedEventArgs e)
     {
         if (e.Item == null)
-            return; // Verifica que un item haya sido tocado
+            return; 
 
         Ticket ticketSeleccionado = e.Item as Ticket;
 
@@ -65,7 +80,6 @@ public partial class VentanaGeneral_Ver_Tickets : ContentPage
 
             if (tecnico == false)
             {
-                // Mostrar detalles y redirigir a otra página
                 shell.MostrarDetalles(ticketSeleccionado);
                 shell.RedirigirPaginaDetalles();
             }
@@ -75,6 +89,4 @@ public partial class VentanaGeneral_Ver_Tickets : ContentPage
             }
         }
     }
-    
-
 }

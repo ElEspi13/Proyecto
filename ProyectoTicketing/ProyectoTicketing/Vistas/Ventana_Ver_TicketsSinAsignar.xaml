@@ -6,7 +6,7 @@
              Style="{DynamicResource Fondo}">
     <ScrollView Padding="10">
         <StackLayout Padding="10">
-            <Label Text="Tickets" FontSize="24" HorizontalOptions="Center" Margin="0,10"/>
+            <Label Text="Tickets" FontSize="24" HorizontalOptions="Center" Margin="0,10" TextColor="{DynamicResource Color_Fuente}"/>
 
             <!-- ListView con Binding adecuado -->
             <ListView x:Name="TicketsListView" 
@@ -32,10 +32,10 @@
                                 <HorizontalStackLayout Spacing="10" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
 
                                     <!-- NombreTicket -->
-                                    <Label Text="{Binding NombreTicket}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start"/>
+                                    <Label Text="{Binding NombreTicket}" FontAttributes="Bold" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" HorizontalOptions="Start"/>
 
                                     <!-- Descripción -->
-                                    <Label Text="{Binding Categoria}" LineBreakMode="TailTruncation" VerticalOptions="Center" HorizontalOptions="Start"/>
+                                    <Label Text="{Binding Categoria}" LineBreakMode="TailTruncation" TextColor="{DynamicResource Color_Fuente}" VerticalOptions="Center" HorizontalOptions="Start"/>
 
                                     <!-- TipoError -->
                                     <Label Text="{Binding TipoError}" FontSize="Small" TextColor="Gray" VerticalOptions="Center" HorizontalOptions="Start"/>

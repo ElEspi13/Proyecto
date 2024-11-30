@@ -193,8 +193,10 @@ namespace ProyectoTicketing
             bool confirmacion;
             if (confirmacion = await DisplayAlert("Confirmar", "¿Estás seguro de que deseas cerrar sesión los datos no guardados se eliminaran?", "Sí", "No"))
             {
+                await DisplayAlert("Informacion", "Cerrando sesion", "OK" );
                 ToolbarItem desconectar = sender as ToolbarItem;
                 InicioSesion.IsVisible = true;
+                
                 ListaTickets.IsVisible = false;
                 CreadorTickets.IsVisible = false;
                 ventana_iniciodeSesion.LimpiarDatos();
@@ -205,6 +207,7 @@ namespace ProyectoTicketing
                 Admin.IsVisible = false;
                 Shell.Current.ToolbarItems.Remove(desconectar);
                 DetallesTicket.IsVisible = false;
+                await Shell.Current.GoToAsync("//InicioSesionRuta");
                 usuario.Nombre = "";    
                 BBDDsesion = false;
                 
@@ -214,7 +217,7 @@ namespace ProyectoTicketing
                 Desconectar.IsEnabled = true;
                 BBDD.DetenerMonitoreo();
                 ventana_Ayuda.MostrarSeccionesSegunRol(-1);
-                await Shell.Current.GoToAsync("//InicioSesionRuta");
+                
             }
             else { Desconectar.IsEnabled = true; }
 
@@ -230,22 +233,42 @@ namespace ProyectoTicketing
         {
 
             ventana_iniciodeSesion.CambiarTamanoFuente(value);
+            ventanaDetallesTicket.CambiarTamanoFuente(value);
+            ventana_Ayuda.CambiarTamanoFuente(value);
+            ventana_Admin.CambiarTamanoFuente(value);
+            ventanaTecnico_Resolvedor.CambiarTamanoFuente(value);
+            ventanaUsuario_Creador_Tickets.CambiarTamanoFuente(value);
 
 
         }
 
+        /// <summary>
+        /// Inserta los datos de un usuario en la base de datos.
+        /// </summary>
+        /// <param name="Usuario">Nombre del usuario.</param>
+        /// <param name="Passwd">Contraseña del usuario.</param>
+        /// <param name="selectedIndex">Índice seleccionado para la configuración del usuario.</param>
         internal void InsertarDatos(string Usuario, string Passwd, int selectedIndex)
         {
-            BBDD.RegistrarUsuario(Usuario,Passwd,selectedIndex);
+            BBDD.RegistrarUsuario(Usuario, Passwd, selectedIndex);
         }
 
+        /// <summary>
+        /// Guarda la configuración del usuario (tema, idioma y tamaño de fuente).
+        /// </summary>
+        /// <param name="Tema">Tema seleccionado para la interfaz.</param>
+        /// <param name="Idioma">Idioma seleccionado.</param>
+        /// <param name="Fuente">Tamaño de la fuente seleccionada.</param>
         internal async void GuardarConfiguracion(int Tema, int Idioma, double Fuente)
         {
- 
-            BBDD.GuardarConfiguracion(Tema,Idioma,Fuente);
-            await DisplayAlert("Guardado","Se ha Guardado la configuración","Ok");
+            BBDD.GuardarConfiguracion(Tema, Idioma, Fuente);
+            await DisplayAlert("Guardado", "Se ha Guardado la configuración", "Ok");
         }
 
+        /// <summary>
+        /// Crea un nuevo ticket y lo guarda en la base de datos.
+        /// </summary>
+        /// <param name="nuevoTicket">Objeto Ticket que contiene los detalles del nuevo ticket.</param>
         internal async void CrearTicket(Ticket nuevoTicket)
         {
             try
@@ -254,107 +277,137 @@ namespace ProyectoTicketing
                 await DisplayAlert("Guardado", "Ticket Se ha Creado Correctamente", "Ok");
                 await Shell.Current.GoToAsync("//ListaTickets");
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 await DisplayAlert("Error", "Ticket NO Se ha Creado Correctamente", "Ok");
             }
-            
         }
 
+        /// <summary>
+        /// Obtiene la lista de tickets asociados a un usuario.
+        /// </summary>
+        /// <returns>Lista de tickets del usuario.</returns>
         internal async Task<List<Ticket>> ObtenerTicketsDeUsuarioAsync()
         {
             try
             {
-                // Llama al método de la base de datos y espera el resultado
                 List<Ticket> tickets = await BBDD.ObtenerTicketsDeUsuarioAsync();
 
                 if (tickets == null || tickets.Count == 0)
                 {
                     await DisplayAlert("Información", "No se encontraron tickets para este usuario.", "Ok");
-                    return new List<Ticket>(); // Devuelve una lista vacía si no hay tickets
+                    return new List<Ticket>();
                 }
 
-                return tickets; // Devuelve los tickets si los hay
+                return tickets;
             }
             catch (Exception e)
             {
                 await DisplayAlert("Error", $"Tickets no se pueden cargar: {e.Message}", "Ok");
-                return new List<Ticket>(); // Devuelve una lista vacía en caso de error
+                return new List<Ticket>();
             }
         }
 
+        /// <summary>
+        /// Muestra los detalles de un ticket seleccionado.
+        /// </summary>
+        /// <param name="ticketSeleccionado">Ticket a mostrar.</param>
         internal void MostrarDetalles(Ticket? ticketSeleccionado)
         {
             ventanaDetallesTicket.SetTicketData(ticketSeleccionado);
-            
         }
 
+        /// <summary>
+        /// Descarga un documento asociado a un ticket.
+        /// </summary>
+        /// <param name="documento">Documento a descargar.</param>
         internal void DescargarDocumento(Documento documento)
         {
             BBDD.DescargarDocumentoAsync(documento);
         }
 
+        /// <summary>
+        /// Redirige a la página de detalles del ticket.
+        /// </summary>
         internal async void RedirigirPaginaDetalles()
         {
             DetallesTicket.IsVisible = true;
             await Shell.Current.GoToAsync("//DetallesTicket");
-            
         }
 
+        /// <summary>
+        /// Actualiza los tickets en tiempo real en la vista general.
+        /// </summary>
         internal async void ActualizarTicketsTiempoReal()
         {
-            
-
-                await ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
-                
-            
-            
-            
+            await ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
         }
 
+        /// <summary>
+        /// Crea un ticket hijo asociado a un ticket padre.
+        /// </summary>
+        /// <param name="IDTicketPadre">ID del ticket padre al que se vincula el nuevo ticket hijo.</param>
         internal async void CrearTicketHijo(string IDTicketPadre)
         {
+            
             ventanaUsuario_Creador_Tickets.GuardarTicketPadre(IDTicketPadre);
             await Shell.Current.GoToAsync("//CreadorTickets");
-
         }
 
+        /// <summary>
+        /// Cierra los tickets asociados a un ticket padre.
+        /// </summary>
+        /// <param name="iDTicketPadre">ID del ticket padre para cerrar los tickets asociados.</param>
         internal void CerrarTicketsIDTicketPadre(string iDTicketPadre)
         {
             BBDD.CerrarTicketsIDTicketPadre(iDTicketPadre);
         }
 
+        /// <summary>
+        /// Cierra un ticket específico por su ID.
+        /// </summary>
+        /// <param name="idTicket">ID del ticket a cerrar.</param>
         internal void CerrarTicketsIDTicket(ObjectId idTicket)
         {
             BBDD.CerrarTicketsIDTicket(idTicket);
         }
 
+        /// <summary>
+        /// Obtiene la lista de tickets que no han sido asignados a ningún técnico.
+        /// </summary>
+        /// <returns>Lista de tickets sin asignar.</returns>
         internal async Task<List<Ticket>> ObtenerTicketsSinAsignarAsync()
         {
             try
             {
-                // Llama al método de la base de datos y espera el resultado
                 List<Ticket> tickets = await BBDD.ObtenerTicketsDeSinAsignarAsync();
 
                 if (tickets == null || tickets.Count == 0)
                 {
                     await DisplayAlert("Información", "No se encontraron tickets para asignar a este usuario.", "Ok");
-                    return new List<Ticket>(); // Devuelve una lista vacía si no hay tickets
+                    return new List<Ticket>();
                 }
 
-                return tickets; // Devuelve los tickets si los hay
+                return tickets;
             }
             catch (Exception e)
             {
                 await DisplayAlert("Error", $"Tickets no se pueden cargar: {e.Message}", "Ok");
-                return new List<Ticket>(); // Devuelve una lista vacía en caso de error
+                return new List<Ticket>();
             }
         }
 
+        /// <summary>
+        /// Cambia la vista a la página de detalles del ticket para técnicos.
+        /// </summary>
         internal void PaginaDetallesTecnico()
         {
             ventanaDetallesTicket.VistaTecnico();
         }
 
+        /// <summary>
+        /// Actualiza los tickets en tiempo real para los técnicos.
+        /// </summary>
         internal async void ActualizarTicketsTiempoRealTecnico()
         {
             try
@@ -362,13 +415,15 @@ namespace ProyectoTicketing
                 await ventana_Ver_TicketsSinAsignar.CargarTicketsAsync();
                 await ventanaGeneral_Ver_Tickets.CargarTicketsAsync();
             }
-            catch (Exception e) { 
-            
-            
+            catch (Exception e)
+            {
             }
-            
         }
 
+        /// <summary>
+        /// Asigna un ticket a un técnico específico.
+        /// </summary>
+        /// <param name="ticketID">ID del ticket a asignar al técnico.</param>
         internal async void AsignarTicketATecnico(ObjectId ticketID)
         {
             if (await BBDD.ActualizarIDTecnicoAsync(ticketID) == true)
@@ -376,17 +431,16 @@ namespace ProyectoTicketing
                 await Shell.Current.GoToAsync("//ListaTickets");
                 await DisplayAlert("Información", "Ticket Asignado.", "Ok");
             }
-            else {
-
+            else
+            {
                 await DisplayAlert("Información", "Ticket no se ha asignado", "Ok");
-
             }
-
-
-            
-
         }
 
+        /// <summary>
+        /// Redirige a la página de solución del ticket para un técnico.
+        /// </summary>
+        /// <param name="ticketSeleccionado">Ticket seleccionado que el técnico resolverá.</param>
         internal async void TecnicoResolvedor(Ticket ticketSeleccionado)
         {
             ventanaTecnico_Resolvedor.SetTicketData(ticketSeleccionado);
@@ -394,6 +448,12 @@ namespace ProyectoTicketing
             await Shell.Current.GoToAsync("//TecnicoResolver");
         }
 
+        /// <summary>
+        /// Actualiza la solución de un ticket y lo guarda.
+        /// </summary>
+        /// <param name="idTicket">ID del ticket a actualizar.</param>
+        /// <param name="Solucion">Solución proporcionada por el técnico.</param>
+        /// <param name="documentosSeleccionados">Lista de documentos asociados al ticket.</param>
         internal async void ActualizarTecnicoTicket(ObjectId idTicket, string Solucion, List<Documento> documentosSeleccionados)
         {
             try
@@ -406,9 +466,12 @@ namespace ProyectoTicketing
             {
                 await DisplayAlert("Error", "No pudieron actualizar los datos.", "Ok");
             }
-            
         }
 
+        /// <summary>
+        /// Elimina un usuario de la base de datos.
+        /// </summary>
+        /// <param name="usuario">Usuario que se va a eliminar.</param>
         internal async void EliminarUsuario(Usuario usuario)
         {
             try
@@ -417,18 +480,20 @@ namespace ProyectoTicketing
                 await MostrarListaUsuarios();
                 await DisplayAlert("Completado", "Se Elimino el usuario.", "Ok");
             }
-            catch (Exception ex) {
-
+            catch (Exception ex)
+            {
                 await DisplayAlert("Error", "No se pudo eliminar al usuario.", "Ok");
             }
-
-            
-            
         }
 
+        /// <summary>
+        /// Obtiene la lista de usuarios registrados.
+        /// </summary>
+        /// <returns>Lista de usuarios.</returns>
         internal async Task<List<Usuario>> MostrarListaUsuarios()
         {
             return await BBDD.ListaUsuarios();
         }
+
     }
 }

@@ -1,26 +1,37 @@
 using ProyectoTicketing.Clases;
 using System.Runtime.Intrinsics.X86;
+
 namespace ProyectoTicketing.Vistas;
 
 public partial class Ventana_DetallesTicket : ContentPage
 {
-	private AppShell shell;
+    private AppShell shell;
     private Ticket ticket;
-	public Ventana_DetallesTicket(AppShell shell)
-	{
-		InitializeComponent();
-		this.shell = shell;
-	}
+
+    /// <summary>
+    /// Constructor de la clase Ventana_DetallesTicket.
+    /// </summary>
+    /// <param name="shell">Instancia de AppShell que maneja la lógica de la aplicación.</param>
+    public Ventana_DetallesTicket(AppShell shell)
+    {
+        InitializeComponent();
+        this.shell = shell;
+    }
+
+    /// <summary>
+    /// Evento que se dispara cuando el usuario decide cerrar el ticket.
+    /// </summary>
     private async void OnCerrarTicketClicked(object sender, EventArgs e)
     {
-        bool result = await DisplayAlert("Cerrar Ticket", "Está seguro de que quiere cerrar los Tickets SE CERRARÁN TODOS LOS TICKETS RELACIONADOS", "OK", "Cancelar");
+        bool result = await DisplayAlert("Cerrar Ticket", "Está seguro de que quiere cerrar los Tickets SE CERRARÁN TODOS LOS TICKETS RELACIONADOS si no esta seguro no los cierre", "OK", "Cancelar");
 
         if (result)
         {
-            if (ticket.IDTicketPadre!=null)
+            if (ticket.IDTicketPadre != null)
             {
                 // Buscar todos los tickets que tienen este IDTicketPadre
                 shell.CerrarTicketsIDTicketPadre(ticket.IDTicketPadre);
+                shell.ActualizarTicketsTiempoReal();
             }
             else
             {
@@ -28,27 +39,38 @@ public partial class Ventana_DetallesTicket : ContentPage
             }
             await DisplayAlert("Tickets Cerrados", "Todos los tickets relacionados han sido cerrados.", "OK");
         }
-    
         else
         {
             // Si el usuario presiona "Cancelar", no hacer nada o realizar alguna otra acción
         }
-
     }
 
-    // Maneja el evento de Crear Ticket Hijo
+    /// <summary>
+    /// Evento que se dispara cuando se quiere crear un ticket hijo relacionado con el ticket actual.
+    /// </summary>
     private async void OnCrearTicketHijoClicked(object sender, EventArgs e)
     {
-        shell.CrearTicketHijo(IdTicketEntry.Text);
+        if (ticket.IDTicketPadre != null)
+        {
+            shell.CrearTicketHijo(ticket.IDTicketPadre);
+        }
+        else {
+            shell.CrearTicketHijo(IdTicketEntry.Text);
+        }
+        
     }
+
+    /// <summary>
+    /// Asigna los datos del ticket a la interfaz de usuario y maneja los documentos asociados.
+    /// </summary>
+    /// <param name="ticket">El ticket que se desea mostrar en la vista.</param>
     public void SetTicketData(Ticket ticket)
     {
         this.ticket = ticket;
-        // Asignamos el ticket al BindingContext de la página
+        BindingContext = ticket;
+
         try
         {
-
-            BindingContext = ticket;
             if (ticket.Documentos != null && ticket.Documentos.Count > 0)
             {
                 // Limpiamos cualquier contenido anterior en el StackLayout antes de agregar nuevos elementos
@@ -57,80 +79,66 @@ public partial class Ventana_DetallesTicket : ContentPage
                 // Recorremos cada documento para asignar el ícono correspondiente
                 foreach (var documento in ticket.Documentos)
                 {
-                    // Clonamos el StackLayout básico que está definido en el XAML
                     var documentoLayout = new StackLayout
                     {
-                        Orientation = StackOrientation.Vertical,  // Cambiado a Vertical para apilar los elementos (imagen y texto)
+                        Orientation = StackOrientation.Vertical,
                         Spacing = 10,
-                        HorizontalOptions = LayoutOptions.Center // Centrado para que se vea bonito
+                        HorizontalOptions = LayoutOptions.Center
                     };
 
-                    // Creamos un ImageButton para el ícono
                     var imageButton = new ImageButton
                     {
                         WidthRequest = 50,
                         HeightRequest = 50
                     };
 
-                    // Determinamos el ícono que corresponde según la extensión del archivo
-                    string extension = Path.GetExtension(documento.NombreArchivo).ToLower();  // Convertimos a minúsculas
+                    string extension = Path.GetExtension(documento.NombreArchivo).ToLower();
 
                     if (extension == ".pdf")
                     {
-                        // Si es un PDF, usamos el ícono de PDF
                         imageButton.Source = "icono_pdf.png";
                     }
                     else if (extension == ".docx" || extension == ".doc")
                     {
-                        // Si es un archivo Word, usamos el ícono de Word
-                        imageButton.Source = "icono_word.png";  // Puedes tener un ícono específico para Word
+                        imageButton.Source = "icono_word.png";
                     }
                     else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                     {
-                        // Si es una imagen, usamos la ruta de la imagen directamente
                         imageButton.Source = documento.RutaArchivo;
                     }
                     else
                     {
-                        // Para otros tipos de archivo, usamos un ícono genérico
                         imageButton.Source = "icono_generico.png";
                     }
 
-                    // Agregamos un evento de clic al ImageButton (si lo deseas, puedes hacer algo cuando se haga clic)
                     imageButton.Clicked += (sender, e) =>
                     {
-                        // Llamamos al método OnDescargarDocumentoClicked y pasamos el documento
                         OnDescargarDocumentoClicked(documento);
                     };
 
-
-                    // Creamos el Label para mostrar el nombre del archivo
                     var label = new Label
                     {
                         Text = documento.NombreArchivo,
                         FontSize = 16,
                     };
 
-                    // Agregamos el ImageButton y el Label al StackLayout de cada documento
                     documentoLayout.Children.Add(imageButton);
                     documentoLayout.Children.Add(label);
 
-                    // Finalmente, agregamos el StackLayout al StackLayout principal donde se muestran los documentos
                     DocumentosSeleccionadosLayout.Children.Add(documentoLayout);
                 }
 
-                // Hacemos visible la sección de documentos
                 DocumentosSeleccionadosLayout.IsVisible = true;
             }
             else
             {
-                // Si no hay documentos, ocultamos la sección de documentos
                 DocumentosSeleccionadosLayout.IsVisible = false;
             }
+
             if (ticket.Estado == "Cerrado")
             {
                 CrearHijo.IsVisible = false;
-                CerrarTickets.IsVisible =false;
+                CerrarTickets.IsVisible = false;
             }
             else
             {
@@ -138,47 +146,73 @@ public partial class Ventana_DetallesTicket : ContentPage
                 CerrarTickets.IsVisible = true;
             }
         }
-        catch(Exception e) {
-            
+        catch (Exception e)
+        {
+
         }
-        
-        
-        
     }
 
-
-
-
-
+    /// <summary>
+    /// Maneja el evento para descargar un documento asociado al ticket.
+    /// </summary>
     private void OnDescargarDocumentoClicked(Documento documento)
     {
-
         if (documento != null)
         {
             shell.DescargarDocumento(documento);
-
         }
         else
         {
             DisplayAlert("Error", "No se pudo encontrar el documento asociado.", "OK");
         }
-       
     }
 
+    /// <summary>
+    /// Configura la interfaz para que se muestre la vista del técnico.
+    /// </summary>
     internal void VistaTecnico()
     {
         CrearHijo.IsVisible = false;
         CerrarTickets.IsVisible = false;
-        if (ticket.Estado=="Abierto")
+
+        if (ticket.Estado == "Abierto")
         {
             AsignarTicket.IsVisible = true;
         }
-        
     }
+
+    /// <summary>
+    /// Asigna el ticket a un técnico.
+    /// </summary>
     private void OnAsignarTicketClicked(object sender, EventArgs e)
     {
         System.Diagnostics.Debug.WriteLine("Botón 'Asignar Ticket' clickeado.");
         shell.AsignarTicketATecnico(ticket.IdTicket);
         shell.ActualizarTicketsTiempoRealTecnico();
+    }
+    /// <summary>
+    /// Cambia el tamaño de la fuente de varios elementos de la interfaz de usuario.
+    /// </summary>
+    /// <param name="factorMultiplicador">El factor por el cual se multiplicará el tamaño original de la fuente.</param>
+    public void CambiarTamanoFuente(double factorMultiplicador)
+    {
+        TituloLabel.FontSize = 24 * factorMultiplicador;
+        TipoErrorLabel.FontSize = 16 * factorMultiplicador;
+        TipoErrorEntry.FontSize = 16 * factorMultiplicador;
+        CategoriaLabel.FontSize = 16 * factorMultiplicador;
+        CategoriaEntry.FontSize = 16 * factorMultiplicador;
+        IdTicketLabel.FontSize = 16 * factorMultiplicador;
+        IdTicketEntry.FontSize = 16 * factorMultiplicador;
+        NombreTicketLabel.FontSize = 16 * factorMultiplicador;
+        NombreTicketEntry.FontSize = 16 * factorMultiplicador;
+        CerrarTickets.FontSize = 20 * factorMultiplicador;
+        CrearHijo.FontSize = 20 * factorMultiplicador;
+        EspecificacionLabel.FontSize = 16 * factorMultiplicador;
+        EspecificacionEditor.FontSize = 16 * factorMultiplicador;
+        SolucionEditor.FontSize = 16 * factorMultiplicador;
+        SolucionLabel.FontSize = 16 * factorMultiplicador;
+        DocumentoNombre.FontSize = 14 * factorMultiplicador;
+        DocumentoLabel.FontSize = 16 * factorMultiplicador;
+        AsignarTicket.FontSize = 20 * factorMultiplicador;
     }
 }

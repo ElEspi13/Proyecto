@@ -11,7 +11,8 @@
               RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
               ColumnDefinitions="*,*" 
               VerticalOptions="FillAndExpand" 
-              HorizontalOptions="FillAndExpand">
+              HorizontalOptions="FillAndExpand"
+              x:Name="MyGrid">
 
             <!-- Indicador de Ticket Hijo -->
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
@@ -25,7 +26,8 @@
                    IsVisible="False" />
 
             <!-- Título de Nombre del Ticket -->
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+            <Label x:Name="NombreTicketLabel"
+                   Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                    Text="{DynamicResource NombreTicketLabel}" 
                    FontSize="16" 
                    TextColor="{DynamicResource Color_Fuente}" 
@@ -40,16 +42,16 @@
                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
             <!-- Título de Tipo de Error -->
-            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+            <Label x:Name="TipoErrorLabel"
+                   Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
                    Text="{DynamicResource TipoErrorLabel}" 
                    FontSize="16" 
                    TextColor="Black" />
 
             <!-- Picker para Tipo de Error -->
             <Picker x:Name="TipoErrorPicker" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                    HeightRequest="70" 
                     BackgroundColor="#606060" 
-                    TextColor="{DynamicResource Color_Fuente}"  
+                    TextColor="{DynamicResource White}"   
                     Title="{DynamicResource PlaceholderTipoError}" 
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="FillAndExpand" 
@@ -64,7 +66,8 @@
             </Picker>
 
             <!-- Título de Categoría -->
-            <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
+            <Label x:Name="CategoriaLabel"
+                   Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
                    Text="{DynamicResource CategoriaLabel}" 
                    FontSize="16" 
                    TextColor="{DynamicResource Color_Fuente}" 
@@ -72,9 +75,8 @@
 
             <!-- Picker para Categoría -->
             <Picker x:Name="CategoriaPicker" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
-                    HeightRequest="70" 
                     BackgroundColor="#606060" 
-                    TextColor="{DynamicResource Color_Fuente}" 
+                    TextColor="{DynamicResource White}" 
                     Title="{DynamicResource PlaceholderCategoria}" 
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="FillAndExpand">
@@ -84,7 +86,8 @@
             <VerticalStackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" 
                                  Spacing="10" 
                                  HorizontalOptions="CenterAndExpand">
-                <Label Text="{DynamicResource SeleccionarArchivoLabel}" 
+                <Label x:Name="SeleccionarArchivoLabel"
+                       Text="{DynamicResource SeleccionarArchivoLabel}" 
                        FontSize="16" 
                        TextColor="{DynamicResource Color_Fuente}" 
                        Margin="0,20,0,5"/>
@@ -97,11 +100,10 @@
                            HorizontalOptions="FillAndExpand"/>
                     <Button x:Name="SeleccionarArchivoButton" 
                             Text="{DynamicResource BotonSeleccionarArchivo}" 
-                            WidthRequest="90" 
-                            HeightRequest="50" 
                             BackgroundColor="Blue" 
                             TextColor="{DynamicResource Color_Fuente}" 
-                            Clicked="OnSeleccionarArchivoClicked"/>
+                            Clicked="OnSeleccionarArchivoClicked"
+                            ToolTipProperties.Text="Botón para seleccionar archivos"/>
                 </HorizontalStackLayout>
 
                 <!-- Mostrar archivo seleccionado -->
@@ -145,7 +147,8 @@
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="EndAndExpand" 
                     Margin="0,20,0,0" 
-                    Clicked="OnEnviarClicked"/>
+                    Clicked="OnEnviarClicked"
+                    x:Name="EnviarButton"/>
         </Grid>
     </ScrollView>
 </ContentPage>

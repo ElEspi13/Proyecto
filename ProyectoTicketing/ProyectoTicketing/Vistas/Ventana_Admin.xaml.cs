@@ -1,4 +1,3 @@
-
 using ProyectoTicketing.Clases;
 using ProyectoTicketing.Servicios;
 
@@ -6,6 +5,7 @@ namespace ProyectoTicketing.Vistas
 {
     /// <summary>
     /// Clase parcial que representa la ventana de administración en la aplicación.
+    /// Permite ver y gestionar usuarios.
     /// </summary>
     public partial class Ventana_Admin : ContentPage
     {
@@ -14,7 +14,7 @@ namespace ProyectoTicketing.Vistas
         /// <summary>
         /// Constructor de la clase Ventana_Admin.
         /// </summary>
-        /// <param name="shell">Instancia de AppShell.</param>
+        /// <param name="shell">Instancia de AppShell que gestiona la lógica de navegación y acciones principales.</param>
         public Ventana_Admin(AppShell shell)
         {
             InitializeComponent();
@@ -22,9 +22,9 @@ namespace ProyectoTicketing.Vistas
         }
 
         /// <summary>
-        /// Método para mostrar la lista de usuarios en la interfaz.
+        /// Muestra la lista de usuarios en la interfaz.
         /// </summary>
-        /// <param name="usuarios">Lista de usuarios a mostrar.</param>
+        /// <param name="usuarios">Lista de usuarios a mostrar en la vista.</param>
         public void MostrarListaUsuarios(List<Usuario> usuarios)
         {
             usuariosListView.ItemsSource = usuarios;
@@ -34,11 +34,12 @@ namespace ProyectoTicketing.Vistas
         /// Evento que se dispara cuando se toca un elemento de la lista de usuarios.
         /// Elimina el usuario seleccionado llamando al método EliminarUsuario del objeto shell.
         /// </summary>
-        private void usuariosListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        private async void usuariosListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             ListView listView = sender as ListView;
             Usuario usuario = listView.SelectedItem as Usuario;
             shell.EliminarUsuario(usuario);
+            List<Usuario> lista = await shell.MostrarListaUsuarios();
         }
 
         /// <summary>
@@ -50,20 +51,24 @@ namespace ProyectoTicketing.Vistas
             Titulo.FontSize = 30 * factorMultiplicador;
         }
 
+        /// <summary>
+        /// Evento que se dispara cuando la página está a punto de aparecer.
+        /// Carga la lista de usuarios desde el servicio correspondiente.
+        /// </summary>
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
             try
             {
-                List<Usuario> lista= await shell.MostrarListaUsuarios();
+                List<Usuario> lista = await shell.MostrarListaUsuarios();
                 MostrarListaUsuarios(lista);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error en OnAppearing: {ex.Message}");
                 await DisplayAlert("Error", "Ocurrió un problema al cargar la página.", "OK");
             }
         }
+        
     }
 }
