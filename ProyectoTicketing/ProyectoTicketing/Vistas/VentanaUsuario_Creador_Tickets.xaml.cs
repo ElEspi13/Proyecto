@@ -29,6 +29,30 @@ namespace ProyectoTicketing.Vistas
         /// </summary>
         private async void OnEnviarClicked(object sender, EventArgs e)
         {
+            if (TipoErrorPicker.SelectedItem == null)
+            {
+                await DisplayAlert("Error", "Debe seleccionar un tipo de error", "OK");
+                return; 
+            }
+
+            if (CategoriaPicker.SelectedItem == null)
+            {
+                await DisplayAlert("Error", "Debe seleccionar una categoría", "OK");
+                return; 
+            }
+
+            if (string.IsNullOrEmpty(Descripcion.Text))
+            {
+                await DisplayAlert("Error", "Debe ingresar una descripción", "OK");
+                return; 
+            }
+
+            if (string.IsNullOrEmpty(NombreTicketEntry.Text))
+            {
+                await DisplayAlert("Error", "Debe ingresar un nombre para el ticket", "OK");
+                return; 
+            }
+
             Ticket nuevoTicket = new Ticket(
                 tipoError: TipoErrorPicker.SelectedItem.ToString(),
                 categoria: CategoriaPicker.SelectedItem.ToString(),
@@ -49,7 +73,7 @@ namespace ProyectoTicketing.Vistas
 
             shell.CrearTicket(nuevoTicket);
 
-            ClearForm();
+            LimpiarCampos();
             ticketPadre = null;
             TicketHijoLabel.IsVisible = false;
         }
@@ -80,7 +104,6 @@ namespace ProyectoTicketing.Vistas
 
                 ArchivoEntry.Text = result.FileName;
                 ArchivoSeleccionadoLayout.IsVisible = true;
-                ArchivoNombre.Text = result.FileName;
 
                 string extension = Path.GetExtension(result.FileName).ToLower();
 
@@ -149,7 +172,7 @@ namespace ProyectoTicketing.Vistas
                 Text = result.FileName,
                 FontSize = 16,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
-                TextColor = ArchivoNombre.TextColor
+                TextColor = NombreTicketLabel.TextColor
             };
 
             stackLayoutDocumento.Children.Add(imageButton);
@@ -171,7 +194,7 @@ namespace ProyectoTicketing.Vistas
         /// <summary>
         /// Limpia el formulario después de enviar el ticket.
         /// </summary>
-        private void ClearForm()
+        public void LimpiarCampos()
         {
             NombreTicketEntry.Text = "";
             TipoErrorPicker.SelectedItem = null;

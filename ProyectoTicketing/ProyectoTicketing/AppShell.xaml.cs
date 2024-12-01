@@ -210,7 +210,8 @@ namespace ProyectoTicketing
                 await Shell.Current.GoToAsync("//InicioSesionRuta");
                 usuario.Nombre = "";    
                 BBDDsesion = false;
-                
+                ventanaTecnico_Resolvedor.LimpiarCampos();
+                ventanaUsuario_Creador_Tickets.LimpiarCampos();
                 Footer.Text = "";
                 BBDD.CerrarSesion();
                 configuracion.AsignarConfiguracion(BBDD.SacarConfiguracion());

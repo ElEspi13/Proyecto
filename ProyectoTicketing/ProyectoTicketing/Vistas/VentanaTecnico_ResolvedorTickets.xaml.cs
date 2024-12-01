@@ -148,6 +148,8 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
     /// </summary>
     public void SetTicketData(Ticket ticket)
     {
+        contadorDocumentos = 0;
+        SeleccionarArchivoButton.IsEnabled = true;
         this.ticket = ticket;
         try
         {
@@ -183,7 +185,7 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
                     }
                     else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                     {
-                        imageButton.Source = documento.RutaArchivo;
+                        imageButton.Source = "icono_imagen.png";
                     }
                     else
                     {
@@ -240,7 +242,14 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
     /// </summary>
     private void EnviarButton_Clicked(object sender, EventArgs e)
     {
-        shell.ActualizarTecnicoTicket(ticket.IdTicket, Solucion.Text, documentosSeleccionados);
+        if (ticket!=null)
+        {
+            shell.ActualizarTecnicoTicket(ticket.IdTicket, Solucion.Text, documentosSeleccionados);
+        }
+        else{
+            DisplayAlert("Error","No ha seleccionado Ticket","OK");
+        }
+        
     }
     /// <summary>
     /// Cambia el tamaño de la fuente de varios elementos de la interfaz de usuario.
@@ -265,4 +274,31 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
         EnviarButton.FontSize = 20 * factorMultiplicador;
         SeleccionarArchivoButton.FontSize = 16 * factorMultiplicador;
     }
+
+    /// <summary>
+    /// Limpia todos los campos de entrada, selectores y elementos visuales asociados a los documentos 
+    /// en la interfaz de usuario para reiniciar la vista y permitir la entrada de nuevos datos.
+    /// </summary>
+    public void LimpiarCampos()
+    {
+        TipoErrorEntry.Text = string.Empty;
+        CategoriaEntry.Text = string.Empty;
+        IdTicketEntry.Text = string.Empty;
+        NombreTicketEntry.Text = string.Empty;
+        EspecificacionErrorEditor.Text = string.Empty;
+        Solucion.Text = string.Empty;
+        ArchivoEntry.Text = string.Empty;
+
+
+        DocumentosSeleccionadosLayout.Children.Clear();
+
+        DocumentoIcono.Source = null;
+        ArchivoIcono.Source = null;
+
+        ArchivoSeleccionadoLayout.IsVisible = false;
+
+        DocumentoNombre.Text = string.Empty;
+    }
+
+
 }

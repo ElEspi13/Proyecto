@@ -38,9 +38,9 @@
             Text="{Binding NombreTicket}" FontSize="16" Style="{DynamicResource Entry}" IsEnabled="False"/>
 
             <!-- Documentos del Ticket -->
-            <Label x:Name="DocumentosTicketLabel" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalOptions="Center"
-                   Text="{DynamicResource DocumentosTicketLabel}" FontSize="18" TextColor="{DynamicResource Color_Fuente}" Margin="0,70,0,5"/>
-            <VerticalStackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
+            <Label x:Name="DocumentosTicketLabel" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalOptions="Center"
+                   Text="{DynamicResource DocumentosTicketLabel}" FontSize="18" TextColor="{DynamicResource Color_Fuente}" Margin="0,50,0,5"/>
+            <VerticalStackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
                 </HorizontalStackLayout>
                 <StackLayout x:Name="DocumentosSeleccionadosLayout" Orientation="Vertical" Spacing="10" IsVisible="True">
@@ -50,9 +50,9 @@
             </VerticalStackLayout>
 
             <!-- Especificación del error -->
-            <Label x:Name="EspecificacionErrorLabel" Grid.Row="8" Grid.Column="0" 
+            <Label x:Name="EspecificacionErrorLabel" Grid.Row="9" Grid.Column="0" 
                    Text="{DynamicResource EspecificacionErrorLabel}" FontSize="18" TextColor="{DynamicResource Color_Fuente}" Margin="0,20,0,5"/>
-            <Editor x:Name="EspecificacionErrorEditor" Grid.Row="9" Grid.Column="0" HeightRequest="150" 
+            <Editor x:Name="EspecificacionErrorEditor" Grid.Row="10" Grid.Column="0" HeightRequest="150" 
                     BackgroundColor="#606060" TextColor="White" 
                     Text="{Binding Descripcion}" 
                     Placeholder="{DynamicResource PlaceholderError}" 
@@ -60,18 +60,19 @@
                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsEnabled="False" Style="{DynamicResource Entry}"/>
 
             <!-- Descripción de la solución -->
-            <Label x:Name="DescripcionSolucionLabel" Grid.Row="8" Grid.Column="1" 
+            <Label x:Name="DescripcionSolucionLabel" Grid.Row="9" Grid.Column="1" 
                    Text="{DynamicResource DescripcionSolucionLabel}" FontSize="18" TextColor="{DynamicResource Color_Fuente}" Margin="0,20,0,5"/>
-            <Editor x:Name="Solucion"  Grid.Row="9" Grid.Column="1" HeightRequest="150" 
+            <Editor x:Name="Solucion"  Grid.Row="10" Grid.Column="1" HeightRequest="150" 
                     BackgroundColor="#606060" TextColor="White" 
                     Placeholder="{DynamicResource PlaceholderSolucion}" 
                     PlaceholderColor="White" 
-                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Style="{DynamicResource Entry}"/>
+                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Style="{DynamicResource Entry}"
+                    Text="{Binding Solucion}"/>
 
             <!-- Agregar documentos -->
-            <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" 
+            <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalOptions="Center"
                    Text="{DynamicResource AgregarDocumentosLabel}" FontSize="18" TextColor="{DynamicResource Color_Fuente}" Margin="0,20,0,5"/>
-            <VerticalStackLayout Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="CenterAndExpand">
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
                     <Entry x:Name="ArchivoEntry" HeightRequest="50" BackgroundColor="#606060" TextColor="White" IsReadOnly="True" HorizontalOptions="FillAndExpand"/>
                     <Button x:Name="SeleccionarArchivoButton" ToolTipProperties.Text="Botón para seleccionar archivos" Text="{DynamicResource BotonSeleccionar}" Clicked="OnSeleccionarArchivoClicked" BackgroundColor="Blue" 

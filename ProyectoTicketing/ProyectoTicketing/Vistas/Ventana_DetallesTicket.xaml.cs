@@ -36,6 +36,7 @@ public partial class Ventana_DetallesTicket : ContentPage
             else
             {
                 shell.CerrarTicketsIDTicket(ticket.IdTicket);
+                shell.ActualizarTicketsTiempoReal();
             }
             await DisplayAlert("Tickets Cerrados", "Todos los tickets relacionados han sido cerrados.", "OK");
         }
@@ -104,7 +105,7 @@ public partial class Ventana_DetallesTicket : ContentPage
                     }
                     else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                     {
-                        imageButton.Source = documento.RutaArchivo;
+                        imageButton.Source = "icono_imagen.png";
                     }
                     else
                     {
@@ -139,11 +140,13 @@ public partial class Ventana_DetallesTicket : ContentPage
             {
                 CrearHijo.IsVisible = false;
                 CerrarTickets.IsVisible = false;
+                AsignarTicket.IsVisible = false;
             }
             else
             {
                 CrearHijo.IsVisible = true;
                 CerrarTickets.IsVisible = true;
+                AsignarTicket.IsVisible=false;
             }
         }
         catch (Exception e)

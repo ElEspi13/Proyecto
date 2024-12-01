@@ -55,9 +55,18 @@ public partial class Ventana_IniciodeSesion : ContentPage
         }
         else
         {
-            Shell.InsertarDatos(Usuario.Text, Passw.Text, Rol.SelectedIndex);
-            LimpiarDatos();
-            
+            if (Rol.SelectedIndex == 0){
+                Shell.InsertarDatos(Usuario.Text, Passw.Text,2);
+                LimpiarDatos();
+
+            }
+            else
+            {
+                Shell.InsertarDatos(Usuario.Text, Passw.Text, 1);
+                LimpiarDatos();
+
+            }
+
         }
     }
 

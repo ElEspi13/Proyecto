@@ -33,7 +33,6 @@ namespace ProyectoTicketing.Clases
         protected override async Task CargarDatosAsync()
         {
             System.Diagnostics.Debug.WriteLine("Este es un mensaje de depuración.");
-            // Invocar el evento para notificar que los datos han sido actualizados
             DatosActualizadosTiempoReal?.Invoke(this, EventArgs.Empty);
         }
 
@@ -45,13 +44,27 @@ namespace ProyectoTicketing.Clases
         protected override FilterDefinition<ChangeStreamDocument<BsonDocument>> ConfigurarFiltro()
         {
 
-            var filtroEstado = Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq("updateDescription.updatedFields.Estado", "Cerrado");
+            var filtroCliente = Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq($"fullDocument.{campoFiltro}", filtroId);
 
+            var filtroInserciones = Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq("operationType", "insert");
 
-            var filtroIdUsuario = Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq($"fullDocument.{campoFiltro}", filtroId);
+            var filtroActualizaciones = Builders<ChangeStreamDocument<BsonDocument>>.Filter.Or(
+                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq("operationType", "update"), 
+                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Exists("updateDescription.updatedFields.estado"),
+                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Exists("updateDescription.updatedFields.solucion"),
+                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Exists("updateDescription.updatedFields.documentosAdjuntos")
+            );
 
+            var filtroCombinado = Builders<ChangeStreamDocument<BsonDocument>>.Filter.And(
+                filtroCliente, 
+                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Or(
+                    filtroInserciones,
+                    filtroActualizaciones
+                )
+            );
 
-            return filtroIdUsuario | filtroEstado;
+            return filtroCombinado;
+
         }
     }
 }

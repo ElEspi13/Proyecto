@@ -71,7 +71,7 @@ namespace ProyectoTicketing.Clases
                 {
                     foreach (var change in cursor.Current)
                     {
-                        Console.WriteLine($"Cambio detectado: {change.FullDocument}");
+                        System.Diagnostics.Debug.WriteLine($"Cambio detectado: {change.FullDocument}");
                         await CargarDatosAsync();
                     }
                 }

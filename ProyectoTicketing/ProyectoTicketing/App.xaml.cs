@@ -7,6 +7,7 @@
             InitializeComponent();
 
             MainPage = new AppShell();
+            Application.Current.MainPage.Title = "PCESPI Assistance";
         }
     }
 }

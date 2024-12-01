@@ -61,7 +61,7 @@
             <VerticalStackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="FillAndExpand">
                 <StackLayout x:Name="DocumentosSeleccionadosLayout" Orientation="Vertical" Spacing="10" IsVisible="True">
                     <ImageButton x:Name="DocumentoIcono" WidthRequest="50" HeightRequest="50" HorizontalOptions="CenterAndExpand"  />
-                    <Label x:Name="DocumentoNombre" FontSize="16" TextColor="Black" />
+                    <Label x:Name="DocumentoNombre" FontSize="16" TextColor="{DynamicResource Color_Fuente}" />
                 </StackLayout>
             </VerticalStackLayout>
 
