@@ -149,6 +149,7 @@ public partial class VentanaTecnico_ResolvedorTickets : ContentPage
     public void SetTicketData(Ticket ticket)
     {
         contadorDocumentos = 0;
+        DocumentosSeleccionadosLayout.Clear();
         SeleccionarArchivoButton.IsEnabled = true;
         this.ticket = ticket;
         try
