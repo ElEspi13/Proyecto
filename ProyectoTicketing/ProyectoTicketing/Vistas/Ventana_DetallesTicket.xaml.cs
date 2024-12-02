@@ -32,17 +32,20 @@ public partial class Ventana_DetallesTicket : ContentPage
                 // Buscar todos los tickets que tienen este IDTicketPadre
                 shell.CerrarTicketsIDTicketPadre(ticket.IDTicketPadre);
                 shell.ActualizarTicketsTiempoReal();
+                CrearHijo.IsVisible = false;
+                CerrarTickets.IsVisible = false;
             }
             else
             {
                 shell.CerrarTicketsIDTicket(ticket.IdTicket);
                 shell.ActualizarTicketsTiempoReal();
+                CrearHijo.IsVisible = false;
+                CerrarTickets.IsVisible = false;
             }
             await DisplayAlert("Tickets Cerrados", "Todos los tickets relacionados han sido cerrados.", "OK");
         }
         else
         {
-            // Si el usuario presiona "Cancelar", no hacer nada o realizar alguna otra acción
         }
     }
 

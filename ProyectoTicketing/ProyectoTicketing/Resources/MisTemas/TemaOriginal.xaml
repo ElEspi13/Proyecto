@@ -6,7 +6,7 @@
     
    
     <Style x:Key="Color_Shell" TargetType="Shell">
-        <Setter Property="BackgroundColor" Value="Grey"/>
+        <Setter Property="BackgroundColor" Value="Black"/>
         <Setter Property="Title"/>
         
     </Style>
