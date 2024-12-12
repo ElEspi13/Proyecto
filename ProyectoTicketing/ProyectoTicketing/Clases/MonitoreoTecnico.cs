@@ -57,12 +57,10 @@ namespace ProyectoTicketing.Clases
         /// <returns>Filtro para la transmisión de cambios en MongoDB.</returns>
         protected override FilterDefinition<ChangeStreamDocument<BsonDocument>> ConfigurarFiltro()
         {
-            return Builders<ChangeStreamDocument<BsonDocument>>.Filter.Or(
-                Builders<ChangeStreamDocument<BsonDocument>>.Filter.And(
+            return Builders<ChangeStreamDocument<BsonDocument>>.Filter.And(
                     Builders<ChangeStreamDocument<BsonDocument>>.Filter.Exists($"fullDocument.{campoFiltro}"),
                     Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq($"fullDocument.{campoFiltro}", BsonNull.Value)
-                ),
-                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Exists($"updateDescription.updatedFields.{campoFiltro}")
+                
     );
         }
     }
