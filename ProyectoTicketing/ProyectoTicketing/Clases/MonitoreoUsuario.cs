@@ -50,9 +50,9 @@ namespace ProyectoTicketing.Clases
 
             var filtroActualizaciones = Builders<ChangeStreamDocument<BsonDocument>>.Filter.Or(
                 Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq("operationType", "update"), 
-                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Exists("updateDescription.updatedFields.estado"),
-                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Exists("updateDescription.updatedFields.solucion"),
-                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Exists("updateDescription.updatedFields.documentosAdjuntos")
+                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Eq("fullDocument..estado", "Cerrado"),
+                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Ne("fullDocument.solucion", BsonNull.Value),
+                Builders<ChangeStreamDocument<BsonDocument>>.Filter.Ne("fullDocument.documentosAdjuntos", BsonNull.Value)
             );
 
             var filtroCombinado = Builders<ChangeStreamDocument<BsonDocument>>.Filter.And(
