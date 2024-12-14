@@ -40,6 +40,7 @@ namespace ProyectoTicketing.Vistas
             Usuario usuario = listView.SelectedItem as Usuario;
             shell.EliminarUsuario(usuario);
             List<Usuario> lista = await shell.MostrarListaUsuarios();
+            listView.ItemsSource = lista;
         }
 
         /// <summary>
