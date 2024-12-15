@@ -124,6 +124,7 @@ public partial class Ventana_DetallesTicket : ContentPage
                     {
                         Text = documento.NombreArchivo,
                         FontSize = 16,
+                        TextColor = NombreTicketLabel.TextColor
                     };
 
                     documentoLayout.Children.Add(imageButton);

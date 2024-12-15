@@ -504,19 +504,34 @@ namespace ProyectoTicketing.Servicios
 
                 foreach (var documento in documentosSeleccionados)
                 {
-                    using (var fileStream = File.OpenRead(documento.RutaArchivo))
+                    if (documento.RutaArchivo != null)
                     {
-                        var fileId = await gridFSBucket.UploadFromStreamAsync(documento.NombreArchivo, fileStream);
+                        using (var fileStream = File.OpenRead(documento.RutaArchivo))
+                        {
+                            var fileId = await gridFSBucket.UploadFromStreamAsync(documento.NombreArchivo, fileStream);
 
-                        var docMetadata = new BsonDocument
+                            var docMetadata = new BsonDocument
                 {
                     { "IdDocumento", fileId },
                     { "NombreArchivo", documento.NombreArchivo },
                     { "TipoArchivo", documento.TipoArchivo }
                 };
 
-                        documentosAdjuntos.Add(docMetadata);
+                            documentosAdjuntos.Add(docMetadata);
+                        }
                     }
+                    else 
+                    {
+                            var docMetadata = new BsonDocument
+                        {
+                            { "IdDocumento", documento.IdDocumento },
+                            { "NombreArchivo", documento.NombreArchivo },
+                            { "TipoArchivo", documento.TipoArchivo }
+                        };
+
+                            documentosAdjuntos.Add(docMetadata);
+                        }
+                    
                 }
 
                 var ticketsCollection = database.GetCollection<Ticket>("tickets");
